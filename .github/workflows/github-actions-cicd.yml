@@ -1,5 +1,5 @@
 #Workflow name
-name: CI/CD Pipeline
+name: Automated Unit Tests
 on: [push]
 jobs:
   #Test's job

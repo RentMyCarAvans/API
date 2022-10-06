@@ -27,8 +27,8 @@ jobs:
         #This action allows caching dependencies and build outputs to improve workflow execution time.
         uses: actions/cache@v1
         with:
-          path: ~/Rent%20My%20Car/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/Rent%20My%20Car/pom.xml') }}
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       #Run Tests
       - name: Run Tests

@@ -8,11 +8,13 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Table(name = "Users")
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
+@Entity
+@Table(name = "Users")
+
 public class User extends Account {
 
     @Id

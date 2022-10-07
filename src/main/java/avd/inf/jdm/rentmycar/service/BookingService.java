@@ -36,10 +36,6 @@ public class BookingService {
         return bookingRepository.findBookingByOffer(offer);
     }
 
-    public Booking create(Booking booking) {
-        return bookingRepository.save(booking);
-    }
-
     public Booking save(Booking booking) {
         return bookingRepository.save(booking);
     }

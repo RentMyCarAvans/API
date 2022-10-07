@@ -37,7 +37,7 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<Booking> create(@RequestBody Booking newBooking){
         try {
-            Booking booking = bookingService.create(newBooking);
+            Booking booking = bookingService.save(newBooking);
             return new ResponseEntity<>(booking, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();

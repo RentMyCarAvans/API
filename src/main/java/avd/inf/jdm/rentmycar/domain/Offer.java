@@ -27,9 +27,9 @@ public class Offer {
     private String pickupLocation;
 
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "car")
-    private Car car;
+//    @OneToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "car")
+//    private Car car;
 
 
     public Offer(LocalDateTime startDateTime, LocalDateTime endDateTime, String pickupLocation, Car car) {
@@ -58,7 +58,7 @@ public class Offer {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.pickupLocation = pickupLocation;
-        this.car = car;
+//        this.car = car;
     }
 
 }

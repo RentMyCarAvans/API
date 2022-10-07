@@ -35,4 +35,8 @@ public class OfferService {
     public Offer create(Offer offer) {
         return offerRepository.save(offer);
     }
+
+    public Offer save(Offer offer) {
+        return offerRepository.save(offer);
+    }
 }

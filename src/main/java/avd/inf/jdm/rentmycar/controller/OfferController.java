@@ -56,4 +56,23 @@ public class OfferController {
         }
     }
 
+    @PutMapping("/{id}")
+    ResponseEntity<Offer> updateCourse(@RequestBody Offer newOffer, @PathVariable Long id) {
+        Optional<Offer> optionalOffer = offerService.getSingleById(id);
+
+        if (optionalOffer.isPresent()) {
+
+            Offer offer = optionalOffer.get();
+
+            offer.setStartDateTime(newOffer.getStartDateTime());
+            offer.setEndDateTime(newOffer.getEndDateTime());
+            offer.setPickupLocation(newOffer.getPickupLocation());
+            offer.setCar(newOffer.getCar());
+
+            return ResponseEntity.ok(offerService.save(offer));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

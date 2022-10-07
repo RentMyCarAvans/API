@@ -33,6 +33,28 @@ public class Offer {
 
 
     public Offer(LocalDateTime startDateTime, LocalDateTime endDateTime, String pickupLocation, Car car) {
+        if (startDateTime == null)
+        {
+            throw new IllegalArgumentException("startDateTime can't be null");
+        }
+
+        if (endDateTime == null)
+        {
+            throw new IllegalArgumentException("endDateTime can't be null");
+        }
+
+        if (pickupLocation == null)
+        {
+            throw new IllegalArgumentException("pickupLocation can't be null");
+        }
+
+        if (car == null)
+        {
+            throw new IllegalArgumentException("car can't be null");
+        }
+
+
+
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.pickupLocation = pickupLocation;

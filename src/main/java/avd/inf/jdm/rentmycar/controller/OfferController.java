@@ -23,7 +23,7 @@ public class OfferController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Offer>> getAllCourses(@RequestParam(required = false) String city){
+    public ResponseEntity<List<Offer>> getAllOffers(@RequestParam(required = false) String city){
         List<Offer> found = city == null ? offerService.getAll() : offerService.getOffersByPickupLocation(city);
         return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
     }
@@ -59,7 +59,7 @@ public class OfferController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Offer> updateCourse(@RequestBody Offer newOffer, @PathVariable Long id) {
+    ResponseEntity<Offer> updateOffer(@RequestBody Offer newOffer, @PathVariable Long id) {
         Optional<Offer> optionalOffer = offerService.getSingleById(id);
 
         if (optionalOffer.isPresent()) {

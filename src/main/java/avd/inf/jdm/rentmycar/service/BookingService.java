@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-class BookingService {
+public class BookingService {
 
     private final BookingRepository bookingRepository;
 

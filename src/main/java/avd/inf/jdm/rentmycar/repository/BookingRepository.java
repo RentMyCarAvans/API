@@ -10,7 +10,7 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findBookingsByCustomer(User customer);
-    List<Booking> findBookingsByOffer(Offer offer);
+    Booking findBookingByOffer(Offer offer);
 
 }
 

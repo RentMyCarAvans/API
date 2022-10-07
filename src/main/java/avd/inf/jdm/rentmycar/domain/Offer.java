@@ -14,48 +14,29 @@ import java.time.LocalDateTime;
 @Table(name = "offers")
 public class Offer {
     @Id
-    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "startDateTime", columnDefinition = "TIMESTAMP", nullable = false)
+    @Column(name = "startDateTime", columnDefinition = "TIMESTAMP")
     private LocalDateTime startDateTime;
 
-    @Column(name = "endDateTime", columnDefinition = "TIMESTAMP", nullable = false)
+    @Column(name = "endDateTime", columnDefinition = "TIMESTAMP")
     private LocalDateTime endDateTime;
 
-    @Column(name = "pickupLocation", nullable = false)
+    @Column(name = "pickupLocation")
     private String pickupLocation;
 
 
-//    @OneToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "car")
-//    private Car car;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "car")
+    private Car car;
 
 
-    public Offer(LocalDateTime startDateTime, LocalDateTime endDateTime, String pickupLocation) {
-        if (startDateTime == null)
-        {
-            throw new IllegalArgumentException("startDateTime can't be null");
-        }
-
-        if (endDateTime == null)
-        {
-            throw new IllegalArgumentException("endDateTime can't be null");
-        }
-
-        if (pickupLocation == null)
-        {
-            throw new IllegalArgumentException("pickupLocation can't be null");
-        }
-
-//
-
-
-
+    public Offer(LocalDateTime startDateTime, LocalDateTime endDateTime, String pickupLocation, Car car) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.pickupLocation = pickupLocation;
+        this.car = car;
     }
 
 }

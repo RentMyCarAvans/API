@@ -1,5 +1,6 @@
 package avd.inf.jdm.rentmycar.controller;
 
+import avd.inf.jdm.rentmycar.ResponseHandler;
 import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +48,13 @@ public class OfferController {
 
 
     @PostMapping
-    public ResponseEntity<Offer> create(@RequestBody Offer newOffer){
+    public ResponseEntity<Object> create(@RequestBody Offer newOffer){
         try {
             Offer student = offerService.create(newOffer);
             return new ResponseEntity<>(student, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -67,7 +69,7 @@ public class OfferController {
             offer.setStartDateTime(newOffer.getStartDateTime());
             offer.setEndDateTime(newOffer.getEndDateTime());
             offer.setPickupLocation(newOffer.getPickupLocation());
-            offer.setCar(newOffer.getCar());
+//            offer.setCar(newOffer.getCar());
 
             return ResponseEntity.ok(offerService.save(offer));
         } else {

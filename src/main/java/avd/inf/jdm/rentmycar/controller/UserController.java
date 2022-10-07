@@ -37,7 +37,7 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         try {
-            User newUser = userService.createUser(user);
+            User newUser = userService.saveUser(user);
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
@@ -45,8 +45,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserByID(@PathVariable Long id) {
-        return userService.getUserByID(id);
+    public ResponseEntity<User> getUserByID(@PathVariable Long id) {
+        try{
+            User getUser = userService.getUserByID(id);
+            return new ResponseEntity<>(getUser,HttpStatus.FOUND);
+        } catch (IllegalArgumentException e ){
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{id}")
@@ -62,7 +67,7 @@ public class UserController {
             user.setDateOfBirth(newUser.getDateOfBirth());
             user.setBonusPoints(newUser.getBonusPoints());
 
-            return ResponseEntity.ok(userService.createUser(user));
+            return ResponseEntity.ok(userService.saveUser(user));
         } else {
             return ResponseEntity.notFound().build();
         }

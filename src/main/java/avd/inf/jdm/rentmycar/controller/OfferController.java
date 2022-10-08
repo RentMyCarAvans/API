@@ -50,8 +50,8 @@ public class OfferController {
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody Offer newOffer){
         try {
-            Offer student = offerService.create(newOffer);
-            return new ResponseEntity<>(student, HttpStatus.CREATED);
+            Offer offer = offerService.create(newOffer);
+            return new ResponseEntity<>(offer, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
 //            return ResponseEntity.badRequest().build();

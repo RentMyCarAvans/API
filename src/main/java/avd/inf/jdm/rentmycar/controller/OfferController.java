@@ -1,5 +1,6 @@
 package avd.inf.jdm.rentmycar.controller;
 
+import avd.inf.jdm.rentmycar.ResponseHandler;
 import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class OfferController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Offer>> getAllCourses(@RequestParam(required = false) String city){
+    public ResponseEntity<List<Offer>> getAllOffers(@RequestParam(required = false) String city){
         List<Offer> found = city == null ? offerService.getAll() : offerService.getOffersByPickupLocation(city);
         return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
     }
@@ -47,17 +48,18 @@ public class OfferController {
 
 
     @PostMapping
-    public ResponseEntity<Offer> create(@RequestBody Offer newOffer){
+    public ResponseEntity<Object> create(@RequestBody Offer newOffer){
         try {
             Offer offer = offerService.create(newOffer);
             return new ResponseEntity<>(offer, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//            return ResponseEntity.badRequest().build();
         }
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Offer> updateCourse(@RequestBody Offer newOffer, @PathVariable Long id) {
+    ResponseEntity<Offer> updateOffer(@RequestBody Offer newOffer, @PathVariable Long id) {
         Optional<Offer> optionalOffer = offerService.getSingleById(id);
 
         if (optionalOffer.isPresent()) {

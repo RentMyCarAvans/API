@@ -22,13 +22,9 @@ public class User extends Account {
     private Long id;
     private String firstName;
     private String lastName;
+    private String password;
     private LocalDate dateOfBirth;
+    private String email;
     private int bonusPoints;
 
-    public User(String firstName, String lastName, LocalDate dateOfBirth, int bonusPoints) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.bonusPoints = bonusPoints;
-    }
 }

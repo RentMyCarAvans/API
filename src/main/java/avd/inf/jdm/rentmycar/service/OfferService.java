@@ -21,7 +21,12 @@ public class OfferService {
     }
 
     public Optional<Offer> getSingleById(Long id) {
-        return offerRepository.findById(id);
+        // Check if the offer exists
+        if (offerRepository.existsById(id)) {
+            return offerRepository.findById(id);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public List<Offer> getOffersByPickupLocation(String city) {
@@ -33,6 +38,30 @@ public class OfferService {
     }
 
     public Offer create(Offer offer) {
+        if (offer.getPickupLocation() == null || offer.getPickupLocation().isEmpty()) {
+            throw new IllegalArgumentException("Pickup location must not be empty");
+        }
+
+        if (offer.getStartDateTime() == null) {
+            throw new IllegalArgumentException("Start date must not be empty");
+        }
+
+        if(offer.getStartDateTime().isBefore(java.time.LocalDateTime.now())) {
+            throw new IllegalArgumentException("Start date must not be in the past");
+        }
+
+        if (offer.getStartDateTime().isEqual(offer.getEndDateTime())) {
+            throw new IllegalArgumentException("Start date must not be equal to end date");
+        }
+
+        if (offer.getEndDateTime() == null) {
+            throw new IllegalArgumentException("End date must not be empty");
+        }
+
+        if(offer.getEndDateTime().isBefore(offer.getStartDateTime())) {
+            throw new IllegalArgumentException("End date must not be before start date");
+        }
+
         return offerRepository.save(offer);
     }
 

@@ -27,6 +27,7 @@ public class Offer {
     private String pickupLocation;
 
 
+
 //    @OneToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "car")
 //    private Car car;

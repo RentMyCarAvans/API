@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/bookings")
+@RequestMapping("/api")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -22,19 +22,19 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    @GetMapping
+    @GetMapping("/v1/bookings")
     public ResponseEntity<List<Booking>> getAllBookings(){
         List<Booking> found =  bookingService.getAll();
         return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/v1/bookings/{id}")
     public ResponseEntity<Optional<Booking>> getById(@PathVariable Long id){
         Optional<Booking> found =  bookingService.getSingleById(id);
         return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
     }
 
-    @PostMapping
+    @PostMapping("/v1/bookings")
     public ResponseEntity<Booking> create(@RequestBody Booking newBooking){
         try {
             Booking booking = bookingService.save(newBooking);
@@ -44,7 +44,7 @@ public class BookingController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/v1/bookings/{id}")
     ResponseEntity<Booking> updateBooking(@RequestBody Booking newBooking, @PathVariable Long id) {
         Optional<Booking> optionalBooking = bookingService.getSingleById(id);
 

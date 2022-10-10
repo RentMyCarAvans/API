@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/offers")
+@RequestMapping("/api")
 public class OfferController {
 
     private final OfferService offerService;
@@ -22,20 +22,20 @@ public class OfferController {
         this.offerService = offerService;
     }
 
-    @GetMapping
+    @GetMapping("/v1/offers")
     public ResponseEntity<List<Offer>> getAllOffers(@RequestParam(required = false) String city){
         List<Offer> found = city == null ? offerService.getAll() : offerService.getOffersByPickupLocation(city);
         return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/v1/offers/{id}")
     public ResponseEntity<Optional<Offer>> getById(@PathVariable Long id){
         Optional<Offer> found =  offerService.getSingleById(id);
         return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
     }
 
     // TODO RS: Check if this works after inplementing the bookings-subsystem
-    @GetMapping("/unbooked")
+    @GetMapping("/v1/offers/unbooked")
     public ResponseEntity<List<Offer>> getAllUnbookedOffers() {
         try {
             List<Offer> found = new ArrayList<>();
@@ -47,7 +47,7 @@ public class OfferController {
     }
 
 
-    @PostMapping
+    @PostMapping("/v1/offers")
     public ResponseEntity<Object> create(@RequestBody Offer newOffer){
         try {
             Offer offer = offerService.create(newOffer);
@@ -58,7 +58,7 @@ public class OfferController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/v1/offers/{id}")
     ResponseEntity<Offer> updateOffer(@RequestBody Offer newOffer, @PathVariable Long id) {
         Optional<Offer> optionalOffer = offerService.getSingleById(id);
 

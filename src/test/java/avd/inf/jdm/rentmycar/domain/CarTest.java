@@ -6,16 +6,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DomainCarTest {
+class CarTest {
 
     @Test
     @DisplayName("Adding a new ICE car and retrieving all the details")
     void getICECar() {
 
         // Arrange
-        Car car1 = new ICE("H-777-RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        Car car1 = new ICE("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
         short expectedYearOfManufacture = 2022;
-        String expectedLicensePlate = "H-777-RR";
+        String expectedLicensePlate = "H777RR";
         String expectedModel = "Porsche 911 Carrera GTS";
         String expectedColor ="BLACK";
         int expectedMileage = 0;
@@ -40,9 +40,9 @@ class DomainCarTest {
     void getBEVCar() {
 
         // Arrange
-        Car car1 = new BEV("H-777-RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        Car car1 = new BEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
         short expectedYearOfManufacture = 2022;
-        String expectedLicensePlate = "H-777-RR";
+        String expectedLicensePlate = "H777RR";
         String expectedModel = "Porsche 911 Carrera GTS";
         String expectedColor ="BLACK";
         int expectedMileage = 0;
@@ -67,9 +67,9 @@ class DomainCarTest {
     void getFCEVCar() {
 
         // Arrange
-        Car car1 = new FCEV("H-777-RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        Car car1 = new FCEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
         short expectedYearOfManufacture = 2022;
-        String expectedLicensePlate = "H-777-RR";
+        String expectedLicensePlate = "H777RR";
         String expectedModel = "Porsche 911 Carrera GTS";
         String expectedColor ="BLACK";
         int expectedMileage = 0;
@@ -94,7 +94,7 @@ class DomainCarTest {
     void calculateTCOOfICE() {
 
         // Arrange
-        Car car = new ICE("H-777-RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        Car car = new ICE("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
         double expectedTCO = 125.22;
 
         // Act
@@ -109,7 +109,7 @@ class DomainCarTest {
     void calculateTCOOfBEV() {
 
         // Arrange
-        Car car = new BEV("H-777-RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        Car car = new BEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
         double expectedTCO = 403.0;
 
         // Act
@@ -124,7 +124,7 @@ class DomainCarTest {
     void calculateTCOOfFCEV() {
 
         // Arrange
-        Car car = new FCEV("H-777-RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        Car car = new FCEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
         double expectedTCO = 222.22;
 
         // Act
@@ -139,16 +139,16 @@ class DomainCarTest {
     void updateCarWithProperties() {
 
         // Arrange
-        Car car = new ICE("H-123-SD", (short) 2019,"KIA Sportage",ColorType.BLACK,12422,2);
+        Car car = new ICE("H123SD", (short) 2019,"KIA Sportage",ColorType.BLACK,12422,2);
         int expectedMileage = 45222;
         Long expectedId = 10L;
-        String expectedLicensePlate = "RF-BT-65";
+        String expectedLicensePlate = "RFBT65";
         String expectedModel = "KIA Ceed";
         String expectedColor = "GREY";
         short expectedYearOfmanufacture = 2007;
 
         // Act
-        car.setLicensePlate("RF-BT-65");
+        car.setLicensePlate("RFBT65");
         car.setMileage(45222);
         car.setId(10L);
         car.setModel("KIA Ceed");

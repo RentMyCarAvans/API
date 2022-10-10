@@ -3,15 +3,20 @@ package avd.inf.jdm.rentmycar.service;
 import avd.inf.jdm.rentmycar.domain.Car;
 import avd.inf.jdm.rentmycar.repository.CarRepository;
 import avd.inf.jdm.rentmycar.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class CarService {
+    private static final Logger log = LoggerFactory.getLogger((CarService.class));
     @Autowired
     private final CarRepository carRepository;
     @Autowired
@@ -46,13 +51,40 @@ public class CarService {
     }
 
     public Car save(Car car) {
+        if (!isValidLicensePlate(car.getLicensePlate())) {
+            throw new IllegalArgumentException("Licenseplate " + car.getLicensePlate() + " is invalid");
+        }
         return carRepository.save(car);
     }
 
     public void deleteCarById(Long Id){ carRepository.deleteById(Id);}
 
-    public Boolean isValidLicensePlate(Car car){
-        return true;
+    public Boolean isValidLicensePlate(String licensePlate){
+        List<String> list = new ArrayList<>();
+
+        // patterns of Dutch licenseplate
+        // source: https://www.rdw.nl/particulier/voertuigen/auto/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat
+        list.add("^([A-Z]{2})([A-Z]{2})(\\d{2})$"); // XX-XX-99
+        list.add("^(\\d{2})([A-Z]{2})([A-Z]{2})$"); // 99-XX-XX
+        list.add("^(\\d{2})([A-Z]{3})(\\d{1})$");   // 99-XXX-9
+        list.add("^(\\d{1})([A-Z]{3})(\\d{2})$");   // 9-XXX-99
+        list.add("^([A-Z]{2})(\\d{3})([A-Z]{1})$"); // XX-999-X
+        list.add("^([A-Z]{1})(\\d{3})([A-Z]{2})$"); // X-999-XX
+        list.add("^([A-Z]{3})(\\d{2})([A-Z]{1})$"); // XXX-99-X
+        list.add("^([A-Z]{1})(\\d{2})([A-Z]{3})$"); // X-99-XXX
+        list.add("^(\\d{1})([A-Z]{2})(\\d{3})$");   // 9-XX-999
+        list.add("^(\\d{3})([A-Z]{2})(\\d{1})$");   // 999-XX-9
+        list.add("^(\\d{3})(\\d{2})([A-Z]{1})$");   // 999-99-X
+        list.add("^([A-Z]{3})(\\d{2})(\\d{1})$");   // XXX-99-9
+        list.add("^([A-Z]{3})([A-Z]{2})(\\d{1})$"); // XXX-XX-9
+        for (String pattern : list) {
+            if (Pattern.matches(pattern, licensePlate)){
+                log.info("[CarService] Car with licenseplate " + licensePlate + " has a match on pattern " + pattern);
+                return true;
+            };
+        }
+        log.warn("[CarService] Car with licenseplate " + licensePlate + " has no match with a pattern ");
+        return false;
     }
 
 }

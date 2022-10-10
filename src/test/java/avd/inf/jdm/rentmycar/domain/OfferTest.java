@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Offer model")
 class OfferTest {
 
     User testOwner1 = new User();

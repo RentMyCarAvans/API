@@ -1,14 +1,19 @@
-package avd.inf.jdm.rentmycar.domain;
+package avd.inf.jdm.rentmycar;
 
+import avd.inf.jdm.rentmycar.domain.Car;
+import avd.inf.jdm.rentmycar.domain.Offer;
+import avd.inf.jdm.rentmycar.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Offer model")
-class OfferTest {
+@SpringBootTest
+class DomainOfferTest {
 
     User testOwner1 = new User();
 

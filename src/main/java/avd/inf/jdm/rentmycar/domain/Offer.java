@@ -40,7 +40,7 @@ public class Offer {
         if (startDateTime == null) {
             throw new NullPointerException("StartDateTime can not be null");
         }
-        if (endDateTime.isEqual(startDateTime)) {
+        if (this.getEndDateTime().isEqual(startDateTime)) {
             throw new IllegalArgumentException("StartDateTime can not be equal to EndDateTime");
         }
         this.startDateTime = startDateTime;
@@ -50,10 +50,10 @@ public class Offer {
         if (endDateTime == null) {
             throw new NullPointerException("EndDateTime can not be null");
         }
-        if (endDateTime.isBefore(startDateTime)) {
+        if (endDateTime.isBefore(this.getStartDateTime())) {
             throw new IllegalArgumentException("EndDateTime can not be before StartDateTime");
         }
-        if (endDateTime.isEqual(startDateTime)) {
+        if (endDateTime.isEqual(this.getStartDateTime())) {
             throw new IllegalArgumentException("EndDateTime can not be equal to StartDateTime");
         }
         this.endDateTime = endDateTime;

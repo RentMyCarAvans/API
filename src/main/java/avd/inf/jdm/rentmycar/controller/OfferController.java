@@ -69,7 +69,7 @@ public class OfferController {
             offer.setStartDateTime(newOffer.getStartDateTime());
             offer.setEndDateTime(newOffer.getEndDateTime());
             offer.setPickupLocation(newOffer.getPickupLocation());
-//            offer.setCar(newOffer.getCar());
+            offer.setCar(newOffer.getCar());
 
             return ResponseEntity.ok(offerService.save(offer));
         } else {

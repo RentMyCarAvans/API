@@ -47,10 +47,22 @@ public class Offer {
     }
 
     public void setEndDateTime(@NonNull LocalDateTime endDateTime) {
+        if (endDateTime == null) {
+            throw new NullPointerException("EndDateTime can not be null");
+        }
+        if (endDateTime.isBefore(startDateTime)) {
+            throw new IllegalArgumentException("EndDateTime can not be before StartDateTime");
+        }
+        if (endDateTime.isEqual(startDateTime)) {
+            throw new IllegalArgumentException("EndDateTime can not be equal to StartDateTime");
+        }
         this.endDateTime = endDateTime;
     }
 
     public void setCar(@NonNull Car car) {
+        if (car == null) {
+            throw new NullPointerException("Car can not be null");
+        }
         this.car = car;
     }
 

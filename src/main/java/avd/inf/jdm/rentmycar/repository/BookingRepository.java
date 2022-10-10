@@ -1,4 +1,8 @@
 package avd.inf.jdm.rentmycar.repository;
 
-public class BookingRepository {
+import avd.inf.jdm.rentmycar.domain.Booking;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BookingRepository extends JpaRepository<Booking, Long> {
+
 }

@@ -60,11 +60,11 @@ class OfferTest {
         assertThrows(IllegalArgumentException.class, () -> new Offer(LocalDateTime.now(), LocalDateTime.now().minusHours(1), "Rotterdam", testCar1));
     }
 
-    @Test
-    @DisplayName("EndDateTime can not be the same as StartDateTime")
-    void Offer_EndDateTimeCanNotBeTheSameAsStartDateTime_ExceptionThrown() {
-        assertThrows(IllegalArgumentException.class, () -> new Offer(LocalDateTime.now(), LocalDateTime.now(), "Rotterdam", testCar1));
-    }
+//    @Test
+//    @DisplayName("EndDateTime can not be the same as StartDateTime")
+//    void Offer_EndDateTimeCanNotBeTheSameAsStartDateTime_ExceptionThrown() {
+//        assertThrows(IllegalArgumentException.class, () -> new Offer(LocalDateTime.now(), LocalDateTime.now(), "Rotterdam", testCar1));
+//    }
 
 
 

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.DiscriminatorFormula;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,17 +16,21 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "Users")
+@DiscriminatorValue("1")
 
 public class User extends Account {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private String firstName;
     private String lastName;
-    private String password;
     private LocalDate dateOfBirth;
-    private String email;
     private int bonusPoints;
 
+
+    public User(String firstName, String lastName, String password, LocalDate dateOfBirth, String email, int bonusPoints) {
+        super(email, password);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.bonusPoints = bonusPoints;
+    }
 }

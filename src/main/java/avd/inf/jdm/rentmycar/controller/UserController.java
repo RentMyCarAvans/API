@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/users")
+@RequestMapping(path = "api")
 public class UserController {
     private final UserService userService;
     @Autowired
@@ -18,16 +18,16 @@ public class UserController {
     }
 
 
-    @GetMapping("/user")
+    @GetMapping("/v1/users")
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
-    @PostMapping("/user")
+    @PostMapping("/v1/users")
     public User createUser(@Valid @RequestBody User user) { return userService.createUser(user);}
 
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/v1/users/{id}")
     public User getUserByID(@PathVariable Long id)  { return userService.getUserByID(id);  }
 
 

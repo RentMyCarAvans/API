@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @SpringBootApplication
 public class RentMyCarApplication {
@@ -26,17 +25,17 @@ public class RentMyCarApplication {
     public CommandLineRunner runRentMyCar(CarService carService, UserRepository userRepository) {
         return (args -> {
             // log
-            /*
+
             log.debug("[RentMyCarApplication] executing method runRentMyCar()");
-            User rob = new User("Rob", "Funcken","password", LocalDate.now(),"rob.funcken@avans.nl");
-            User roy = new User("Roy", "Schrauwen","password", LocalDate.now(),"rob.funcken@avans.nl");
-            User aubrey = new User("Aubrey", "Polderman","password", LocalDate.now(),"rob.funcken@avans.nl");
+            User rob = new User("Rob", "Funcken","password", LocalDate.now(),"rob.funcken@avans.nl", 100);
+            User roy = new User("Roy", "Schrauwen","password", LocalDate.now(),"rob.funcken@avans.nl", 100);
+            User aubrey = new User("Aubrey", "Polderman","password", LocalDate.now(),"rob.funcken@avans.nl", 100);
 
             // Save a person
             userRepository.save(rob);
             userRepository.save(roy);
             userRepository.save(aubrey);
-             */
+
 
             // Create a car of category Internal Combustion Engine belonging to user Rob
             carService.save(new ICE("1ICE12", (short) 2020,"Porsche 911 Carrera GTS", ColorType.BLACK,500,2/*, rob*/));

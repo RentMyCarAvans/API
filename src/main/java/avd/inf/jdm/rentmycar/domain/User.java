@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "Users")
 @DiscriminatorValue("1")
 
 public class User extends Account {

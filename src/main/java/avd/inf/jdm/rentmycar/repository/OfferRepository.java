@@ -11,7 +11,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     List<Offer> findOffersByPickupLocation(String city);
 
     // TODO RS: Check if this works after inplementing the bookings-subsystem
-    @Query(value = "SELECT * FROM offers AS o WHERE o.id NOT EXISTS (SELECT offer FROM bookings)", nativeQuery = true)
+    @Query(value = "SELECT * FROM offers AS o WHERE NOT EXISTS (SELECT offer FROM bookings b WHERE o.id = b.offer)", nativeQuery = true)
     List<Offer> findUnbooked();
 
 }

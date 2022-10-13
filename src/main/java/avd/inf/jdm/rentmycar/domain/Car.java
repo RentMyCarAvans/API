@@ -63,18 +63,18 @@ public abstract class Car {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    // @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    // @JoinColumn(name = "user_id", nullable = false)
-    // private User user;
+     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+     @JoinColumn(name = "user_id", nullable = false)
+     private User user;
 
-    public Car(String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats/*, User user*/) {
+    public Car(String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user) {
         this.licensePlate = licensePlate;
         this.yearOfManufacture = yearOfManufacture;
         this.model = model;
         this.colorType = colorType.name();
         this.mileage = mileage;
         this.numberOfSeats = numberOfSeats;
-        // this.user = user;
+         this.user = user;
     }
 
     public abstract double calculateTCO(int mileage, int yearOfManufacture, int numberOfSeats);

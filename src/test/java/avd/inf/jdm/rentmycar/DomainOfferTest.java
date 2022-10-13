@@ -1,12 +1,11 @@
 package avd.inf.jdm.rentmycar;
 
-import avd.inf.jdm.rentmycar.domain.Car;
-import avd.inf.jdm.rentmycar.domain.Offer;
-import avd.inf.jdm.rentmycar.domain.User;
+import avd.inf.jdm.rentmycar.domain.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,9 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class DomainOfferTest {
 
-    User testOwner1 = new User();
 
-    Car testCar1 = new Car("AB-12-CD", (short) 2006, "Renault Kangoo", "Blue", 200000);
+    User testOwner1 = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
+
+    Car testCar1 = new ICE("AB-12-CD", (short) 2006, "Renault Kangoo", ColorType.BLACK, 200000, 5, testOwner1);
     Offer testOffer1 = new Offer(LocalDateTime.parse("2022-10-10T08:00"), LocalDateTime.parse("2022-10-10T10:00"), "Rotterdam", testCar1);
 
 

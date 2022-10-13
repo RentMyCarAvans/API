@@ -31,4 +31,5 @@ public class User extends Account {
         this.dateOfBirth = dateOfBirth;
         this.bonusPoints = bonusPoints;
     }
+
 }

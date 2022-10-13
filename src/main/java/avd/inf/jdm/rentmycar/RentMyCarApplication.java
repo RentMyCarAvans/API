@@ -51,7 +51,7 @@ public class RentMyCarApplication {
             Car car3 = new FCEV("3FCE56", (short) 2022,"Tesla Model S",ColorType.GREY,5000,4, aubrey);
             carService.save(car3);
 
-            Offer offer1 = new Offer(LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Tilburg", car2);
+            Offer offer1 = new Offer(LocalDateTime.now().plusYears(3), LocalDateTime.now().plusYears(4), "Tilburg", car2);
             offerService.save(offer1);
 
             Booking booking1 = new Booking(offer1, rob);

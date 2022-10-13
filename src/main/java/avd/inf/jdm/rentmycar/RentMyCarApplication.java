@@ -2,7 +2,10 @@ package avd.inf.jdm.rentmycar;
 
 import avd.inf.jdm.rentmycar.domain.*;
 import avd.inf.jdm.rentmycar.repository.UserRepository;
+import avd.inf.jdm.rentmycar.service.BookingService;
 import avd.inf.jdm.rentmycar.service.CarService;
+import avd.inf.jdm.rentmycar.service.OfferService;
+import avd.inf.jdm.rentmycar.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class RentMyCarApplication {
@@ -22,7 +26,7 @@ public class RentMyCarApplication {
     }
 
     @Bean
-    public CommandLineRunner runRentMyCar(CarService carService, UserRepository userRepository) {
+    public CommandLineRunner runRentMyCar(CarService carService, UserService userService, OfferService offerService, BookingService bookingService) {
         return (args -> {
             // log
 
@@ -32,9 +36,9 @@ public class RentMyCarApplication {
             User aubrey = new User("Aubrey", "Polderman","password", LocalDate.now(),"rob.funcken@avans.nl", 100);
 
             // Save a person
-            userRepository.save(rob);
-            userRepository.save(roy);
-            userRepository.save(aubrey);
+            userService.save(rob);
+            userService.save(roy);
+            userService.save(aubrey);
 
 
             // Create a car of category Internal Combustion Engine belonging to user Rob
@@ -47,7 +51,12 @@ public class RentMyCarApplication {
             Car car3 = new FCEV("3FCE56", (short) 2022,"Tesla Model S",ColorType.GREY,5000,4, aubrey);
             carService.save(car3);
 
-            Offer offer1 = new Offer();
+            Offer offer1 = new Offer(LocalDateTime.now().plusYears(3), LocalDateTime.now().plusYears(4), "Tilburg", car2);
+            offerService.save(offer1);
+
+            Booking booking1 = new Booking(offer1, rob);
+            bookingService.save(booking1);
+
         });
     }
 

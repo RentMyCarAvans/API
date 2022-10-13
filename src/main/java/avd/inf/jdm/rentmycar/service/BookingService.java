@@ -1,6 +1,7 @@
 package avd.inf.jdm.rentmycar.service;
 
 import avd.inf.jdm.rentmycar.domain.Booking;
+import avd.inf.jdm.rentmycar.domain.BookingStatus;
 import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.repository.BookingRepository;
@@ -34,6 +35,10 @@ public class BookingService {
 
     public Optional<Booking> getBookingByOffer(Offer offer) {
         return bookingRepository.findBookingByOffer(offer);
+    }
+
+    public Optional<List<Booking>> getBookingByStatus(BookingStatus status) {
+        return bookingRepository.findBookingByStatus(status);
     }
 
     public Booking save(Booking booking) {

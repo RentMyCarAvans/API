@@ -8,8 +8,8 @@ public class FCEV extends Car{
     public FCEV() {
     }
 
-    public FCEV(String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats/*, User user*/) {
-        super(licensePlate, yearOfManufacture, model, colorType, mileage, numberOfSeats/*, user*/);
+    public FCEV(String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user) {
+        super(licensePlate, yearOfManufacture, model, colorType, mileage, numberOfSeats, user);
     }
 
     @Override

@@ -38,13 +38,16 @@ public class RentMyCarApplication {
 
 
             // Create a car of category Internal Combustion Engine belonging to user Rob
-            carService.save(new ICE("1ICE12", (short) 2020,"Porsche 911 Carrera GTS", ColorType.BLACK,500,2/*, rob*/));
-
+            Car car1 = new ICE("1ICE12", (short) 2020,"Porsche 911 Carrera GTS", ColorType.BLACK,500,2,rob);
+            carService.save(car1);
             // Create a car of category Battery Electric Vehicle belonging to user Roy
-            carService.save(new BEV("2BEV34", (short) 2021,"Lamborgini Diablo",ColorType.GREEN,1000,2/*, roy*/));
-
+            Car car2 =  new BEV("2BEV34", (short) 2021,"Lamborgini Diablo",ColorType.GREEN,1000,2, roy);
+            carService.save(car2);
             // Create a car of category Fuel Cell Electric Vehicle belonging to user Aubrey
-            carService.save(new FCEV("3FCE56", (short) 2022,"Tesla Model S",ColorType.GREY,5000,4/*, aubrey*/));
+            Car car3 = new FCEV("3FCE56", (short) 2022,"Tesla Model S",ColorType.GREY,5000,4, aubrey);
+            carService.save(car3);
+
+            Offer offer1 = new Offer();
         });
     }
 

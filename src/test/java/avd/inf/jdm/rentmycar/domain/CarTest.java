@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
+
 @SpringBootTest
 class CarTest {
 
@@ -13,7 +15,8 @@ class CarTest {
     void getICECar() {
 
         // Arrange
-        Car car1 = new ICE("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
+        Car car1 = new ICE("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
         short expectedYearOfManufacture = 2022;
         String expectedLicensePlate = "H777RR";
         String expectedModel = "Porsche 911 Carrera GTS";
@@ -38,9 +41,10 @@ class CarTest {
     @Test
     @DisplayName("Adding a new BEV car and retrieving all the details")
     void getBEVCar() {
+        User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car1 = new BEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        Car car1 = new BEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
         short expectedYearOfManufacture = 2022;
         String expectedLicensePlate = "H777RR";
         String expectedModel = "Porsche 911 Carrera GTS";
@@ -65,9 +69,10 @@ class CarTest {
     @Test
     @DisplayName("Adding a new FCEV car and retrieving all the details")
     void getFCEVCar() {
+        User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car1 = new FCEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        Car car1 = new FCEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
         short expectedYearOfManufacture = 2022;
         String expectedLicensePlate = "H777RR";
         String expectedModel = "Porsche 911 Carrera GTS";
@@ -92,9 +97,10 @@ class CarTest {
     @Test
     @DisplayName("Calcutating tco of an ICE car")
     void calculateTCOOfICE() {
+        User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car = new ICE("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        Car car = new ICE("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
         double expectedTCO = 125.22;
 
         // Act
@@ -107,9 +113,10 @@ class CarTest {
     @Test
     @DisplayName("Calcutating tco of an BEV car")
     void calculateTCOOfBEV() {
+        User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car = new BEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        Car car = new BEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
         double expectedTCO = 403.0;
 
         // Act
@@ -122,9 +129,10 @@ class CarTest {
     @Test
     @DisplayName("Calcutating tco of an FCEV car")
     void calculateTCOOfFCEV() {
+        User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car = new FCEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2);
+        Car car = new FCEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
         double expectedTCO = 222.22;
 
         // Act
@@ -137,9 +145,10 @@ class CarTest {
     @Test
     @DisplayName("Updating ICE Car with new properties")
     void updateCarWithProperties() {
+        User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car = new ICE("H123SD", (short) 2019,"KIA Sportage",ColorType.BLACK,12422,2);
+        Car car = new ICE("H123SD", (short) 2019,"KIA Sportage",ColorType.BLACK,12422,2, testUser);
         int expectedMileage = 45222;
         Long expectedId = 10L;
         String expectedLicensePlate = "RFBT65";

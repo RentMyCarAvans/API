@@ -9,8 +9,8 @@ public class BEV extends Car{
     public BEV() {
     }
 
-    public BEV(String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats/*, User user*/) {
-        super(licensePlate, yearOfManufacture, model, colorType, mileage, numberOfSeats/*, user*/);
+    public BEV(String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user) {
+        super(licensePlate, yearOfManufacture, model, colorType, mileage, numberOfSeats, user);
     }
 
     @Override

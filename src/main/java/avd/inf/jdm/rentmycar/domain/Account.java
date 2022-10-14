@@ -1,7 +1,6 @@
 package avd.inf.jdm.rentmycar.domain;
 
 import lombok.*;
-import org.hibernate.annotations.DiscriminatorFormula;
 
 import javax.persistence.*;
 

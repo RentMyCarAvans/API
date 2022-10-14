@@ -52,10 +52,21 @@ public class RentMyCarApplication {
             carService.save(car3);
 
             Offer offer1 = new Offer(LocalDateTime.now().plusYears(3), LocalDateTime.now().plusYears(4), "Tilburg", car2);
+            Offer offer2 = new Offer(LocalDateTime.now().plusYears(3).plusHours(1), LocalDateTime.now().plusYears(3).plusHours(2), "Breda", car1);
+            Offer offer3 = new Offer(LocalDateTime.now().plusYears(3).plusDays(1), LocalDateTime.now().plusYears(3).plusDays(1).plusHours(1), "Rotterdam", car1);
             offerService.save(offer1);
+            offerService.save(offer2);
+            offerService.save(offer3);
 
             Booking booking1 = new Booking(offer1, rob);
+            Booking booking2 = new Booking(offer2, aubrey);
             bookingService.save(booking1);
+            bookingService.save(booking2);
+
+            booking2.setStatus(BookingStatus.RETURNED);
+            booking2.setDropOfLocation("Amsterdam");
+            bookingService.save(booking2);
+
 
         });
     }

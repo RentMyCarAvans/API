@@ -40,4 +40,7 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
+    public void delete(Booking booking) {
+        bookingRepository.delete(booking);
+    }
 }

@@ -41,11 +41,11 @@ class DomainOfferTest {
         assertThrows(NullPointerException.class, () -> new Offer(LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Rotterdam", null));
     }
 
-    @Test
-    @DisplayName("StartDateTime can not be set null using setter")
-    void Offer_StartDateTimeCanNotBeNullUsingSetter_ExceptionThrown() {
-        assertThrows(NullPointerException.class, () -> testOffer1.setStartDateTime(null));
-    }
+//    @Test
+//    @DisplayName("StartDateTime can not be set null using setter")
+//    void Offer_StartDateTimeCanNotBeNullUsingSetter_ExceptionThrown() {
+//        assertThrows(NullPointerException.class, () -> testOffer1.setStartDateTime(null));
+//    }
 
     @Test
     @DisplayName("EndDateTime can not be set null using setter")

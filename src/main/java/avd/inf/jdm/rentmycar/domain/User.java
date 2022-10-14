@@ -1,5 +1,6 @@
 package avd.inf.jdm.rentmycar.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +14,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "Users")
 @DiscriminatorValue("1")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "password"})
 
 public class User extends Account {
 

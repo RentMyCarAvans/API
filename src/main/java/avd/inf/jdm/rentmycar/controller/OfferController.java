@@ -1,7 +1,10 @@
 package avd.inf.jdm.rentmycar.controller;
 
 import avd.inf.jdm.rentmycar.ResponseHandler;
+import avd.inf.jdm.rentmycar.controller.dto.OfferDTO;
+import avd.inf.jdm.rentmycar.domain.Car;
 import avd.inf.jdm.rentmycar.domain.Offer;
+import avd.inf.jdm.rentmycar.service.CarService;
 import avd.inf.jdm.rentmycar.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +20,11 @@ import java.util.Optional;
 public class OfferController {
 
     private final OfferService offerService;
+    private final CarService carService;
     @Autowired
-    public OfferController(OfferService offerService) {
+    public OfferController(OfferService offerService, CarService carService) {
         this.offerService = offerService;
+        this.carService = carService;
     }
 
     @GetMapping("/v1/offers")
@@ -47,16 +52,29 @@ public class OfferController {
     }
 
 
+//    @PostMapping("/v1/offers")
+//    public ResponseEntity<Object> create(@RequestBody Offer newOffer){
+//        try {
+//            Offer offer = offerService.create(newOffer);
+//            return new ResponseEntity<>(offer, HttpStatus.CREATED);
+//        } catch (IllegalArgumentException e) {
+//            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+////            return ResponseEntity.badRequest().build();
+//        }
+//    }
+
     @PostMapping("/v1/offers")
-    public ResponseEntity<Object> create(@RequestBody Offer newOffer){
-        try {
-            Offer offer = offerService.create(newOffer);
-            return new ResponseEntity<>(offer, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-//            return ResponseEntity.badRequest().build();
+    public ResponseEntity<Object> create(@RequestBody OfferDTO offerDTO) {
+        Car car = carService.getSingleById(offerDTO.getCarId()).get();
+        Offer newOffer = offerService.create(offerDTO.getStartDateTime(), offerDTO.getEndDateTime(), offerDTO.getPickupLocation(), car);
+
+        if (newOffer != null) {
+            return new ResponseEntity<>(newOffer, HttpStatus.CREATED);
         }
-    }
+
+        return ResponseHandler.generateResponse("Offer could not be created", HttpStatus.BAD_REQUEST, null);
+        }
+
 
     @PutMapping("/v1/offers/{id}")
     ResponseEntity<Offer> updateOffer(@RequestBody Offer newOffer, @PathVariable Long id) {

@@ -55,6 +55,7 @@ public class BookingController {
             booking.setCustomer(newBooking.getCustomer());
             booking.setOffer(newBooking.getOffer());
             booking.setDropOfLocation(newBooking.getDropOfLocation());
+            booking.setStatus(newBooking.getStatus());
 
             return ResponseEntity.ok(bookingService.save(booking));
         } else {

@@ -3,6 +3,7 @@ package avd.inf.jdm.rentmycar.controller;
 import avd.inf.jdm.rentmycar.domain.Booking;
 import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.service.BookingService;
+import avd.inf.jdm.rentmycar.service.RideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class BookingController {
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
+
 
     @GetMapping("/v1/bookings")
     public ResponseEntity<List<Booking>> getAllBookings(){
@@ -55,7 +57,12 @@ public class BookingController {
             booking.setCustomer(newBooking.getCustomer());
             booking.setOffer(newBooking.getOffer());
             booking.setDropOfLocation(newBooking.getDropOfLocation());
-
+//            is ride object there?
+//            Optional<Ride> optionalRide = rideService.
+//            if(booking.getRide()) {
+//
+//            }
+            booking.setBookingStatus(newBooking.getBookingStatus());
             return ResponseEntity.ok(bookingService.save(booking));
         } else {
             return ResponseEntity.notFound().build();

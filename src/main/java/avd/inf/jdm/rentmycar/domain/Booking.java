@@ -24,6 +24,10 @@ public class Booking {
     private Offer offer;
 
     @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ride")
+    private Ride ride;
+
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer", nullable = false)
     private User customer;
 

@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Period;
 
 @Getter
 @Setter
@@ -33,4 +34,19 @@ public class User extends Account {
         this.bonusPoints = bonusPoints;
     }
 
+    public int calculateAge() {
+        LocalDate curDate = LocalDate.now();
+        if ((dateOfBirth != null) && (curDate != null)) {
+            return Period.between(dateOfBirth, curDate).getYears();
+        } else {
+            return 0;
+        }
+    }
+
+    public boolean isAdult() {
+        int userAge = calculateAge();
+        if (userAge >= 18) {
+            return true;
+        } else return false;
+    }
 }

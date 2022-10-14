@@ -31,14 +31,16 @@ public class Booking {
     @JoinColumn(name = "customer", nullable = false)
     private User customer;
 
-    @Column(name = "dropOfLocation")
+    @Column(name = "dropOfLocation", nullable = true)
     private String dropOfLocation;
 
-    private BookingStatus bookingStatus;
+    @Column(name = "status", nullable = false)
+    private BookingStatus status;
 
     public Booking(Offer offer, User customer) {
         this.offer = offer;
         this.customer = customer;
+        this.status = BookingStatus.PENDING;
     }
 
     public Booking(Offer offer, Ride ride, User customer) {

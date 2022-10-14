@@ -23,7 +23,6 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-
     @GetMapping("/v1/bookings")
     public ResponseEntity<List<Booking>> getAllBookings(){
         List<Booking> found =  bookingService.getAll();
@@ -57,12 +56,8 @@ public class BookingController {
             booking.setCustomer(newBooking.getCustomer());
             booking.setOffer(newBooking.getOffer());
             booking.setDropOfLocation(newBooking.getDropOfLocation());
-//            is ride object there?
-//            Optional<Ride> optionalRide = rideService.
-//            if(booking.getRide()) {
-//
-//            }
-            booking.setBookingStatus(newBooking.getBookingStatus());
+            booking.setStatus(newBooking.getStatus());
+
             return ResponseEntity.ok(bookingService.save(booking));
         } else {
             return ResponseEntity.notFound().build();

@@ -1,9 +1,5 @@
 package avd.inf.jdm.rentmycar.domain;
 
 public enum BookingStatus {
-    PENDING,
-    STARTED,
-    CANCELLED,
-    NOSHOW
+    PENDING, APPROVED, PICKEDUP, RETURNED, CANCELLED
 }
-

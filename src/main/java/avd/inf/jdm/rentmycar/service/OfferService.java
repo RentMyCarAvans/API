@@ -1,10 +1,12 @@
 package avd.inf.jdm.rentmycar.service;
 
+import avd.inf.jdm.rentmycar.domain.Car;
 import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,5 +113,45 @@ public class OfferService {
         }
 
         return offerRepository.save(offer);
+    }
+
+    public Offer create(LocalDateTime startDateTime, LocalDateTime endDateTime, String pickupLocation, Car car) {
+        // Check if the input is valid
+        if (startDateTime == null) {
+            throw new IllegalArgumentException("Start date must not be empty");
+        }
+
+        if(startDateTime.isBefore(java.time.LocalDateTime.now())) {
+            throw new IllegalArgumentException("Start date must not be in the past");
+        }
+
+        if (startDateTime.isEqual(endDateTime)) {
+            throw new IllegalArgumentException("Start date must not be equal to end date");
+        }
+
+        if (endDateTime == null) {
+            throw new IllegalArgumentException("End date must not be empty");
+        }
+
+        if(endDateTime.isBefore(startDateTime)) {
+            throw new IllegalArgumentException("End date must not be before start date");
+        }
+
+        if (pickupLocation == null || pickupLocation.isEmpty()) {
+            throw new IllegalArgumentException("Pickup location must not be empty");
+        }
+
+        if (car == null) {
+            throw new IllegalArgumentException("Car must not be empty");
+        }
+
+        Offer offer = new Offer();
+        offer.setStartDateTime(startDateTime);
+        offer.setEndDateTime(endDateTime);
+        offer.setPickupLocation(pickupLocation);
+        offer.setCar(car);
+
+        offerRepository.save(offer);
+        return offer;
     }
 }

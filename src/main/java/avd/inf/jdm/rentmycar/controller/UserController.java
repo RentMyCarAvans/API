@@ -1,5 +1,6 @@
 package avd.inf.jdm.rentmycar.controller;
 
+import avd.inf.jdm.rentmycar.controller.dto.UserDto;
 import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/v1/users")
-    public User createUser(@Valid @RequestBody User user) { return userService.save(user);}
+    public User createUser(@Valid @RequestBody UserDto userDto) { return userService.saveDTO(userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword());}
 
 
     @GetMapping("/v1/users/{id}")

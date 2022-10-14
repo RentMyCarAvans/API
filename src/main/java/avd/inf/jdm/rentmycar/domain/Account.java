@@ -25,6 +25,7 @@ public class Account {
     private String email;
     private String password;
 
+    private boolean isAdmin;
 
     public Account(String email, String password) {
         this.email = email;

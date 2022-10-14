@@ -35,7 +35,7 @@ public class RentMyCarApplication {
             User roy = new User("Roy", "Schrauwen","password", LocalDate.now(),"rob.funcken@avans.nl", 100);
             User aubrey = new User("Aubrey", "Polderman","password", LocalDate.now(),"rob.funcken@avans.nl", 100);
 
-            // Save a person
+//             Save a person
             userService.save(rob);
             userService.save(roy);
             userService.save(aubrey);

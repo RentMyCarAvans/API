@@ -30,7 +30,9 @@ public class OfferController {
     @GetMapping("/v1/offers")
     public ResponseEntity<Object> getAllOffers(
             @RequestParam(required = false) String city,
-            @RequestParam(required = false) String colorOfCar
+            @RequestParam(required = false) String colorOfCar,
+            @RequestParam(required = false) Integer numberOfSeats,
+            @RequestParam(required = false) String fuel
     ){
 
         List<Offer> found = new ArrayList<>();
@@ -44,6 +46,18 @@ public class OfferController {
         if(colorOfCar != null && !colorOfCar.isEmpty()){
             found = found.stream().filter(offer -> offer.getCar().getColorType().equals(colorOfCar)).toList();
         }
+
+        if(numberOfSeats != null && numberOfSeats != 0){
+            found = found.stream().filter(offer -> offer.getCar().getNumberOfSeats() >= numberOfSeats).toList();
+        }
+
+        if(fuel != null){
+            found = found.stream().filter(offer -> offer.getCar().getClass().equals(fuel)).toList();
+        }
+
+
+
+
 
         return found.isEmpty()
                 ? ResponseHandler.generateResponse("No offers found", HttpStatus.NO_CONTENT, null)

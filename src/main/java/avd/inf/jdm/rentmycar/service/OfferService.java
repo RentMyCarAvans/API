@@ -158,4 +158,8 @@ public class OfferService {
     public void delete(Offer offer) {
         offerRepository.delete(offer);
     }
+
+    public List<Offer> getOffersByCarColor(String colorOfCar) {
+        return offerRepository.findOffersByCar_ColorType(colorOfCar);
+    }
 }

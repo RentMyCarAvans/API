@@ -28,8 +28,25 @@ public class OfferController {
     }
 
     @GetMapping("/v1/offers")
-    public ResponseEntity<Object> getAllOffers(@RequestParam(required = false) String city){
-        List<Offer> found = city == null ? offerService.getAll() : offerService.getOffersByPickupLocation(city);
+    public ResponseEntity<Object> getAllOffers(
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String colorOfCar
+    ){
+
+        List<Offer> found = new ArrayList<>();
+
+        if(city != null && !city.isEmpty() && colorOfCar != null && !colorOfCar.isEmpty()) {
+            found = offerService.getOffersByPickupLocation(city).stream()
+                    .filter(offer -> offer.getCar().getColorType().equals(colorOfCar))
+                    .toList();
+        } else if (city != null && !city.isEmpty()) {
+            found = offerService.getOffersByPickupLocation(city);
+        } else if (colorOfCar != null && !colorOfCar.isEmpty()) {
+            found = offerService.getOffersByCarColor(colorOfCar);
+        } else {
+            found = offerService.getAll();
+        }
+
         return found.isEmpty()
                 ? ResponseHandler.generateResponse("No offers found", HttpStatus.NO_CONTENT, null)
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);

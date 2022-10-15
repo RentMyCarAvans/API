@@ -95,4 +95,16 @@ public class OfferController {
         }
     }
 
+    @DeleteMapping("/v1/offers/{id}")
+    public ResponseEntity<Offer> delete(@PathVariable Long id) {
+        Optional<Offer> optionalOffer = offerService.getSingleById(id);
+
+        if (optionalOffer.isPresent()) {
+            offerService.delete(optionalOffer.get());
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

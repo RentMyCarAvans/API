@@ -154,4 +154,8 @@ public class OfferService {
         offerRepository.save(offer);
         return offer;
     }
+
+    public void delete(Offer offer) {
+        offerRepository.delete(offer);
+    }
 }

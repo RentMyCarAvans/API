@@ -1,8 +1,12 @@
 package avd.inf.jdm.rentmycar.service;
 
 import avd.inf.jdm.rentmycar.domain.Car;
+import avd.inf.jdm.rentmycar.domain.ColorType;
+import avd.inf.jdm.rentmycar.domain.ICE;
+import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.repository.CarRepository;
 import avd.inf.jdm.rentmycar.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +18,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+@Slf4j
 @Service
 public class CarService {
-    private static final Logger log = LoggerFactory.getLogger((CarService.class));
     @Autowired
     private final CarRepository carRepository;
     @Autowired
@@ -24,42 +28,52 @@ public class CarService {
 
     @Autowired
     public CarService(CarRepository carRepository, UserRepository userRepository) {
+        log.debug("[CarService] constructor(CarRepository, UserRepository)");
         this.carRepository = carRepository;
         this.userRepository = userRepository;
     }
 
     public List<Car> getAllCars() {
+        log.debug("[CarService] getAllCars()");
         return carRepository.findAll();
     }
 
     public Car getCarById(Long id) {
+        log.debug("[CarService] getCarById()");
         return carRepository.findById(id).get();
     }
 
     public Optional<Car> getSingleById(Long id) {
+        log.debug("[CarService] getSingleById(" + id + ")");
         return carRepository.findById(id);
     }
 
     public Boolean existCarById(Long id){
+        log.debug("[CarService] existCarById(" + id + ")");
         return carRepository.existsById(id);
     }
 
     public Car createCar(Car car) {
+        log.debug("[CarService] createCar(Car)");
         if (car.getYearOfManufacture() < 2000)
             throw new IllegalArgumentException("Year of manufacture cannot be older than 5 years");
         return carRepository.save(car);
     }
 
     public Car save(Car car) {
+        log.debug("[CarService] save(Car)");
         if (!isValidLicensePlate(car.getLicensePlate())) {
             throw new IllegalArgumentException("Licenseplate " + car.getLicensePlate() + " is invalid");
         }
         return carRepository.save(car);
     }
 
-    public void deleteCarById(Long Id){ carRepository.deleteById(Id);}
+    public void deleteCarById(Long id){
+        log.debug("[CarService] deleteCarById(" + id + ")");
+        carRepository.deleteById(id);}
 
     public Boolean isValidLicensePlate(String licensePlate){
+        log.debug("[CarService] isValidLicensePlate(" + licensePlate + ")");
         List<String> listOfLicensePlatePatterns = new ArrayList<>();
 
         // patterns of Dutch licenseplate
@@ -85,6 +99,28 @@ public class CarService {
         }
         log.warn("[CarService] Car with licenseplate " + licensePlate + " has no match with a pattern ");
         return false;
+    }
+
+    public Car createCar(String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user){
+        log.debug("[CarService] createCar(" + licensePlate + "," + yearOfManufacture + "," + model + "," + colorType.name() + mileage + "," + numberOfSeats + ")");
+        if (licensePlate == null || licensePlate.isEmpty()) {
+            throw new IllegalArgumentException("Licenseplate must not be empty");
+        }
+
+        if (user == null) {
+            throw new IllegalArgumentException("User must not be empty");
+        }
+        // TODO Figure out a way to determine the type of car. For now an ICE car will always be created
+        Car car = new ICE();
+        car.setLicensePlate(licensePlate);
+        car.setYearOfManufacture(yearOfManufacture);
+        car.setModel(model);
+        car.setColorType(colorType);
+        car.setMileage(mileage);
+        car.setNumberOfSeats(numberOfSeats);
+        car.setUser(user);
+        carRepository.save(car);
+        return car;
     }
 
 }

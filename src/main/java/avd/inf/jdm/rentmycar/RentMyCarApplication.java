@@ -6,6 +6,7 @@ import avd.inf.jdm.rentmycar.service.BookingService;
 import avd.inf.jdm.rentmycar.service.CarService;
 import avd.inf.jdm.rentmycar.service.OfferService;
 import avd.inf.jdm.rentmycar.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -16,10 +17,10 @@ import org.springframework.context.annotation.Bean;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Slf4j
 @SpringBootApplication
 public class RentMyCarApplication {
 
-    private static final Logger log = LoggerFactory.getLogger((RentMyCarApplication.class));
 
     public static void main(String[] args) {
         SpringApplication.run(RentMyCarApplication.class, args);
@@ -31,15 +32,14 @@ public class RentMyCarApplication {
             // log
 
             log.debug("[RentMyCarApplication] executing method runRentMyCar()");
-            User rob = new User("Rob", "Funcken","password", LocalDate.now(),"rob.funcken@avans.nl", 100);
-            User roy = new User("Roy", "Schrauwen","password", LocalDate.now(),"rob.funcken@avans.nl", 100);
-            User aubrey = new User("Aubrey", "Polderman","password", LocalDate.now(),"rob.funcken@avans.nl", 100);
+            User rob = new User("Rob", "Funcken","password", LocalDate.now().minusYears(25),"rob.funcken@avans.nl", 100);
+            User roy = new User("Roy", "Schrauwen","password", LocalDate.now().minusYears(25),"roy.schrauwen@student.avans.nl", 100);
+            User aubrey = new User("Aubrey", "Polderman","password", LocalDate.now().minusYears(25),"aubrey.polderman@student.avans.nl", 100);
 
             // Save a person
             userService.save(rob);
             userService.save(roy);
             userService.save(aubrey);
-
 
             // Create a car of category Internal Combustion Engine belonging to user Rob
             Car car1 = new ICE("1ICE12", (short) 2020,"Porsche 911 Carrera GTS", ColorType.BLACK,500,2,rob);

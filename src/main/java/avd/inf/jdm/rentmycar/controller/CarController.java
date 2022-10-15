@@ -1,11 +1,16 @@
 package avd.inf.jdm.rentmycar.controller;
 
+import avd.inf.jdm.rentmycar.ResponseHandler;
+import avd.inf.jdm.rentmycar.controller.dto.CarDTO;
 import avd.inf.jdm.rentmycar.domain.Car;
+import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.service.CarService;
+import avd.inf.jdm.rentmycar.service.UserService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +25,19 @@ import javax.validation.Valid;
                 description = "" +
                         "Overview of available API's"))
 @Tag(name = "car-controller", description = "API's to add new cars, delete a car, retrieve all cars, retrieve specific car information")
+@Slf4j
 @RestController
 @RequestMapping(path = "/api")
 public class CarController {
 
     private final CarService carService;
+    private final UserService userService;
 
     @Autowired
-    public CarController(CarService carService) {
+    public CarController(CarService carService, UserService userService) {
+        log.debug("[CarController] constructor(carrepository, userrepository)");
         this.carService = carService;
+        this.userService = userService;
     }
 
     @Operation(summary = "Retrieving all cars")
@@ -48,8 +57,24 @@ public class CarController {
 
     @Operation(summary = "Add a new car")
     @PostMapping("/v1/cars")
-    public Car createCar(@Valid @RequestBody Car car) {
-        return carService.createCar(car);
+    public ResponseEntity<Object> create(@RequestBody CarDTO carDTO) {
+        log.debug("[CarController] invoke POST api/v1/cars");
+        if (!carService.isValidLicensePlate(carDTO.getLicensePlate())){
+            log.debug("[CarController] Licenseplate \" + carDTO.getLicensePlate() + \" is invalid");
+            return ResponseHandler.generateResponse("Licenseplate " + carDTO.getLicensePlate() + " is invalid. Please enter a valid licenseplate", HttpStatus.BAD_REQUEST, null);
+        }
+        try {
+            User user = userService.getUserByID(carDTO.getUserId());
+            Car newCar = carService.createCar(carDTO.getLicensePlate(), carDTO.getYearOfManufacture(), carDTO.getModel(), carDTO.getColorType(), carDTO.getMileage(), carDTO.getNumberOfSeats(), user);
+            if (newCar != null) {
+                return new ResponseEntity<>(newCar, HttpStatus.CREATED);
+            }
+
+            return ResponseHandler.generateResponse("Car could not be created", HttpStatus.BAD_REQUEST, null);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
     }
 
     @Operation(summary = "Retrieve a car by id")

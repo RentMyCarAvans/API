@@ -35,16 +35,14 @@ public class OfferController {
 
         List<Offer> found = new ArrayList<>();
 
-        if(city != null && !city.isEmpty() && colorOfCar != null && !colorOfCar.isEmpty()) {
-            found = offerService.getOffersByPickupLocation(city).stream()
-                    .filter(offer -> offer.getCar().getColorType().equals(colorOfCar))
-                    .toList();
-        } else if (city != null && !city.isEmpty()) {
-            found = offerService.getOffersByPickupLocation(city);
-        } else if (colorOfCar != null && !colorOfCar.isEmpty()) {
-            found = offerService.getOffersByCarColor(colorOfCar);
-        } else {
-            found = offerService.getAll();
+        found = offerService.getAll();
+
+        if(city != null && !city.isEmpty()){
+            found = found.stream().filter(offer -> offer.getPickupLocation().equals(city)).toList();
+        }
+
+        if(colorOfCar != null && !colorOfCar.isEmpty()){
+            found = found.stream().filter(offer -> offer.getCar().getColorType().equals(colorOfCar)).toList();
         }
 
         return found.isEmpty()

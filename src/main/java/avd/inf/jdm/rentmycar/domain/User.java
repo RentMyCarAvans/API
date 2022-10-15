@@ -24,6 +24,7 @@ public class User extends Account {
     private LocalDate dateOfBirth;
     private int bonusPoints;
 
+    private boolean isAdult;
 
     public User(String firstName, String lastName, String password, LocalDate dateOfBirth, String email, int bonusPoints) {
         super(email, password);
@@ -31,6 +32,7 @@ public class User extends Account {
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.bonusPoints = bonusPoints;
+        this.isAdult = isAdult();
     }
 
     public int calculateAge() {

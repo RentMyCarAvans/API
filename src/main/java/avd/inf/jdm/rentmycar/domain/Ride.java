@@ -15,12 +15,12 @@ import java.time.LocalDateTime;
 public class Ride {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+//    @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User customer;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    private User customer;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "booking_id")
     private Booking booking;
@@ -46,15 +46,14 @@ public class Ride {
     };
 
     public Ride(User customer, Booking booking, double startRideLatitude, double startRideLongitude, double endRideLatitude, double endRideLongitude, double totalKilometersDriven, double maxAccelerationForce, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        this.customer = customer;
         this.booking = booking;
-        startRideLatitude = startRideLatitude;
-        startRideLongitude = startRideLongitude;
-        endRideLatitude = endRideLatitude;
-        endRideLongitude = endRideLongitude;
+        this.startRideLatitude = startRideLatitude;
+        this.startRideLongitude = startRideLongitude;
+        this.endRideLatitude = endRideLatitude;
+        this.endRideLongitude = endRideLongitude;
         this.totalKilometersDriven = totalKilometersDriven;
-        maxAccelerationForce = maxAccelerationForce;
-        this.startDateTime = LocalDateTime.now();
+        this.maxAccelerationForce = maxAccelerationForce;
+        if (startDateTime == null) this.startDateTime = LocalDateTime.now();
         this.endDateTime = endDateTime;
     }
 

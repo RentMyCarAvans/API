@@ -1,5 +1,7 @@
 package avd.inf.jdm.rentmycar.domain;
 
+import avd.inf.jdm.rentmycar.service.UserService;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +23,7 @@ public class Ride {
 //    @OneToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "user_id")
 //    private User customer;
+    @JsonBackReference
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "booking_id")
     private Booking booking;
@@ -34,16 +37,6 @@ public class Ride {
 
     private double totalKilometersDriven;
     private double maxAccelerationForce;
-
-    public void calculateBonusPointsForThisRide(Booking booking, User customer) {
-        double calculateRecklessness =  100 + ((totalKilometersDriven*1.5) + (maxAccelerationForce*10));
-        int driversAge = booking.getCustomer().calculateAge();
-
-        // drivers below age 30 get bigger penalty
-        double recklessnessToPoints = calculateRecklessness / (driversAge < 30 ? 2.5 : 2) ;
-
-        customer.setBonusPoints(customer.getBonusPoints() + (int)recklessnessToPoints);
-    };
 
     public Ride (Booking booking) {
         this.booking = booking;

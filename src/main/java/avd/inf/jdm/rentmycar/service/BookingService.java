@@ -42,22 +42,46 @@ public class BookingService {
     public Booking save(Booking booking) {
         return bookingRepository.save(booking);
     }
+    public Booking saveAndFlush(Booking booking) {
+        return bookingRepository.saveAndFlush(booking);
+    }
+    public boolean startRide(Booking booking) {
+        if (booking.getId() == null) {
+            throw new IllegalArgumentException("Booking must not be null");
+        }
+        if(bookingRepository.existsById(booking.getId())) {
+            Ride newRide = new Ride(booking);
+            newRide.setStartDateTime(LocalDateTime.now());
+            booking.setRide(newRide);
+            booking.setStatus(BookingStatus.PICKEDUP);
 
-    public Booking startRide(Booking booking) {
-        Ride newRide = new Ride(booking);
-        newRide.setStartDateTime(LocalDateTime.now());
-        booking.setRide(newRide);
-        booking.setStatus(BookingStatus.PICKEDUP);
-
-        return bookingRepository.save(booking);
+             bookingRepository.save(booking);
+             return true;
+        }
+        return false;
 
     }
 
-    public Booking endRide(Booking booking) {
-        Ride updatedRide = booking.getRide();
-        updatedRide.setEndDateTime(LocalDateTime.now());
-        booking.setStatus(BookingStatus.RETURNED);
-        return bookingRepository.save(booking);
+    public boolean endRide(Booking booking) {
+        if(booking.getId() == null ) {
+            throw new IllegalArgumentException("Booking must not be null");
+        }
+
+        if(bookingRepository.existsById(booking.getId())) {
+            booking.setStatus(BookingStatus.RETURNED);
+
+            Ride updatedRide = booking.getRide();
+            updatedRide.setEndDateTime(LocalDateTime.now());
+            //    calculate the bonuspoints here?
+            booking.calculateBonusPointsForThisRide();
+            booking.setStatus(BookingStatus.RETURNED);
+
+            bookingRepository.saveAndFlush(booking);
+            return true;
+
+
+        }
+        return false;
     }
 
     public void delete(Booking booking) {

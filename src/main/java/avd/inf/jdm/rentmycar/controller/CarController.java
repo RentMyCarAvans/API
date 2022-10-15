@@ -2,6 +2,10 @@ package avd.inf.jdm.rentmycar.controller;
 
 import avd.inf.jdm.rentmycar.domain.Car;
 import avd.inf.jdm.rentmycar.service.CarService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
-
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Rent My Car Avans",
+                description = "" +
+                        "Overview of available API's"))
+@Tag(name = "car-controller", description = "API's to add new cars, delete a car, retrieve all cars, retrieve specific car information")
 @RestController
 @RequestMapping(path = "/api")
 public class CarController {
@@ -22,7 +31,7 @@ public class CarController {
         this.carService = carService;
     }
 
-    // API for retrieving all cars
+    @Operation(summary = "Retrieving all cars")
     @GetMapping("/v1/cars")
     public ResponseEntity<List<Car>> getAllCars(){
         try {
@@ -37,13 +46,13 @@ public class CarController {
         }
     }
 
-    // API for adding a new car
+    @Operation(summary = "Add a new car")
     @PostMapping("/v1/cars")
     public Car createCar(@Valid @RequestBody Car car) {
         return carService.createCar(car);
     }
 
-    // API for retrieving a car by id
+    @Operation(summary = "Retrieve a car by id")
     @GetMapping("/v1/cars/{id}")
     public ResponseEntity<Optional<Car>> getCarById(@PathVariable Long id){
         Optional<Car> found = carService.getSingleById(id);
@@ -53,7 +62,7 @@ public class CarController {
         return ResponseEntity.ok(found);
     }
 
-    //API for deleting a car by id
+    @Operation(summary = "Delete a car by id")
     @DeleteMapping("/v1/cars/{id}")
     public ResponseEntity<HttpStatus> deleteCarById(@PathVariable Long id){
         if (!carService.existCarById(id)){
@@ -63,7 +72,7 @@ public class CarController {
         return ResponseEntity.ok().build();
     }
 
-    // API for updating a car
+    @Operation(summary = "Update a car by id")
     @PutMapping("/v1/cars/{id}")
     ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody Car carNewValues){
         Optional<Car> optionalCar = carService.getSingleById(id);

@@ -37,12 +37,6 @@ public class Offer {
     private Car car;
 
     public void setStartDateTime(LocalDateTime startDateTime) {
-//        if (startDateTime == null) {
-//            throw new NullPointerException("StartDateTime can not be null");
-//        }
-//        if (this.getEndDateTime().isEqual(startDateTime)) {
-//            throw new IllegalArgumentException("StartDateTime can not be equal to EndDateTime");
-//        }
         this.startDateTime = startDateTime;
     }
 

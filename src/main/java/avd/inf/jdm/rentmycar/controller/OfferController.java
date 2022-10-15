@@ -28,52 +28,50 @@ public class OfferController {
     }
 
     @GetMapping("/v1/offers")
-    public ResponseEntity<List<Offer>> getAllOffers(@RequestParam(required = false) String city){
+    public ResponseEntity<Object> getAllOffers(@RequestParam(required = false) String city){
         List<Offer> found = city == null ? offerService.getAll() : offerService.getOffersByPickupLocation(city);
-        return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
+        return found.isEmpty()
+                ? ResponseHandler.generateResponse("No offers found", HttpStatus.NO_CONTENT, null)
+                : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }
 
     @GetMapping("/v1/offers/{id}")
-    public ResponseEntity<Optional<Offer>> getById(@PathVariable Long id){
+    public ResponseEntity<Object> getById(@PathVariable Long id){
         Optional<Offer> found =  offerService.getSingleById(id);
-        return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
+        return found.isEmpty()
+                ? ResponseHandler.generateResponse("Offer with id " + id + " not found", HttpStatus.NOT_FOUND, null)
+                : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }
 
-    // TODO RS: Check if this works after inplementing the bookings-subsystem
     @GetMapping("/v1/offers/unbooked")
-    public ResponseEntity<List<Offer>> getAllUnbookedOffers() {
+    public ResponseEntity<Object> getAllUnbookedOffers() {
         try {
             List<Offer> found = new ArrayList<>();
             found.addAll(offerService.getUnbooked());
-            return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
+            return found.isEmpty()
+                    ? ResponseHandler.generateResponse("No offers found", HttpStatus.NO_CONTENT, null)
+                    : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseHandler.generateResponse("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
-
-//    @PostMapping("/v1/offers")
-//    public ResponseEntity<Object> create(@RequestBody Offer newOffer){
-//        try {
-//            Offer offer = offerService.create(newOffer);
-//            return new ResponseEntity<>(offer, HttpStatus.CREATED);
-//        } catch (IllegalArgumentException e) {
-//            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-////            return ResponseEntity.badRequest().build();
-//        }
-//    }
-
     @PostMapping("/v1/offers")
     public ResponseEntity<Object> create(@RequestBody OfferDTO offerDTO) {
-        Car car = carService.getSingleById(offerDTO.getCarId()).get();
-        Offer newOffer = offerService.create(offerDTO.getStartDateTime(), offerDTO.getEndDateTime(), offerDTO.getPickupLocation(), car);
+        try {
+            Car car = carService.getSingleById(offerDTO.getCarId()).get();
+            Offer newOffer = offerService.create(offerDTO.getStartDateTime(), offerDTO.getEndDateTime(), offerDTO.getPickupLocation(), car);
 
-        if (newOffer != null) {
-            return new ResponseEntity<>(newOffer, HttpStatus.CREATED);
-        }
+            if (newOffer != null) {
+                return new ResponseEntity<>(newOffer, HttpStatus.CREATED);
+            }
 
-        return ResponseHandler.generateResponse("Offer could not be created", HttpStatus.BAD_REQUEST, null);
+            return ResponseHandler.generateResponse("Offer could not be created", HttpStatus.BAD_REQUEST, null);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
+    }
 
 
     @PutMapping("/v1/offers/{id}")

@@ -76,43 +76,6 @@ public class RentMyCarApplication {
             bookingService.save(booking1);
 
 
-//          bookingService.save(booking1);
-//            bookingService.startRide(booking2);
-
-//            booking1.setDropOfLocation("Frankfurt");
-//            booking2.setDropOfLocation("Amsterdam");
-
-//            bookingService.endRide(booking1);
-//
-//            bookingService.endRide(booking2);
-
-            // save new state
-//            bookingService.save(booking1);
-//            bookingService.save(booking2);
-
-
-//            Ride ride1 = new Ride(booking1);
-//            ride1.setStartRideLongitude(51.804369);
-//            ride1.setEndRideLatitude(4.984159);
-//            ride1.setEndRideLongitude(51.804369);
-//            ride1.setStartRideLatitude(4.984159);
-//            ride1.setMaxAccelerationForce(5);
-//            ride1.setTotalKilometersDriven(150);
-//            ride1.setStartDateTime(LocalDateTime.now().minusDays(1));
-//            ride1.setEndDateTime(LocalDateTime.now().plusDays(5));
-//
-//            rideRepository.save(ride1);
-//
-//            Ride ride2 = new Ride(booking2);
-//            ride2.setStartRideLongitude(51.804369);
-//            ride2.setEndRideLatitude(4.984159);
-//            ride2.setEndRideLongitude(51.804369);
-//            ride2.setStartRideLatitude(4.984159);
-//            ride2.setMaxAccelerationForce(5);
-//            ride2.setTotalKilometersDriven(150);
-//            ride2.setStartDateTime(LocalDateTime.now().minusDays(1));
-//            ride2.setEndDateTime(LocalDateTime.now().plusDays(5));
-//            rideRepository.save(ride2);
         });
     }
 

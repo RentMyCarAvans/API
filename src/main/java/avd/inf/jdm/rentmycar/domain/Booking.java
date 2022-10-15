@@ -43,4 +43,9 @@ public class Booking {
         this.status = BookingStatus.PENDING;
     }
 
+    public Booking(Offer offer, Ride ride, User customer) {
+        this.offer = offer;
+        this.ride = ride;
+        this.customer = customer;
+    }
 }

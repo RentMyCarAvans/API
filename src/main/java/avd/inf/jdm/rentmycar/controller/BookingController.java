@@ -3,6 +3,7 @@ package avd.inf.jdm.rentmycar.controller;
 import avd.inf.jdm.rentmycar.domain.Booking;
 import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.service.BookingService;
+import avd.inf.jdm.rentmycar.service.RideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

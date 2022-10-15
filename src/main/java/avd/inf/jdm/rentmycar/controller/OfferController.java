@@ -132,7 +132,7 @@ public class OfferController {
         @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
         @ApiResponse(responseCode = "404", description = "Offer not found", content = @Content) })
     @PutMapping("/v1/offers/{id}")
-    ResponseEntity<Offer> updateOffer(@RequestBody Offer newOffer, @PathVariable Long id) {
+    ResponseEntity<Offer> update(@RequestBody Offer newOffer, @PathVariable Long id) {
         Optional<Offer> optionalOffer = offerService.getSingleById(id);
 
         if (optionalOffer.isPresent()) {

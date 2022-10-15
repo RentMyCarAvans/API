@@ -63,4 +63,16 @@ public class BookingController {
         }
     }
 
+    @DeleteMapping("/v1/bookings/{id}")
+    public ResponseEntity<Booking> delete(@PathVariable Long id) {
+        Optional<Booking> optionalBooking = bookingService.getSingleById(id);
+
+        if (optionalBooking.isPresent()) {
+            bookingService.delete(optionalBooking.get());
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

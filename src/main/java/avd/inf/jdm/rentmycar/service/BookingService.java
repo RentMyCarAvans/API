@@ -72,9 +72,8 @@ public class BookingService {
 
             Ride updatedRide = booking.getRide();
             updatedRide.setEndDateTime(LocalDateTime.now());
-            //    calculate the bonuspoints here?
+            //    calculate the bonuspoints here
             booking.calculateBonusPointsForThisRide();
-            booking.setStatus(BookingStatus.RETURNED);
 
             bookingRepository.saveAndFlush(booking);
             return true;

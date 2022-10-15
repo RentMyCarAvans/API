@@ -5,6 +5,7 @@ import avd.inf.jdm.rentmycar.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,11 +45,19 @@ public class BookingService {
 
     public Booking startRide(Booking booking) {
         Ride newRide = new Ride(booking);
+        newRide.setStartDateTime(LocalDateTime.now());
         booking.setRide(newRide);
         booking.setStatus(BookingStatus.PICKEDUP);
 
         return bookingRepository.save(booking);
 
+    }
+
+    public Booking endRide(Booking booking) {
+        Ride updatedRide = booking.getRide();
+        updatedRide.setEndDateTime(LocalDateTime.now());
+        booking.setStatus(BookingStatus.RETURNED);
+        return bookingRepository.save(booking);
     }
 
     public void delete(Booking booking) {

@@ -6,6 +6,8 @@ import avd.inf.jdm.rentmycar.domain.Car;
 import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.service.CarService;
 import avd.inf.jdm.rentmycar.service.OfferService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Tag(name = "offer-controller", description = "Endpoints to add new offers, delete an offer, retrieve all offers, retrieve specific offer information")
 @RestController
 @RequestMapping("/api")
 public class OfferController {
@@ -27,12 +30,12 @@ public class OfferController {
         this.carService = carService;
     }
 
+    @Operation(summary = "Retrieving all offers")
     @GetMapping("/v1/offers")
     public ResponseEntity<Object> getAllOffers(
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String colorOfCar,
-            @RequestParam(required = false) Integer numberOfSeats,
-            @RequestParam(required = false) String fuel
+            @RequestParam(required = false) Integer numberOfSeats
     ){
 
         List<Offer> found = new ArrayList<>();
@@ -51,9 +54,7 @@ public class OfferController {
             found = found.stream().filter(offer -> offer.getCar().getNumberOfSeats() >= numberOfSeats).toList();
         }
 
-        if(fuel != null){
-            found = found.stream().filter(offer -> offer.getCar().getClass().equals(fuel)).toList();
-        }
+
 
 
 
@@ -64,6 +65,7 @@ public class OfferController {
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }
 
+    @Operation(summary = "Retrieve an offer by id")
     @GetMapping("/v1/offers/{id}")
     public ResponseEntity<Object> getById(@PathVariable Long id){
         Optional<Offer> found =  offerService.getSingleById(id);
@@ -72,6 +74,7 @@ public class OfferController {
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }
 
+    @Operation(summary = "Retrieve all unbooked offers")
     @GetMapping("/v1/offers/unbooked")
     public ResponseEntity<Object> getAllUnbookedOffers() {
         try {
@@ -85,6 +88,7 @@ public class OfferController {
         }
     }
 
+    @Operation(summary = "Add a new offer")
     @PostMapping("/v1/offers")
     public ResponseEntity<Object> create(@RequestBody OfferDTO offerDTO) {
         try {
@@ -103,6 +107,7 @@ public class OfferController {
     }
 
 
+    @Operation(summary = "Update an offer by id")
     @PutMapping("/v1/offers/{id}")
     ResponseEntity<Offer> updateOffer(@RequestBody Offer newOffer, @PathVariable Long id) {
         Optional<Offer> optionalOffer = offerService.getSingleById(id);
@@ -122,6 +127,7 @@ public class OfferController {
         }
     }
 
+    @Operation(summary = "Delete an offer by id")
     @DeleteMapping("/v1/offers/{id}")
     public ResponseEntity<Offer> delete(@PathVariable Long id) {
         Optional<Offer> optionalOffer = offerService.getSingleById(id);

@@ -54,4 +54,12 @@ public class BookingService {
     public void delete(Booking booking) {
         bookingRepository.delete(booking);
     }
+
+    public Booking create(Offer offer, User customer) {
+        Booking booking = new Booking();
+        booking.setOffer(offer);
+        booking.setCustomer(customer);
+        booking.setStatus(BookingStatus.PENDING);
+        return bookingRepository.save(booking);
+    }
 }

@@ -34,6 +34,12 @@ public class Booking {
     private BookingStatus status;
 
     public Booking(Offer offer, User customer) {
+        if(offer == null) {
+            throw new NullPointerException("Offer can not be null");
+        }
+        if(customer == null) {
+            throw new NullPointerException("Customer can not be null");
+        }
         this.offer = offer;
         this.customer = customer;
         this.status = BookingStatus.PENDING;

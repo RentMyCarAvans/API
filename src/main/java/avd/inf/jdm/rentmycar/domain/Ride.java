@@ -45,16 +45,10 @@ public class Ride {
         customer.setBonusPoints(customer.getBonusPoints() + (int)recklessnessToPoints);
     };
 
-    public Ride(User customer, Booking booking, double startRideLatitude, double startRideLongitude, double endRideLatitude, double endRideLongitude, double totalKilometersDriven, double maxAccelerationForce, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public Ride (Booking booking) {
         this.booking = booking;
-        this.startRideLatitude = startRideLatitude;
-        this.startRideLongitude = startRideLongitude;
-        this.endRideLatitude = endRideLatitude;
-        this.endRideLongitude = endRideLongitude;
-        this.totalKilometersDriven = totalKilometersDriven;
-        this.maxAccelerationForce = maxAccelerationForce;
         if (startDateTime == null) this.startDateTime = LocalDateTime.now();
-        this.endDateTime = endDateTime;
+
     }
 
 }

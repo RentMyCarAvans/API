@@ -45,10 +45,5 @@ public class User extends Account {
         }
     }
 
-    public boolean isAdult() {
-        int userAge = calculateAge();
-        if (userAge >= 18) {
-            return true;
-        } else return false;
-    }
+    public boolean isAdult() { return calculateAge() >= 18; }
 }

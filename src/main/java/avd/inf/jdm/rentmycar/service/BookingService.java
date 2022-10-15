@@ -1,9 +1,6 @@
 package avd.inf.jdm.rentmycar.service;
 
-import avd.inf.jdm.rentmycar.domain.Booking;
-import avd.inf.jdm.rentmycar.domain.BookingStatus;
-import avd.inf.jdm.rentmycar.domain.Offer;
-import avd.inf.jdm.rentmycar.domain.User;
+import avd.inf.jdm.rentmycar.domain.*;
 import avd.inf.jdm.rentmycar.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +40,15 @@ public class BookingService {
 
     public Booking save(Booking booking) {
         return bookingRepository.save(booking);
+    }
+
+    public Booking startRide(Booking booking) {
+        Ride newRide = new Ride(booking);
+        booking.setRide(newRide);
+        booking.setStatus(BookingStatus.PICKEDUP);
+
+        return bookingRepository.save(booking);
+
     }
 
     public void delete(Booking booking) {

@@ -22,6 +22,7 @@ import javax.validation.Valid;
 @Tag(name = "car-controller", description = "API's to add new cars, delete a car, retrieve all cars, retrieve specific car information")
 @RestController
 @RequestMapping(path = "/api")
+@CrossOrigin
 public class CarController {
 
     private final CarService carService;

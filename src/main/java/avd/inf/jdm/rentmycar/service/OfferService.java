@@ -3,6 +3,7 @@ package avd.inf.jdm.rentmycar.service;
 import avd.inf.jdm.rentmycar.domain.Car;
 import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.repository.OfferRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class OfferService {
     private final OfferRepository offerRepository;
@@ -157,5 +159,11 @@ public class OfferService {
 
     public void delete(Offer offer) {
         offerRepository.delete(offer);
+    }
+
+    // TODO inform Roy
+    public Boolean existCarById(Long id){
+        log.debug("[CarService] existCarById(" + id + ")");
+        return offerRepository.findOfferByCar(id);
     }
 }

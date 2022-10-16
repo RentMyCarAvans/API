@@ -1,9 +1,6 @@
 package avd.inf.jdm.rentmycar.service;
 
-import avd.inf.jdm.rentmycar.domain.Car;
-import avd.inf.jdm.rentmycar.domain.ColorType;
-import avd.inf.jdm.rentmycar.domain.ICE;
-import avd.inf.jdm.rentmycar.domain.User;
+import avd.inf.jdm.rentmycar.domain.*;
 import avd.inf.jdm.rentmycar.repository.CarRepository;
 import avd.inf.jdm.rentmycar.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -101,7 +98,7 @@ public class CarService {
         return false;
     }
 
-    public Car createCar(String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user){
+    public Car createCar(String type, String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user){
         log.debug("[CarService] createCar(" + licensePlate + "," + yearOfManufacture + "," + model + "," + colorType.name() + mileage + "," + numberOfSeats + ")");
         if (licensePlate == null || licensePlate.isEmpty()) {
             throw new IllegalArgumentException("Licenseplate must not be empty");
@@ -110,8 +107,17 @@ public class CarService {
         if (user == null) {
             throw new IllegalArgumentException("User must not be empty");
         }
-        // TODO Figure out a way to determine the type of car. For now an ICE car will always be created
-        Car car = new ICE();
+        // type determines what concrete class should be used
+        Car car = null;
+        switch (type){
+            case "ICE": car = new ICE();
+                break;
+            case "BEV": car = new BEV();
+                break;
+            case "FCEV": car = new FCEV();
+                break;
+            default: throw new IllegalArgumentException("Cartype " + type + " is not valid. Please provide a valid type");
+        }
         car.setLicensePlate(licensePlate);
         car.setYearOfManufacture(yearOfManufacture);
         car.setModel(model);

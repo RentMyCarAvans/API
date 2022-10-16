@@ -5,6 +5,7 @@ import avd.inf.jdm.rentmycar.controller.dto.CarDTO;
 import avd.inf.jdm.rentmycar.domain.Car;
 import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.service.CarService;
+import avd.inf.jdm.rentmycar.service.OfferService;
 import avd.inf.jdm.rentmycar.service.UserService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
+
 @OpenAPIDefinition(
         info = @Info(
                 title = "Rent My Car Avans",
@@ -32,10 +33,12 @@ public class CarController {
 
     private final CarService carService;
     private final UserService userService;
+    private final OfferService offerService;
 
     @Autowired
-    public CarController(CarService carService, UserService userService) {
+    public CarController(CarService carService, UserService userService, OfferService offerService) {
         log.debug("[CarController] constructor(carrepository, userrepository)");
+        this.offerService = offerService;
         this.carService = carService;
         this.userService = userService;
     }
@@ -43,6 +46,7 @@ public class CarController {
     @Operation(summary = "Retrieving all cars")
     @GetMapping("/v1/cars")
     public ResponseEntity<List<Car>> getAllCars(){
+        log.debug("[CarController] invoke GET api/v1/cars");
         try {
             List<Car> list = carService.getAllCars();
             if(list.isEmpty() || list.size() == 0){
@@ -65,7 +69,7 @@ public class CarController {
         }
         try {
             User user = userService.getUserByID(carDTO.getUserId());
-            Car newCar = carService.createCar(carDTO.getLicensePlate(), carDTO.getYearOfManufacture(), carDTO.getModel(), carDTO.getColorType(), carDTO.getMileage(), carDTO.getNumberOfSeats(), user);
+            Car newCar = carService.createCar(carDTO.getType(), carDTO.getLicensePlate(), carDTO.getYearOfManufacture(), carDTO.getModel(), carDTO.getColorType(), carDTO.getMileage(), carDTO.getNumberOfSeats(), user);
             if (newCar != null) {
                 return new ResponseEntity<>(newCar, HttpStatus.CREATED);
             }
@@ -80,6 +84,7 @@ public class CarController {
     @Operation(summary = "Retrieve a car by id")
     @GetMapping("/v1/cars/{id}")
     public ResponseEntity<Optional<Car>> getCarById(@PathVariable Long id){
+        log.debug("[CarController] invoke GET api/v1/cars/{" + id + "}");
         Optional<Car> found = carService.getSingleById(id);
         if (found.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -89,9 +94,13 @@ public class CarController {
 
     @Operation(summary = "Delete a car by id")
     @DeleteMapping("/v1/cars/{id}")
-    public ResponseEntity<HttpStatus> deleteCarById(@PathVariable Long id){
+    public ResponseEntity<Object> deleteCarById(@PathVariable Long id){
+        log.debug("[CarController] invoke DELETE api/v1/cars/{" + id + "}");
         if (!carService.existCarById(id)){
             return ResponseEntity.notFound().build();
+        }
+        if (offerService.existCarById(id)){
+            return ResponseHandler.generateResponse("Car can not be deleted because an offer is active", HttpStatus.FAILED_DEPENDENCY, null);
         }
         carService.deleteCarById(id);
         return ResponseEntity.ok().build();
@@ -100,6 +109,7 @@ public class CarController {
     @Operation(summary = "Update a car by id")
     @PutMapping("/v1/cars/{id}")
     ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody Car carNewValues){
+        log.debug("[CarController] invoke PUT api/v1/cars/{" + id + "}");
         Optional<Car> optionalCar = carService.getSingleById(id);
 
         if(optionalCar.isPresent()){

@@ -6,6 +6,9 @@ import avd.inf.jdm.rentmycar.domain.Booking;
 import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.service.BookingService;
+
+import avd.inf.jdm.rentmycar.service.RideService;
+
 import avd.inf.jdm.rentmycar.service.OfferService;
 import avd.inf.jdm.rentmycar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;

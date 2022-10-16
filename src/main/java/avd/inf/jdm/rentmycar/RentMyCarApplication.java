@@ -1,6 +1,7 @@
 package avd.inf.jdm.rentmycar;
 
 import avd.inf.jdm.rentmycar.domain.*;
+import avd.inf.jdm.rentmycar.repository.RideRepository;
 import avd.inf.jdm.rentmycar.repository.UserRepository;
 import avd.inf.jdm.rentmycar.service.BookingService;
 import avd.inf.jdm.rentmycar.service.CarService;
@@ -26,7 +27,7 @@ public class RentMyCarApplication {
     }
 
     @Bean
-    public CommandLineRunner runRentMyCar(CarService carService, UserService userService, OfferService offerService, BookingService bookingService) {
+    public CommandLineRunner runRentMyCar(CarService carService, UserService userService, OfferService offerService, BookingService bookingService, RideRepository rideRepository) {
         return (args -> {
             // log
 
@@ -79,6 +80,10 @@ public class RentMyCarApplication {
             booking2.setStatus(BookingStatus.RETURNED);
             booking2.setDropOfLocation("Amsterdam");
             bookingService.save(booking2);
+
+            bookingService.startRide(booking1);
+            bookingService.endRide(booking1);
+            bookingService.save(booking1);
 
 
         });

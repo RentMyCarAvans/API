@@ -29,6 +29,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequestMapping(path = "/api")
+@CrossOrigin
 public class CarController {
 
     private final CarService carService;

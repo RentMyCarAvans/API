@@ -161,9 +161,8 @@ public class OfferService {
         offerRepository.delete(offer);
     }
 
-    // TODO inform Roy
-    public Boolean existCarById(Long id){
-        log.debug("[CarService] existCarById(" + id + ")");
-        return offerRepository.findOfferByCar(id);
+
+    public List<Offer> getOffersByCarColor(String colorOfCar) {
+        return offerRepository.findOffersByCar_ColorType(colorOfCar);
     }
 }

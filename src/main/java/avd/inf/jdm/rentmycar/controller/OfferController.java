@@ -24,6 +24,7 @@ import java.util.Optional;
 @Tag(name = "offer-controller", description = "Endpoints to add new offers, delete an offer, retrieve all offers, retrieve specific offer information")
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class OfferController {
 
     private final OfferService offerService;

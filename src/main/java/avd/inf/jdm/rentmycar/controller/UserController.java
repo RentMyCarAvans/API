@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api")
+@CrossOrigin
 public class UserController {
     private final UserService userService;
     @Autowired

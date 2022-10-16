@@ -20,14 +20,14 @@ class CarTest {
         short expectedYearOfManufacture = 2022;
         String expectedLicensePlate = "H777RR";
         String expectedModel = "Porsche 911 Carrera GTS";
-        String expectedColor ="BLACK";
+        ColorType expectedColor = ColorType.BLACK;
         int expectedMileage = 0;
 
         // Act
         short actualYearOfManufacture = car1.getYearOfManufacture();
         String actualLicensePlate = car1.getLicensePlate();
         String actualModel = car1.getModel();
-        String actualColor = car1.getColorType();
+        ColorType actualColor = car1.getColorType();
         int actualMileage = car1.getMileage();
 
         // Assert
@@ -48,14 +48,14 @@ class CarTest {
         short expectedYearOfManufacture = 2022;
         String expectedLicensePlate = "H777RR";
         String expectedModel = "Porsche 911 Carrera GTS";
-        String expectedColor ="BLACK";
+        ColorType expectedColor = ColorType.BLACK;
         int expectedMileage = 0;
 
         // Act
         short actualYearOfManufacture = car1.getYearOfManufacture();
         String actualLicensePlate = car1.getLicensePlate();
         String actualModel = car1.getModel();
-        String actualColor = car1.getColorType();
+        ColorType actualColor = car1.getColorType();
         int actualMileage = car1.getMileage();
 
         // Assert
@@ -76,14 +76,14 @@ class CarTest {
         short expectedYearOfManufacture = 2022;
         String expectedLicensePlate = "H777RR";
         String expectedModel = "Porsche 911 Carrera GTS";
-        String expectedColor ="BLACK";
+        ColorType expectedColor = ColorType.BLACK;
         int expectedMileage = 0;
 
         // Act
         short actualYearOfManufacture = car1.getYearOfManufacture();
         String actualLicensePlate = car1.getLicensePlate();
         String actualModel = car1.getModel();
-        String actualColor = car1.getColorType();
+        ColorType actualColor = car1.getColorType();
         int actualMileage = car1.getMileage();
 
         // Assert
@@ -153,7 +153,7 @@ class CarTest {
         Long expectedId = 10L;
         String expectedLicensePlate = "RFBT65";
         String expectedModel = "KIA Ceed";
-        String expectedColor = "GREY";
+        ColorType expectedColor = ColorType.GREY;
         short expectedYearOfmanufacture = 2007;
 
         // Act
@@ -161,7 +161,7 @@ class CarTest {
         car.setMileage(45222);
         car.setId(10L);
         car.setModel("KIA Ceed");
-        car.setColorType("GREY");
+        car.setColorType(ColorType.GREY);
         car.setYearOfManufacture((short) 2007);
 
         // Assert

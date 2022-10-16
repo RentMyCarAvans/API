@@ -1,6 +1,6 @@
 package avd.inf.jdm.rentmycar.service;
 
-import avd.inf.jdm.rentmycar.domain.Car;
+import avd.inf.jdm.rentmycar.domain.*;
 import avd.inf.jdm.rentmycar.repository.CarRepository;
 import avd.inf.jdm.rentmycar.repository.UserRepository;
 import org.slf4j.Logger;
@@ -44,12 +44,6 @@ public class CarService {
         return carRepository.existsById(id);
     }
 
-    public Car createCar(Car car) {
-        if (car.getYearOfManufacture() < 2000)
-            throw new IllegalArgumentException("Year of manufacture cannot be older than 5 years");
-        return carRepository.save(car);
-    }
-
     public Car save(Car car) {
         if (!isValidLicensePlate(car.getLicensePlate())) {
             throw new IllegalArgumentException("Licenseplate " + car.getLicensePlate() + " is invalid");
@@ -85,6 +79,37 @@ public class CarService {
         }
         log.warn("[CarService] Car with licenseplate " + licensePlate + " has no match with a pattern ");
         return false;
+    }
+
+    public Car createCar(String type, String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user){
+        log.debug("[CarService] createCar(" + licensePlate + "," + yearOfManufacture + "," + model + "," + colorType.name() + mileage + "," + numberOfSeats + ")");
+        if (licensePlate == null || licensePlate.isEmpty()) {
+            throw new IllegalArgumentException("Licenseplate must not be empty");
+        }
+
+        if (user == null) {
+            throw new IllegalArgumentException("User must not be empty");
+        }
+        // type determines what concrete class should be used
+        Car car = null;
+        switch (type){
+            case "ICE": car = new ICE();
+                break;
+            case "BEV": car = new BEV();
+                break;
+            case "FCEV": car = new FCEV();
+                break;
+            default: throw new IllegalArgumentException("Cartype " + type + " is not valid. Please provide a valid type");
+        }
+        car.setLicensePlate(licensePlate);
+        car.setYearOfManufacture(yearOfManufacture);
+        car.setModel(model);
+        car.setColorType(colorType);
+        car.setMileage(mileage);
+        car.setNumberOfSeats(numberOfSeats);
+        car.setUser(user);
+        carRepository.save(car);
+        return car;
     }
 
 }

@@ -94,4 +94,6 @@ public class BookingService {
         booking.setStatus(BookingStatus.PENDING);
         return bookingRepository.save(booking);
     }
+
+
 }

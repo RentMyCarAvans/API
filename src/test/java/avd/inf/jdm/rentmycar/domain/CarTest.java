@@ -16,9 +16,9 @@ class CarTest {
 
         // Arrange
         User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
-        Car car1 = new ICE("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
+        Car car1 = new ICE("H777RX", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
         short expectedYearOfManufacture = 2022;
-        String expectedLicensePlate = "H777RR";
+        String expectedLicensePlate = "H777RX";
         String expectedModel = "Porsche 911 Carrera GTS";
         ColorType expectedColor = ColorType.BLACK;
         int expectedMileage = 0;

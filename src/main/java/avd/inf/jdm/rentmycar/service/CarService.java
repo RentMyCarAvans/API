@@ -44,6 +44,10 @@ public class CarService {
         return carRepository.existsById(id);
     }
 
+    public Optional<Car> getCarByLicensePlate(String licensePlate) {
+        return carRepository.findByLicensePlate(licensePlate);
+    }
+
     public Car save(Car car) {
         if (!isValidLicensePlate(car.getLicensePlate())) {
             throw new IllegalArgumentException("Licenseplate " + car.getLicensePlate() + " is invalid");

@@ -1,5 +1,6 @@
 package avd.inf.jdm.rentmycar.domain;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,4 +42,43 @@ class BookingTest {
         assertEquals(BookingStatus.PENDING, testBooking1.getStatus());
     }
 
+    @Test
+    @DisplayName("Calculate the bonuspoint system")
+    void Booking_BonusPointsShouldCalculateCorrectly() {
+        //arrange
+        Booking testBooking1 = new Booking(testOffer1, testCustomer1);
+        Ride testRide1 = new Ride(testBooking1);
+        testBooking1.setRideAsChild(testRide1);
+        int expectedBonusPoints = 600;
+
+        //act
+        testRide1.setMaxAccelerationForce(100);
+        testRide1.setTotalKilometersDriven(100);
+        testBooking1.calculateBonusPointsForThisRide();
+
+        int actualBonusPoints = testCustomer1.getBonusPoints();
+
+        //assert
+        Assertions.assertEquals(expectedBonusPoints, actualBonusPoints);
+    }
+
+    @Test
+    @DisplayName("Calculate the bonuspoint system")
+    void Booking_BonusPointsShouldCalculateCorrectlyUnexpected() {
+        //arrange
+        Booking testBooking1 = new Booking(testOffer1, testCustomer1);
+        Ride testRide1 = new Ride(testBooking1);
+        testBooking1.setRideAsChild(testRide1);
+        int unexpectedBonusPoints = 150;
+
+        //act
+        testRide1.setMaxAccelerationForce(100);
+        testRide1.setTotalKilometersDriven(100);
+        testBooking1.calculateBonusPointsForThisRide();
+
+        int actualBonusPoints = testCustomer1.getBonusPoints();
+
+        //assert
+        Assertions.assertNotEquals(unexpectedBonusPoints, actualBonusPoints);
+    }
 }

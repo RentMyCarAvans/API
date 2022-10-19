@@ -102,6 +102,20 @@ public class CarController {
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }
 
+    @Operation(summary = "Retrieve a car by licenseplate")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Car succesfully retrieved",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
+            @ApiResponse(responseCode = "404", description = "No car found",content = @Content) })
+    @GetMapping("/v1/cars/query")
+    public ResponseEntity<Object> getCarByLicensePlate(@RequestParam(name = "licenseplate") String licensePlate){
+        log.debug("[CarController] invoke GET api/v1/cars/{" + licensePlate + "}");
+        Optional<Car> found = carService.getCarByLicensePlate(licensePlate);
+        return found.isEmpty()
+                ? ResponseHandler.generateResponse("Car with licenseplante " + licensePlate + " not found", HttpStatus.NOT_FOUND, null)
+                : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
+    }
+
     @Operation(summary = "Delete a car by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Car succesfully deleted",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class)) }),

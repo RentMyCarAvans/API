@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,20 +43,22 @@ public class CarService {
         return carRepository.existsById(id);
     }
 
+    public Boolean existsByLicensePlate(String licensePlate) { return carRepository.existsCarByLicensePlate(licensePlate);}
+
     public Optional<Car> getCarByLicensePlate(String licensePlate) {
+        log.info("[CarService] getCarByLicensePlate with licenseplate " + licensePlate + " =>" + carRepository.findByLicensePlate(licensePlate));
         return carRepository.findByLicensePlate(licensePlate);
     }
 
     public Car save(Car car) {
-        if (!isValidLicensePlate(car.getLicensePlate())) {
-            throw new IllegalArgumentException("Licenseplate " + car.getLicensePlate() + " is invalid");
-        }
+        log.info("[CarService] save()");
         return carRepository.save(car);
     }
 
     public void deleteCarById(Long Id){ carRepository.deleteById(Id);}
 
     public Boolean isValidLicensePlate(String licensePlate){
+        log.info("[CarService] isValidLicensePlate()");
         List<String> listOfLicensePlatePatterns = new ArrayList<>();
 
         // patterns of Dutch licenseplate
@@ -94,6 +95,19 @@ public class CarService {
         if (user == null) {
             throw new IllegalArgumentException("User must not be empty");
         }
+
+        // Check if a given licenseplate matches a pattern
+        if (!isValidLicensePlate(licensePlate)) {
+            log.info("[CarService] isValidLicensePlate()" );
+            throw new IllegalArgumentException("Licenseplate " + licensePlate + " is invalid");
+        }
+
+        // If the licenseplate already exists, then throw a exception
+        if (existsByLicensePlate(licensePlate)) {
+            log.info("[CarService] existsByLicensePlate() => " + !existsByLicensePlate(licensePlate));
+            throw new IllegalArgumentException("Licenseplate " + licensePlate + " is already registered");
+        }
+
         // type determines what concrete class should be used
         Car car = null;
         switch (type){
@@ -112,6 +126,7 @@ public class CarService {
         car.setMileage(mileage);
         car.setNumberOfSeats(numberOfSeats);
         car.setUser(user);
+        log.info("[CarService] let's save the car" );
         carRepository.save(car);
         return car;
     }

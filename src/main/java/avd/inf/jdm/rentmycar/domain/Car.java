@@ -47,7 +47,7 @@ public abstract class Car {
     private String model;
 
     @Column(name="color", nullable = true)
-    private String colorType;
+    private ColorType colorType;
 
     @Column(name="mileage", nullable = true)
     private int mileage;
@@ -71,7 +71,7 @@ public abstract class Car {
         this.licensePlate = licensePlate;
         this.yearOfManufacture = yearOfManufacture;
         this.model = model;
-        this.colorType = colorType.name();
+        this.colorType = colorType;
         this.mileage = mileage;
         this.numberOfSeats = numberOfSeats;
          this.user = user;

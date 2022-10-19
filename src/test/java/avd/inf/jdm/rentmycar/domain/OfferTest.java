@@ -1,6 +1,5 @@
-package avd.inf.jdm.rentmycar;
+package avd.inf.jdm.rentmycar.domain;
 
-import avd.inf.jdm.rentmycar.domain.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Offer model")
 @SpringBootTest
-class DomainOfferTest {
+class OfferTest {
 
 
     User testOwner1 = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
@@ -42,12 +41,6 @@ class DomainOfferTest {
     }
 
     @Test
-    @DisplayName("StartDateTime can not be set null using setter")
-    void Offer_StartDateTimeCanNotBeNullUsingSetter_ExceptionThrown() {
-        assertThrows(NullPointerException.class, () -> testOffer1.setStartDateTime(null));
-    }
-
-    @Test
     @DisplayName("EndDateTime can not be set null using setter")
     void Offer_EndDateTimeCanNotBeNullUsingSetter_ExceptionThrown() {
         assertThrows(NullPointerException.class, () -> testOffer1.setEndDateTime(null));
@@ -64,13 +57,5 @@ class DomainOfferTest {
     void Offer_EndDateTimeCanNotBeBeforeStartDateTime_ExceptionThrown() {
         assertThrows(IllegalArgumentException.class, () -> new Offer(LocalDateTime.now(), LocalDateTime.now().minusHours(1), "Rotterdam", testCar1));
     }
-
-//    @Test
-//    @DisplayName("EndDateTime can not be the same as StartDateTime")
-//    void Offer_EndDateTimeCanNotBeTheSameAsStartDateTime_ExceptionThrown() {
-//        assertThrows(IllegalArgumentException.class, () -> new Offer(LocalDateTime.now(), LocalDateTime.now(), "Rotterdam", testCar1));
-//    }
-
-
 
 }

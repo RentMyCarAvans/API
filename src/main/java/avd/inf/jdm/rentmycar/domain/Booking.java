@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
@@ -17,11 +18,13 @@ public class Booking {
     @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
+    @NonNull
     private Long id;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "offer", nullable = false)
+    @JoinColumn(name = "offer")
+    @NonNull
     private Offer offer;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -30,28 +33,24 @@ public class Booking {
     @JsonManagedReference
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "customer", nullable = false)
+    @JoinColumn(name = "customer")
+    @NonNull
     private User customer;
 
-    @Column(name = "dropOfLocation", nullable = true)
+    @Column(name = "dropOfLocation")
     private String dropOfLocation;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
+    @NonNull
     private BookingStatus status;
 
-    public Booking(Offer offer, User customer) {
-        if(offer == null) {
-            throw new NullPointerException("Offer can not be null");
-        }
-        if(customer == null) {
-            throw new NullPointerException("Customer can not be null");
-        }
+    public Booking(@NonNull Offer offer, @NonNull User customer) {
         this.offer = offer;
         this.customer = customer;
         this.status = BookingStatus.PENDING;
     }
 
-    public Booking(Offer offer, Ride ride, User customer) {
+    public Booking(@NonNull Offer offer, @NonNull Ride ride, @NonNull User customer) {
         this.offer = offer;
         this.ride = ride;
         this.customer = customer;

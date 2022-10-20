@@ -13,14 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class OfferTest {
 
-
     User testOwner1 = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
-
     Car testCar1 = new ICE("AB-12-CD", (short) 2006, "Renault Kangoo", ColorType.BLACK, 200000, 5, testOwner1);
     Offer testOffer1 = new Offer(LocalDateTime.parse("2022-10-10T08:00"), LocalDateTime.parse("2022-10-10T10:00"), "Rotterdam", testCar1);
-
-
-
 
     @Test
     @DisplayName("StartDateTime can not be set null on initialization")
@@ -35,27 +30,21 @@ class OfferTest {
     }
 
     @Test
-    @DisplayName("Car can not be set null on initialization")
-    void Offer_CarCanNotBeNullOnInitialization_ExceptionThrown() {
-        assertThrows(NullPointerException.class, () -> new Offer(LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Rotterdam", null));
-    }
-
-    @Test
     @DisplayName("EndDateTime can not be set null using setter")
     void Offer_EndDateTimeCanNotBeNullUsingSetter_ExceptionThrown() {
         assertThrows(NullPointerException.class, () -> testOffer1.setEndDateTime(null));
     }
 
     @Test
-    @DisplayName("Car can not be set null using setter")
-    void Offer_CarCanNotBeNullUsingSetter_ExceptionThrown() {
-        assertThrows(NullPointerException.class, () -> testOffer1.setCar(null));
-    }
-
-    @Test
     @DisplayName("EndDateTime can not be before StartDateTime")
     void Offer_EndDateTimeCanNotBeBeforeStartDateTime_ExceptionThrown() {
         assertThrows(IllegalArgumentException.class, () -> new Offer(LocalDateTime.now(), LocalDateTime.now().minusHours(1), "Rotterdam", testCar1));
+    }
+
+    @Test
+    @DisplayName("EndDateTime can not be equal to StartDateTime")
+    void Offer_EndDateTimeCanNotBeEqualToStartDateTime_ExceptionThrown() {
+        assertThrows(IllegalArgumentException.class, () -> new Offer(LocalDateTime.parse("2022-10-10T10:00"), LocalDateTime.parse("2022-10-10T10:00"), "Rotterdam", testCar1));
     }
 
 }

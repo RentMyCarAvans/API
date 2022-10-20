@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -29,21 +30,16 @@ public class Offer {
     @Column(name = "pickupLocation")
     private String pickupLocation;
 
-
-
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "car")
     @NonNull
     private Car car;
 
-    public void setStartDateTime(LocalDateTime startDateTime) {
+    public void setStartDateTime(@NonNull LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
     public void setEndDateTime(@NonNull LocalDateTime endDateTime) {
-        if (endDateTime == null) {
-            throw new NullPointerException("EndDateTime can not be null");
-        }
         if (endDateTime.isBefore(this.getStartDateTime())) {
             throw new IllegalArgumentException("EndDateTime can not be before StartDateTime");
         }
@@ -54,23 +50,11 @@ public class Offer {
     }
 
     public void setCar(@NonNull Car car) {
-        if (car == null) {
-            throw new NullPointerException("Car can not be null");
-        }
         this.car = car;
     }
 
-    public Offer(LocalDateTime startDateTime, LocalDateTime endDateTime, String pickupLocation, Car car) {
+    public Offer(@NonNull LocalDateTime startDateTime, @NonNull LocalDateTime endDateTime, @NonNull String pickupLocation, @NonNull Car car) {
         // Check if input is valid
-        if (startDateTime == null) {
-            throw new NullPointerException("StartDateTime can not be null");
-        }
-        if (endDateTime == null) {
-            throw new NullPointerException("EndDateTime can not be null");
-        }
-        if (car == null) {
-            throw new NullPointerException("Car can not be null");
-        }
         if (endDateTime.isBefore(startDateTime)) {
             throw new IllegalArgumentException("EndDateTime can not be before StartDateTime");
         }

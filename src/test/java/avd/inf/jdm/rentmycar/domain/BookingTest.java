@@ -15,24 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class BookingTest {
 
     User testOwner1 = new User("Test", "The Owner", "welkom", LocalDate.of(2022,01,01), "test+owner@rentmycar.nl", 100);
-
     User testCustomer1 = new User("Test", "The Customer", "welkom", LocalDate.of(2022,01,01), "test+customer@rentmycar.nl", 100);
-
     Car testCar1 = new ICE("AB-12-CD", (short) 2006, "Renault Kangoo", ColorType.BLACK, 200000, 5, testOwner1);
-
     Offer testOffer1 = new Offer(LocalDateTime.parse("2022-10-10T08:00"), LocalDateTime.parse("2022-10-10T10:00"), "Rotterdam", testCar1);
 
-    @Test
-    @DisplayName("Offer can not be set null on initialization")
-    void Booking_OfferCanNotBeNullOnInitialization_ExceptionThrown() {
-        assertThrows(NullPointerException.class, () -> new Booking(null, testCustomer1));
-    }
-
-    @Test
-    @DisplayName("Customer can not be set null on initialization")
-    void Booking_CustomerCanNotBeNullOnInitialization_ExceptionThrown() {
-        assertThrows(NullPointerException.class, () -> new Booking(testOffer1, null));
-    }
 
     @Test
     @DisplayName("Default BookingStatus is PENDING")

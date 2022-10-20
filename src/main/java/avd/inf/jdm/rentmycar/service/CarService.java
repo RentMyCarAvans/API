@@ -27,11 +27,11 @@ public class CarService {
         this.userRepository = userRepository;
     }
 
-    public List<Car> getAllCars() {
+    public List<Car> getAll() {
         return carRepository.findAll();
     }
 
-    public Car getCarById(Long id) {
+    public Car getById(Long id) {
         return carRepository.findById(id).get();
     }
 
@@ -39,13 +39,13 @@ public class CarService {
         return carRepository.findById(id);
     }
 
-    public Boolean existCarById(Long id){
+    public Boolean existsById(Long id){
         return carRepository.existsById(id);
     }
 
     public Boolean existsByLicensePlate(String licensePlate) { return carRepository.existsCarByLicensePlate(licensePlate);}
 
-    public Optional<Car> getCarByLicensePlate(String licensePlate) {
+    public Optional<Car> getByLicensePlate(String licensePlate) {
         log.info("[CarService] getCarByLicensePlate with licenseplate " + licensePlate + " =>" + carRepository.findByLicensePlate(licensePlate));
         return carRepository.findByLicensePlate(licensePlate);
     }
@@ -55,7 +55,7 @@ public class CarService {
         return carRepository.save(car);
     }
 
-    public void deleteCarById(Long Id){ carRepository.deleteById(Id);}
+    public void deleteById(Long Id){ carRepository.deleteById(Id);}
 
     public Boolean isValidLicensePlate(String licensePlate){
         log.info("[CarService] isValidLicensePlate()");
@@ -86,7 +86,7 @@ public class CarService {
         return false;
     }
 
-    public Car createCar(String type, String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user){
+    public Car create(String type, String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user){
         log.debug("[CarService] createCar(" + licensePlate + "," + yearOfManufacture + "," + model + "," + colorType.name() + mileage + "," + numberOfSeats + ")");
         if (licensePlate == null || licensePlate.isEmpty()) {
             throw new IllegalArgumentException("Licenseplate must not be empty");

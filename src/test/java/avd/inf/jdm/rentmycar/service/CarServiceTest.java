@@ -1,44 +1,47 @@
 package avd.inf.jdm.rentmycar.service;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import avd.inf.jdm.rentmycar.domain.Car;
+import avd.inf.jdm.rentmycar.domain.ColorType;
+import avd.inf.jdm.rentmycar.domain.ICE;
+import avd.inf.jdm.rentmycar.domain.User;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@SpringBootTest
+import java.time.LocalDate;
+import java.util.Optional;
+
+@RunWith(MockitoJUnitRunner.class)
 public class CarServiceTest {
 
-    private CarService carService;
+    @Mock
+    CarService carService;
 
     @Test
-    @DisplayName("Adding succesfully a new ICE car")
-    void saveCarSuccesfull() {
-        // Arrange
-
-        // Act
-
-        // Assert
-
+    public void testValidLicensePlate() {
+        Boolean validLicensePlate = true;
+        when(carService.isValidLicensePlate("HF067X")).thenReturn(validLicensePlate);
+        assertEquals(validLicensePlate, carService.isValidLicensePlate("HF067X"));
     }
 
     @Test
-    @DisplayName("Succesful validation of valid licenseplates with different patterns")
-    void checkValidLicensePlate() {
-        // Arrange
-
-        // Act
-
-        // Assert
-
+    public void testInvalidLicensePlate() {
+        Boolean validLicensePlate = true;
+        when(carService.isValidLicensePlate("IN-VAL-ID")).thenReturn(validLicensePlate);
+        assertEquals(validLicensePlate, carService.isValidLicensePlate("IN-VAL-ID"));
     }
-
     @Test
-    @DisplayName("Succesful invalidation of licenseplates not matching any pattern")
-    void checkInvalidLicensePlate() {
-        // Arrange
-
-        // Act
-
-        // Assert
-
+    public void testgetCarById() {
+        User user = new User("Demo","Testname","password", LocalDate.now(), "email@gmail.com",0);
+        Car car = new ICE("1ICE12", (short) 2020,"Porsche 911 Carrera GTS", ColorType.BLACK,500,2,user);
+        when(carService.getCarById(1L)).thenReturn(car);
+        Car car2 = carService.getCarById(1L);
+        assertEquals(car, car2);
     }
 }

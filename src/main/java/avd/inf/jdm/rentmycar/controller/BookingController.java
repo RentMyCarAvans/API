@@ -78,7 +78,7 @@ public class BookingController {
     public ResponseEntity<Object> create(@RequestBody BookingDTO bookingDTO){
         try {
             Offer offer = offerService.getSingleById(bookingDTO.getOfferId()).get();
-            User customer = userService.getUserByID(bookingDTO.getCustomerId());
+            User customer = userService.getUserByID(bookingDTO.getCustomerId()).get();
             Booking newBooking = bookingService.create(offer, customer);
 
             if (newBooking != null) {

@@ -75,7 +75,7 @@ public class CarController {
             return ResponseHandler.generateResponse("Licenseplate " + carDTO.getLicensePlate() + " is invalid. Please enter a valid licenseplate", HttpStatus.BAD_REQUEST, null);
         }
         try {
-            User user = userService.getUserByID(carDTO.getUserId());
+            User user = userService.getUserByID(carDTO.getUserId()).get();
             Car newCar = carService.createCar(carDTO.getType(), carDTO.getLicensePlate(), carDTO.getYearOfManufacture(), carDTO.getModel(), carDTO.getColorType(), carDTO.getMileage(), carDTO.getNumberOfSeats(), user);
             if (newCar != null) {
                 return new ResponseEntity<>(newCar, HttpStatus.CREATED);

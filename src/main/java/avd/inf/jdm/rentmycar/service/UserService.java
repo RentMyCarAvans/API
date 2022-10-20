@@ -1,5 +1,6 @@
 package avd.inf.jdm.rentmycar.service;
 
+import avd.inf.jdm.rentmycar.domain.Booking;
 import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +14,10 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+
+    public List<User> getAll() {
+        return userRepository.findAll();
+    }
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -47,7 +52,13 @@ public class UserService {
         }
     }
 
-    public User getUserByID(Long id)  {
-        return userRepository.findById(id).get();
+    public Optional<User> getUserByID(Long id)  {
+        return userRepository.findById(id);
+    }
+
+    public User getUserByEmail(String email) { return userRepository.findUserByEmail(email).get();}
+
+    public void delete (User user) {
+        userRepository.delete(user);
     }
 }

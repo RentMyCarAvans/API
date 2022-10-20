@@ -1,7 +1,9 @@
 package avd.inf.jdm.rentmycar.service;
 
+import avd.inf.jdm.rentmycar.domain.Booking;
 import avd.inf.jdm.rentmycar.domain.Car;
 import avd.inf.jdm.rentmycar.domain.Offer;
+import avd.inf.jdm.rentmycar.repository.BookingRepository;
 import avd.inf.jdm.rentmycar.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,11 @@ import java.util.Optional;
 @Service
 public class OfferService {
     private final OfferRepository offerRepository;
+    private final BookingService bookingService;
     @Autowired
-    public OfferService(OfferRepository offerRepository) {
+    public OfferService(OfferRepository offerRepository, BookingService bookingService) {
         this.offerRepository = offerRepository;
+        this.bookingService = bookingService;
     }
 
     public List<Offer> getAll() {
@@ -161,5 +165,9 @@ public class OfferService {
 
     public List<Offer> getOffersByCarColor(String colorOfCar) {
         return offerRepository.findOffersByCar_ColorType(colorOfCar);
+    }
+
+    public boolean offerIsBooked(Offer offer) {
+        return bookingService.getBookingByOffer(offer).isPresent();
     }
 }

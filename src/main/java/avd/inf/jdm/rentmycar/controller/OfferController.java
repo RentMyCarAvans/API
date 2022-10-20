@@ -157,15 +157,27 @@ public class OfferController {
         @ApiResponse(responseCode = "400", description = "Invalid id supplied",content = @Content),
         @ApiResponse(responseCode = "404", description = "Offer not found",content = @Content) })
     @DeleteMapping("/v1/offers/{id}")
-    public ResponseEntity<Offer> delete(@PathVariable Long id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
+        // 1. Check if the offer exists
+        // 2. Check is the offer is booked
+        // 3a. If the offer exists and is not booked, delete it and return 200
+        // 3b. If the offer exists and is booked, return a 400
+        // 3c. If the offer does not exist, return a 404
+
         Optional<Offer> optionalOffer = offerService.getSingleById(id);
 
         if (optionalOffer.isPresent()) {
-            offerService.delete(optionalOffer.get());
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
+            Offer offer = optionalOffer.get();
+
+            if (!offerService.offerIsBooked(offer)) {
+                offerService.delete(offer);
+                return ResponseHandler.generateResponse("Offer with id " + id + " is succesfully deleted", HttpStatus.OK, null);
+            } else {
+                return ResponseHandler.generateResponse("Offer is booked and can not be deleted", HttpStatus.BAD_REQUEST, null);
+            }
+
         }
+        return ResponseHandler.generateResponse("Offer with id " + id + " not found", HttpStatus.NOT_FOUND, null);
     }
 
 }

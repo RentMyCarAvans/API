@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Tag(name = "Authentication Controller", description = "Endpoints regarding user authentication")
 @RestController
@@ -41,9 +42,10 @@ public class AuthController {
     public ResponseEntity<Object> login(
             @RequestBody(required = true) AuthDTO authDTO
     ){
-        User user = userService.getUserByEmail(authDTO.getEmail());
-        if(user == null || !user.getPassword().equals(authDTO.getPassword())) {
+        Optional<User> user = userService.getUserByEmail(authDTO.getEmail());
+        if(user.isEmpty() || !user.get().getPassword().equals(authDTO.getPassword())) {
             return ResponseHandler.generateResponse("Username or password is incorrect", HttpStatus.UNAUTHORIZED, null);
+
         }
 
         // TODO: Create class for creating JWTs

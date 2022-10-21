@@ -57,8 +57,8 @@ public class UserController {
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto userDto) {
         User newUser;
         try {
-            User maybeUser = userService.getUserByEmail(userDto.getEmail());
-            if (maybeUser == null) {
+            Optional<User> maybeUser = userService.getUserByEmail(userDto.getEmail());
+            if (maybeUser.isEmpty()) {
                 newUser = userService.saveDTO(userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword());
                 return new ResponseHandler().generateResponse("User created", HttpStatus.CREATED, newUser);
 
@@ -91,7 +91,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User not found",content = @Content) })
     @DeleteMapping("/v1/users/{email}")
     public ResponseEntity<User> delete(@PathVariable String email) {
-        Optional<User> optionalUser = Optional.ofNullable(userService.getUserByEmail(email));
+        Optional<User> optionalUser = userService.getUserByEmail(email);
 
         if (optionalUser.isPresent()) {
             userService.delete(optionalUser.get());

@@ -67,4 +67,14 @@ public class Offer {
         this.car = car;
     }
 
+    @Override
+    public String toString() {
+        return "Offer{" +
+                "id=" + id +
+                ", startDateTime=" + startDateTime +
+                ", endDateTime=" + endDateTime +
+                ", pickupLocation='" + pickupLocation + '\'' +
+                ", car=" + car.getModel() +
+                '}';
+    }
 }

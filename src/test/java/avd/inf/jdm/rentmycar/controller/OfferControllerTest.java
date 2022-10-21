@@ -27,7 +27,7 @@ public class OfferControllerTest {
     final HttpHeaders headers = new HttpHeaders();
 
     @Test
-    public void testRetrieveStudentCourse() throws JSONException {
+    public void testRetrieveOfferFive() throws JSONException {
 
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 

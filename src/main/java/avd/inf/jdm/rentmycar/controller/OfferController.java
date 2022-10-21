@@ -56,7 +56,7 @@ public class OfferController {
         }
 
         if(colorOfCar != null && !colorOfCar.isEmpty()){
-            found = found.stream().filter(offer -> offer.getCar().getColorType().equals(colorOfCar)).toList();
+            found = found.stream().filter(offer -> offer.getCar().getColorType().toString().equals(colorOfCar)).toList();
         }
 
         if(numberOfSeats != null && numberOfSeats != 0){

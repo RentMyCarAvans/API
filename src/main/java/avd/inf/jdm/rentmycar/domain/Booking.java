@@ -70,5 +70,5 @@ public class Booking {
 
         driver.setBonusPoints(driver.getBonusPoints() + (int)recklessnessToPoints);
 
-    };
+    }
 }

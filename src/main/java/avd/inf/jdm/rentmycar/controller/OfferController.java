@@ -94,8 +94,7 @@ public class OfferController {
     @GetMapping("/v1/offers/unbooked")
     public ResponseEntity<Object> getAllUnbookedOffers() {
         try {
-            List<Offer> found = new ArrayList<>();
-            found.addAll(offerService.getUnbooked());
+            List<Offer> found = new ArrayList<>(offerService.getUnbooked());
             return found.isEmpty()
                     ? ResponseHandler.generateResponse("No offers found", HttpStatus.NO_CONTENT, null)
                     : ResponseHandler.generateResponse(null, HttpStatus.OK, found);

@@ -1,9 +1,7 @@
 package avd.inf.jdm.rentmycar.service;
 
-import avd.inf.jdm.rentmycar.domain.Booking;
 import avd.inf.jdm.rentmycar.domain.Car;
 import avd.inf.jdm.rentmycar.domain.Offer;
-import avd.inf.jdm.rentmycar.repository.BookingRepository;
 import avd.inf.jdm.rentmycar.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

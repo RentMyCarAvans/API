@@ -43,7 +43,7 @@ public class AuthController {
             @RequestBody(required = true) AuthDTO authDTO
     ){
         Optional<User> user = userService.getUserByEmail(authDTO.getEmail());
-        if(user == null || !user.get().getPassword().equals(authDTO.getPassword())) {
+        if(user.isEmpty() || !user.get().getPassword().equals(authDTO.getPassword())) {
             return ResponseHandler.generateResponse("Username or password is incorrect", HttpStatus.UNAUTHORIZED, null);
 
         }

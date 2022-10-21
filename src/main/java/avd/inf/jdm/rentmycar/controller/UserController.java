@@ -58,7 +58,7 @@ public class UserController {
         User newUser;
         try {
             Optional<User> maybeUser = userService.getUserByEmail(userDto.getEmail());
-            if (maybeUser == null) {
+            if (maybeUser.isEmpty()) {
                 newUser = userService.saveDTO(userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword());
                 return new ResponseHandler().generateResponse("User created", HttpStatus.CREATED, newUser);
 

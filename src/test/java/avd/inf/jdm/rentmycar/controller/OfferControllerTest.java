@@ -41,6 +41,8 @@ class OfferControllerTest {
         var result = offerController.getAllOffers(null, null, null);
         var data = (List<Offer>) ((HashMap) result.getBody()).get("data");
 
+        System.out.println(data.size() + " offers found: " + data);
+
         // assert
         assertEquals(6, data.size());
     }

@@ -7,8 +7,6 @@ import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.service.BookingService;
 
-import avd.inf.jdm.rentmycar.service.RideService;
-
 import avd.inf.jdm.rentmycar.service.OfferService;
 import avd.inf.jdm.rentmycar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -77,15 +75,21 @@ public class BookingController {
     @PostMapping("/v1/bookings")
     public ResponseEntity<Object> create(@RequestBody BookingDTO bookingDTO){
         try {
-            Offer offer = offerService.getSingleById(bookingDTO.getOfferId()).get();
-            User customer = userService.getUserByID(bookingDTO.getCustomerId()).get();
+            Offer offer = offerService.getSingleById(bookingDTO.getOfferId()).isPresent() ? offerService.getSingleById(bookingDTO.getOfferId()).get() : null;
+            User customer = userService.getUserByID(bookingDTO.getCustomerId()).isPresent() ? userService.getUserByID(bookingDTO.getCustomerId()).get() : null;
+
+
+            if(offer == null || customer == null){
+                return ResponseHandler.generateResponse("Offer or customer not found", HttpStatus.NOT_FOUND, null);
+            }
+
             Booking newBooking = bookingService.create(offer, customer);
 
             if (newBooking != null) {
-                return new ResponseHandler().generateResponse("Booking created", HttpStatus.CREATED, newBooking);
+                return ResponseHandler.generateResponse("Booking created", HttpStatus.CREATED, newBooking);
             }
 
-            return new ResponseHandler().generateResponse("Booking could not be created", HttpStatus.BAD_REQUEST, null);
+            return ResponseHandler.generateResponse("Booking could not be created", HttpStatus.BAD_REQUEST, null);
 
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);

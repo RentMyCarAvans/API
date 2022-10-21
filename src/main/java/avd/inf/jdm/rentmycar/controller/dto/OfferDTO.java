@@ -1,6 +1,5 @@
 package avd.inf.jdm.rentmycar.controller.dto;
 
-import avd.inf.jdm.rentmycar.domain.Offer;
 import lombok.Getter;
 import lombok.Setter;
 

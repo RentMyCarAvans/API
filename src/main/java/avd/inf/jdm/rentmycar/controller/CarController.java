@@ -50,10 +50,10 @@ public class CarController {
             @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
             @ApiResponse(responseCode = "404", description = "No cars found",content = @Content) })
     @GetMapping("/v1/cars")
-    public ResponseEntity<Object> getAllCars(){
+    public ResponseEntity<Object> getAll(){
         log.debug("[CarController] invoke GET api/v1/cars");
         try {
-            List<Car> found = carService.getAllCars();
+            List<Car> found = carService.getAll();
             return found.isEmpty()
                     ? ResponseHandler.generateResponse("No cars found", HttpStatus.NO_CONTENT, null)
                     : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
@@ -76,7 +76,7 @@ public class CarController {
         }
         try {
             User user = userService.getUserByID(carDTO.getUserId()).get();
-            Car newCar = carService.createCar(carDTO.getType(), carDTO.getLicensePlate(), carDTO.getYearOfManufacture(), carDTO.getModel(), carDTO.getColorType(), carDTO.getMileage(), carDTO.getNumberOfSeats(), user);
+            Car newCar = carService.create(carDTO.getType(), carDTO.getLicensePlate(), carDTO.getYearOfManufacture(), carDTO.getModel(), carDTO.getColorType(), carDTO.getMileage(), carDTO.getNumberOfSeats(), user);
             if (newCar != null) {
                 return new ResponseEntity<>(newCar, HttpStatus.CREATED);
             }
@@ -94,7 +94,7 @@ public class CarController {
             @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
             @ApiResponse(responseCode = "404", description = "No car found",content = @Content) })
     @GetMapping("/v1/cars/{id}")
-    public ResponseEntity<Object> getCarById(@PathVariable Long id){
+    public ResponseEntity<Object> getById(@PathVariable Long id){
         log.debug("[CarController] invoke GET api/v1/cars/{" + id + "}");
         Optional<Car> found = carService.getSingleById(id);
         return found.isEmpty()
@@ -108,9 +108,9 @@ public class CarController {
             @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
             @ApiResponse(responseCode = "404", description = "No car found",content = @Content) })
     @GetMapping("/v1/cars/query")
-    public ResponseEntity<Object> getCarByLicensePlate(@RequestParam(name = "licenseplate") String licensePlate){
+    public ResponseEntity<Object> getByLicensePlate(@RequestParam(name = "licenseplate") String licensePlate){
         log.debug("[CarController] invoke GET api/v1/cars/{" + licensePlate + "}");
-        Optional<Car> found = carService.getCarByLicensePlate(licensePlate);
+        Optional<Car> found = carService.getByLicensePlate(licensePlate);
         return found.isEmpty()
                 ? ResponseHandler.generateResponse("Car with licenseplante " + licensePlate + " not found", HttpStatus.NOT_FOUND, null)
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
@@ -122,18 +122,17 @@ public class CarController {
             @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
             @ApiResponse(responseCode = "404", description = "No car found",content = @Content) })
     @DeleteMapping("/v1/cars/{id}")
-    public ResponseEntity<Object> deleteCarById(@PathVariable Long id){
+    public ResponseEntity<Object> deleteById(@PathVariable Long id){
         log.debug("[CarController] invoke DELETE api/v1/cars/{" + id + "}");
-        if (!carService.existCarById(id)){
+        if (!carService.existsById(id)){
             return ResponseEntity.notFound().build();
         }
-        // TODO Exceptionhandling on IntegrityConstraintViolation
-        /*
-        if (offerService.existCarById(id)){
-           return ResponseHandler.generateResponse("Car can not be deleted because an offer is active", HttpStatus.FAILED_DEPENDENCY, null);
-       }
-        */
-        carService.deleteCarById(id);
+        try {
+            carService.deleteById(id);
+        }
+        catch (Exception e) {
+            return ResponseHandler.generateResponse("Car can't be deleted", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
         return ResponseEntity.ok().build();
     }
 
@@ -143,7 +142,7 @@ public class CarController {
             @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
             @ApiResponse(responseCode = "404", description = "No car found",content = @Content) })
     @PutMapping("/v1/cars/{id}")
-    ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody Car carNewValues){
+    ResponseEntity<Car> update(@PathVariable Long id, @RequestBody Car carNewValues){
         Optional<Car> optionalCar = carService.getSingleById(id);
 
         if(optionalCar.isPresent()){

@@ -29,6 +29,7 @@ public class OfferController {
 
     private final OfferService offerService;
     private final CarService carService;
+
     @Autowired
     public OfferController(OfferService offerService, CarService carService) {
         this.offerService = offerService;
@@ -62,12 +63,6 @@ public class OfferController {
         if(numberOfSeats != null && numberOfSeats != 0){
             found = found.stream().filter(offer -> offer.getCar().getNumberOfSeats() >= numberOfSeats).toList();
         }
-
-
-
-
-
-
 
         return found.isEmpty()
                 ? ResponseHandler.generateResponse("No offers found", HttpStatus.NO_CONTENT, null)

@@ -84,14 +84,14 @@ public class UserController {
        : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }
 
-    @Operation(summary = "Delete a user by email")
+    @Operation(summary = "Delete a user by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User deleted",content = { @Content(mediaType = "application/json",schema = @Schema(implementation = User.class)) }),
-            @ApiResponse(responseCode = "400", description = "Invalid email supplied",content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied",content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found",content = @Content) })
-    @DeleteMapping("/v1/users/{email}")
-    public ResponseEntity<User> delete(@PathVariable String email) {
-        Optional<User> optionalUser = Optional.ofNullable(userService.getUserByEmail(email));
+    @DeleteMapping("/v1/users/{id}")
+    public ResponseEntity<User> delete(@PathVariable Long id) {
+        Optional<User> optionalUser = userService.getUserByID(id);
 
         if (optionalUser.isPresent()) {
             userService.delete(optionalUser.get());

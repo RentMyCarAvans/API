@@ -57,7 +57,7 @@ public class OfferController {
         }
 
         if(colorOfCar != null && !colorOfCar.isEmpty()){
-            found = found.stream().filter(offer -> offer.getCar().getColorType().equals(colorOfCar)).toList();
+            found = found.stream().filter(offer -> offer.getCar().getColorType().toString().equals(colorOfCar)).toList();
         }
 
         if(numberOfSeats != null && numberOfSeats != 0){
@@ -89,8 +89,7 @@ public class OfferController {
     @GetMapping("/v1/offers/unbooked")
     public ResponseEntity<Object> getAllUnbookedOffers() {
         try {
-            List<Offer> found = new ArrayList<>();
-            found.addAll(offerService.getUnbooked());
+            List<Offer> found = new ArrayList<>(offerService.getUnbooked());
             return found.isEmpty()
                     ? ResponseHandler.generateResponse("No offers found", HttpStatus.NO_CONTENT, null)
                     : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
@@ -107,9 +106,12 @@ public class OfferController {
     @PostMapping("/v1/offers")
     public ResponseEntity<Object> create(@RequestBody OfferDTO offerDTO) {
         try {
-            Car car = carService.getSingleById(offerDTO.getCarId()).get();
-            Offer newOffer = offerService.create(offerDTO.getStartDateTime(), offerDTO.getEndDateTime(), offerDTO.getPickupLocation(), car);
+            Car car = carService.getSingleById(offerDTO.getCarId()).isPresent() ? carService.getSingleById(offerDTO.getCarId()).get() : null;
+            if(car == null){
+                return ResponseHandler.generateResponse("Car with id " + offerDTO.getCarId() + " not found", HttpStatus.NOT_FOUND, null);
+            }
 
+            Offer newOffer = offerService.create(offerDTO.getStartDateTime(), offerDTO.getEndDateTime(), offerDTO.getPickupLocation(), car);
             if (newOffer != null) {
                 return new ResponseEntity<>(newOffer, HttpStatus.CREATED);
             }

@@ -53,5 +53,21 @@ public class AuthController {
         return ResponseHandler.generateResponse("Login successfully", HttpStatus.OK, randomExampleToken);
     }
 
+    @Operation(summary = "Reset password for Rent My Car")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully reset password",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AuthDTO.class)) }),
+            @ApiResponse(responseCode = "404", description = "User Not Found", content = @Content) })
+    @PostMapping("/v1/auth/reset")
+    public ResponseEntity<Object> resetPassword(   @RequestBody(required = false) AuthDTO authDTO){
+        User user = userService.getUserByEmail(authDTO.getEmail());
+        if(user == null) {
+            return ResponseHandler.generateResponse("User not found", HttpStatus.NOT_FOUND, null);
+        }
+        else {
+            // TODO: generate and persist new JWT token, implement email functionality, send email with token in link to reset password.
+            return ResponseHandler.generateResponse("Password reset email sent to "+ user.getEmail(), HttpStatus.OK, null);
+        }
+    }
+
 
 }

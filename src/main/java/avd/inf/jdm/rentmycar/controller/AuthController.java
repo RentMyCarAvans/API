@@ -61,13 +61,13 @@ public class AuthController {
             @ApiResponse(responseCode = "404", description = "User Not Found", content = @Content) })
     @PostMapping("/v1/auth/reset")
     public ResponseEntity<Object> resetPassword(   @RequestBody(required = false) AuthDTO authDTO){
-        User user = userService.getUserByEmail(authDTO.getEmail());
-        if(user == null) {
+        Optional<User> user = userService.getUserByEmail(authDTO.getEmail());
+        if(user.isEmpty()) {
             return ResponseHandler.generateResponse("User not found", HttpStatus.NOT_FOUND, null);
         }
         else {
             // TODO: generate and persist new JWT token, implement email functionality, send email with token in link to reset password.
-            return ResponseHandler.generateResponse("Password reset email sent to "+ user.getEmail(), HttpStatus.OK, null);
+            return ResponseHandler.generateResponse("Password reset email sent to "+ user.get().getEmail(), HttpStatus.OK, null);
         }
     }
 

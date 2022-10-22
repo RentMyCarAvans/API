@@ -163,6 +163,8 @@ public class BookingController {
                 maybeRide.setEndDateTime(endRideDTO.getEndDateTime());
                 maybeRide.setEndRideLongitude(endRideDTO.getEndRideLongitude());
                 maybeRide.setEndRideLatitude(endRideDTO.getEndRideLatitude());
+                maybeRide.setStartRideLatitude(endRideDTO.getStartRideLatitude());
+                maybeRide.setStartRideLongitude(endRideDTO.getStartRideLongitude());
                 maybeRide.setTotalKilometersDriven(endRideDTO.getTotalKilometersDriven());
                 maybeRide.setMaxAccelerationForce(endRideDTO.getMaxAccelerationForce());
                 rideService.save(maybeRide);

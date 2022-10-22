@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,16 +17,12 @@ import java.time.LocalDateTime;
 @Table(name = "rides")
 public class Ride {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @NotNull
     private Long id;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private User customer;
     @JsonBackReference
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "booking_id")
+    @OneToOne(mappedBy = "ride", cascade = CascadeType.MERGE, optional = false)
     private Booking booking;
     private double startRideLatitude;
     private double startRideLongitude;

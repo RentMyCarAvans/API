@@ -3,10 +3,7 @@ package avd.inf.jdm.rentmycar;
 import avd.inf.jdm.rentmycar.domain.*;
 import avd.inf.jdm.rentmycar.repository.RideRepository;
 import avd.inf.jdm.rentmycar.repository.UserRepository;
-import avd.inf.jdm.rentmycar.service.BookingService;
-import avd.inf.jdm.rentmycar.service.CarService;
-import avd.inf.jdm.rentmycar.service.OfferService;
-import avd.inf.jdm.rentmycar.service.UserService;
+import avd.inf.jdm.rentmycar.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -27,7 +24,7 @@ public class RentMyCarApplication {
     }
 
     @Bean
-    public CommandLineRunner runRentMyCar(CarService carService, UserService userService, OfferService offerService, BookingService bookingService, RideRepository rideRepository) {
+    public CommandLineRunner runRentMyCar(CarService carService, UserService userService, OfferService offerService, BookingService bookingService) {
         return (args -> {
             // log
 
@@ -82,8 +79,9 @@ public class RentMyCarApplication {
             bookingService.save(booking2);
 
             bookingService.startRide(booking1);
+
             bookingService.endRide(booking1);
-            bookingService.save(booking1);
+//            bookingService.save(booking1);
 
 
         });

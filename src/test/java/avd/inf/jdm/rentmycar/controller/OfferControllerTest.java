@@ -35,7 +35,7 @@ public class OfferControllerTest {
                 createURLWithPort(),
                 HttpMethod.GET, entity, String.class);
 
-        String expected = "{\"data\":{\"id\":5,\"startDateTime\":\"2022-11-01T12:00:00\",\"endDateTime\":\"2022-11-01T13:00:00\",\"pickupLocation\":\"Tilburg\",\"car\":{\"type\":\"BEV\",\"id\":2,\"licensePlate\":\"2BEV34\",\"yearOfManufacture\":2021,\"model\":\"Lamborgini Diablo\",\"colorType\":\"BLACK\",\"mileage\":1000,\"numberOfSeats\":2,\"user\":{\"id\":4,\"email\":\"paul@avans.nl\",\"firstName\":\"Paul\",\"lastName\":\"de Mast\",\"dateOfBirth\":\"2022-10-21\",\"bonusPoints\":100,\"adult\":false,\"admin\":false}}},\"status\":200}";
+        String expected = "{\"data\":{\"id\":5,\"startDateTime\":\"2022-11-01T12:00:00\",\"endDateTime\":\"2022-11-01T13:00:00\",\"pickupLocation\":\"Tilburg\",\"car\":{\"type\":\"BEV\",\"id\":2,\"licensePlate\":\"2BEV34\",\"yearOfManufacture\":2021,\"model\":\"Lamborgini Diablo\",\"colorType\":\"BLACK\",\"mileage\":1000,\"numberOfSeats\":2,\"user\":{\"id\":4,\"email\":\"paul@avans.nl\",\"firstName\":\"Paul\",\"lastName\":\"de Mast\",\"dateOfBirth\":\"2000-01-01\",\"bonusPoints\":100,\"adult\":true,\"admin\":false}}},\"status\":200}";
 
         JSONAssert.assertEquals(expected, response.getBody(), false);
     }

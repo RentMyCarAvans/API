@@ -74,7 +74,7 @@ public abstract class Car {
         this.colorType = colorType;
         this.mileage = mileage;
         this.numberOfSeats = numberOfSeats;
-         this.user = user;
+        this.user = user;
     }
 
     public abstract double calculateTCO(int mileage, int yearOfManufacture, int numberOfSeats);

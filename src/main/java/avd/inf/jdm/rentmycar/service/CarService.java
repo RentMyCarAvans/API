@@ -46,19 +46,17 @@ public class CarService {
     public Boolean existsByLicensePlate(String licensePlate) { return carRepository.existsCarByLicensePlate(licensePlate);}
 
     public Optional<Car> getByLicensePlate(String licensePlate) {
-        log.info("[CarService] getCarByLicensePlate with licenseplate " + licensePlate + " =>" + carRepository.findByLicensePlate(licensePlate));
         return carRepository.findByLicensePlate(licensePlate);
     }
 
     public Car save(Car car) {
-        log.info("[CarService] save()");
         return carRepository.save(car);
     }
 
-    public void deleteById(Long Id){ carRepository.deleteById(Id);}
+    public void deleteById(Long Id){
+        carRepository.deleteById(Id);}
 
     public Boolean isValidLicensePlate(String licensePlate){
-        log.info("[CarService] isValidLicensePlate()");
         List<String> listOfLicensePlatePatterns = new ArrayList<>();
 
         // patterns of Dutch licenseplate
@@ -76,18 +74,19 @@ public class CarService {
         listOfLicensePlatePatterns.add("^(\\d{3})(\\d{2})([A-Z]{1})$");   // 999-99-X
         listOfLicensePlatePatterns.add("^([A-Z]{3})(\\d{2})(\\d{1})$");   // XXX-99-9
         listOfLicensePlatePatterns.add("^([A-Z]{3})([A-Z]{2})(\\d{1})$"); // XXX-XX-9
+
+        // Check if a given liceseplate matches a pattern
         for (String pattern : listOfLicensePlatePatterns) {
             if (Pattern.matches(pattern, licensePlate)){
-                log.info("[CarService] Car with licenseplate " + licensePlate + " has a match on pattern " + pattern);
+                log.info("Car with licenseplate " + licensePlate + " has a match on pattern " + pattern);
                 return true;
             };
         }
-        log.warn("[CarService] Car with licenseplate " + licensePlate + " has no match with a pattern ");
+        log.warn("Car with licenseplate " + licensePlate + " has no match with a pattern ");
         return false;
     }
 
     public Car create(String type, String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user){
-        log.debug("[CarService] createCar(" + licensePlate + "," + yearOfManufacture + "," + model + "," + colorType.name() + mileage + "," + numberOfSeats + ")");
         if (licensePlate == null || licensePlate.isEmpty()) {
             throw new IllegalArgumentException("Licenseplate must not be empty");
         }
@@ -98,13 +97,11 @@ public class CarService {
 
         // Check if a given licenseplate matches a pattern
         if (!isValidLicensePlate(licensePlate)) {
-            log.info("[CarService] isValidLicensePlate()" );
             throw new IllegalArgumentException("Licenseplate " + licensePlate + " is invalid");
         }
 
         // If the licenseplate already exists, then throw a exception
         if (existsByLicensePlate(licensePlate)) {
-            log.info("[CarService] existsByLicensePlate() => " + !existsByLicensePlate(licensePlate));
             throw new IllegalArgumentException("Licenseplate " + licensePlate + " is already registered");
         }
 
@@ -126,7 +123,6 @@ public class CarService {
         car.setMileage(mileage);
         car.setNumberOfSeats(numberOfSeats);
         car.setUser(user);
-        log.info("[CarService] let's save the car" );
         carRepository.save(car);
         return car;
     }

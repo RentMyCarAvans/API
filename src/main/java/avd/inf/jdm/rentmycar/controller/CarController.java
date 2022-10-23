@@ -51,7 +51,7 @@ public class CarController {
             @ApiResponse(responseCode = "404", description = "No cars found",content = @Content) })
     @GetMapping("/v1/cars")
     public ResponseEntity<Object> getAll(){
-        log.debug("[CarController] invoke GET api/v1/cars");
+        log.info("invoke GET api/v1/cars");
         try {
             List<Car> found = carService.getAll();
             return found.isEmpty()
@@ -69,9 +69,8 @@ public class CarController {
             @ApiResponse(responseCode = "404", description = "No cars found",content = @Content) })
     @PostMapping("/v1/cars")
     public ResponseEntity<Object> create(@RequestBody CarDTO carDTO) {
-        log.debug("[CarController] invoke POST api/v1/cars");
+        log.info("invoke POST api/v1/cars");
         if (!carService.isValidLicensePlate(carDTO.getLicensePlate())){
-            log.debug("[CarController] Licenseplate \" + carDTO.getLicensePlate() + \" is invalid");
             return ResponseHandler.generateResponse("Licenseplate " + carDTO.getLicensePlate() + " is invalid. Please enter a valid licenseplate", HttpStatus.BAD_REQUEST, null);
         }
         try {
@@ -95,7 +94,7 @@ public class CarController {
             @ApiResponse(responseCode = "404", description = "No car found",content = @Content) })
     @GetMapping("/v1/cars/{id}")
     public ResponseEntity<Object> getById(@PathVariable Long id){
-        log.debug("[CarController] invoke GET api/v1/cars/{" + id + "}");
+        log.info("invoke GET api/v1/cars/{" + id + "}");
         Optional<Car> found = carService.getSingleById(id);
         return found.isEmpty()
                 ? ResponseHandler.generateResponse("Car with id " + id + " not found", HttpStatus.NOT_FOUND, null)
@@ -109,7 +108,7 @@ public class CarController {
             @ApiResponse(responseCode = "404", description = "No car found",content = @Content) })
     @GetMapping("/v1/cars/query")
     public ResponseEntity<Object> getByLicensePlate(@RequestParam(name = "licenseplate") String licensePlate){
-        log.debug("[CarController] invoke GET api/v1/cars/{" + licensePlate + "}");
+        log.info("invoke GET api/v1/cars/query{" + licensePlate + "}");
         Optional<Car> found = carService.getByLicensePlate(licensePlate);
         return found.isEmpty()
                 ? ResponseHandler.generateResponse("Car with licenseplante " + licensePlate + " not found", HttpStatus.NOT_FOUND, null)
@@ -123,7 +122,7 @@ public class CarController {
             @ApiResponse(responseCode = "404", description = "No car found",content = @Content) })
     @DeleteMapping("/v1/cars/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable Long id){
-        log.debug("[CarController] invoke DELETE api/v1/cars/{" + id + "}");
+        log.info("invoke DELETE api/v1/cars/{" + id + "}");
         if (!carService.existsById(id)){
             return ResponseEntity.notFound().build();
         }
@@ -143,6 +142,7 @@ public class CarController {
             @ApiResponse(responseCode = "404", description = "No car found",content = @Content) })
     @PutMapping("/v1/cars/{id}")
     ResponseEntity<Car> update(@PathVariable Long id, @RequestBody Car carNewValues){
+        log.info("invoke PUT api/v1/cars/{" + id + "}");
         Optional<Car> optionalCar = carService.getSingleById(id);
 
         if(optionalCar.isPresent()){

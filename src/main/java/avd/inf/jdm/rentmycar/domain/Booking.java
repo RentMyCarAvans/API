@@ -27,8 +27,9 @@ public class Booking {
     @NonNull
     private Offer offer;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ride")
+    @OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
+    @JsonManagedReference
+    @JoinColumn(name = "rides_id", unique = true, referencedColumnName = "id")
     private Ride ride;
     @JsonManagedReference
 

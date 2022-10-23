@@ -2,12 +2,15 @@ package avd.inf.jdm.rentmycar.controller;
 
 import avd.inf.jdm.rentmycar.ResponseHandler;
 import avd.inf.jdm.rentmycar.controller.dto.BookingDTO;
+import avd.inf.jdm.rentmycar.controller.dto.EndRideDTO;
 import avd.inf.jdm.rentmycar.domain.Booking;
 import avd.inf.jdm.rentmycar.domain.Offer;
+import avd.inf.jdm.rentmycar.domain.Ride;
 import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.service.BookingService;
 
 import avd.inf.jdm.rentmycar.service.OfferService;
+import avd.inf.jdm.rentmycar.service.RideService;
 import avd.inf.jdm.rentmycar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,12 +37,14 @@ public class BookingController {
     private final BookingService bookingService;
     private final OfferService offerService;
     private final UserService userService;
+    private final RideService rideService;
 
     @Autowired
-    public BookingController(BookingService bookingService, OfferService offerService, UserService userService) {
+    public BookingController(BookingService bookingService, OfferService offerService, UserService userService, RideService rideService) {
         this.bookingService = bookingService;
         this.offerService = offerService;
         this.userService = userService;
+        this.rideService = rideService;
     }
 
     @Operation(summary = "Retrieving all bookings")
@@ -136,5 +142,51 @@ public class BookingController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Operation(summary = "End A Ride")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Booking and ride updated", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Booking.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Booking not found", content = @Content) })
+    @PostMapping("/v1/bookings/endride/{bookingId}")
+    ResponseEntity<Booking> endARide(@RequestBody EndRideDTO endRideDTO, @PathVariable Long bookingId) {
+        Optional<Booking> optionalBooking = bookingService.getSingleById(bookingId);
+
+        if (optionalBooking.isPresent()) {
+
+            Booking booking = optionalBooking.get();
+
+            booking.setStatus(endRideDTO.getStatus());
+            Ride maybeRide = booking.getRide();
+            if (maybeRide != null) {
+
+                maybeRide.setEndDateTime(endRideDTO.getEndDateTime());
+                maybeRide.setEndRideLongitude(endRideDTO.getEndRideLongitude());
+                maybeRide.setEndRideLatitude(endRideDTO.getEndRideLatitude());
+                maybeRide.setStartRideLatitude(endRideDTO.getStartRideLatitude());
+                maybeRide.setStartRideLongitude(endRideDTO.getStartRideLongitude());
+                maybeRide.setTotalKilometersDriven(endRideDTO.getTotalKilometersDriven());
+                maybeRide.setMaxAccelerationForce(endRideDTO.getMaxAccelerationForce());
+                rideService.save(maybeRide);
+            }
+            else {
+                Ride newRide = new Ride(booking);
+                newRide.setStartDateTime(LocalDateTime.now());
+                newRide.setEndDateTime(endRideDTO.getEndDateTime());
+                newRide.setEndRideLongitude(endRideDTO.getEndRideLongitude());
+                newRide.setEndRideLatitude(endRideDTO.getEndRideLatitude());
+                newRide.setStartRideLongitude(endRideDTO.getStartRideLongitude());
+                newRide.setStartRideLatitude(endRideDTO.getStartRideLatitude());
+                newRide.setTotalKilometersDriven(endRideDTO.getTotalKilometersDriven());
+                newRide.setMaxAccelerationForce(endRideDTO.getMaxAccelerationForce());
+                booking.setRide(newRide);
+            }
+            bookingService.save(booking);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 }

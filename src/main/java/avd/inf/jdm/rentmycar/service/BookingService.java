@@ -46,19 +46,25 @@ public class BookingService {
         return bookingRepository.saveAndFlush(booking);
     }
     public boolean startRide(Booking booking) {
-        if (booking.getId() == null) {
-            throw new IllegalArgumentException("Booking must not be null");
+        if (booking == null) {
+            throw new IllegalArgumentException("Booking not found");
         }
-        if(bookingRepository.existsById(booking.getId())) {
-            Ride newRide = new Ride(booking);
-            newRide.setStartDateTime(LocalDateTime.now());
-            booking.setRide(newRide);
+
+            Ride optionalRide = booking.getRide();
+            if(optionalRide == null) {
+                Ride newRide = new Ride(booking);
+                booking.setRide(newRide);
+
+
+            } else {
+//                optionalRide.setStartDateTime(LocalDateTime.now());
+                booking.setRide(optionalRide);
+            }
             booking.setStatus(BookingStatus.PICKEDUP);
 
              bookingRepository.save(booking);
              return true;
-        }
-        return false;
+
 
     }
 
@@ -75,7 +81,7 @@ public class BookingService {
             //    calculate the bonuspoints here
             booking.calculateBonusPointsForThisRide();
 
-            bookingRepository.saveAndFlush(booking);
+            bookingRepository.save(booking);
             return true;
 
 

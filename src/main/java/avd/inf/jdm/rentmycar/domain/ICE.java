@@ -13,6 +13,8 @@ public class ICE extends Car{
     }
 
     public double calculateTCO(int mileage, int yearOfManufacture, int numberOfSeats) {
-        return 100 + ((mileage/1000) + (yearOfManufacture*0.01) + (numberOfSeats * 2.50));
+        double tco;
+        tco = 100 + ((mileage/1000) + (yearOfManufacture*0.01) + (numberOfSeats * 2.50));
+        return Math.round(tco*100.0)/100.0;
     }
 }

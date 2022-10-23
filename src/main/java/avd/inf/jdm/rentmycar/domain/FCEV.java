@@ -14,6 +14,8 @@ public class FCEV extends Car{
 
     @Override
     public double calculateTCO(int mileage, int yearOfManufacture, int numberOfSeats) {
-        return 200 + ((mileage/1000) + (yearOfManufacture*0.01) + (numberOfSeats * 1.00));
+        double tco;
+        tco = 200 + ((mileage/1000) + (yearOfManufacture*0.01) + (numberOfSeats * 1.00));
+        return Math.round(tco*100.0)/100.0;
     }
 }

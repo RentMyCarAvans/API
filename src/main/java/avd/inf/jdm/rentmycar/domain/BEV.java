@@ -16,6 +16,7 @@ public class BEV extends Car{
     @Override
     public double calculateTCO(int mileage, int yearOfManufacture, int numberOfSeats) {
         int amount = 0;
+        double tco;
 
         // Determine the amount based on the year of manufacture. If the car is older than 4 years, then the amount is 500.
         switch (YearMonth.now().getYear() - yearOfManufacture){
@@ -34,6 +35,8 @@ public class BEV extends Car{
             default:
                 amount = 500;
         }
-        return 300 + ((mileage/1000) + amount + (numberOfSeats * 1.50));
+        tco = 300 + ((mileage/1000) + amount + (numberOfSeats * 1.50));
+        return Math.round(tco*100.0)/100.0;
     }
+
 }

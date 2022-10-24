@@ -43,7 +43,7 @@ public class CarService {
         return carRepository.existsById(id);
     }
 
-    public Boolean existsByLicensePlate(String licensePlate) { return carRepository.existsCarByLicensePlate(licensePlate);}
+    public Boolean existsByLicensePlate(String licensePlate) { return carRepository.existsByLicensePlate(licensePlate);}
 
     public Optional<Car> getByLicensePlate(String licensePlate) {
         return carRepository.findByLicensePlate(licensePlate);

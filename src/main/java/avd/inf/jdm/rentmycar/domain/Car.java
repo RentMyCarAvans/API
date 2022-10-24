@@ -56,16 +56,14 @@ public abstract class Car {
     private int numberOfSeats;
 
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-     @JoinColumn(name = "user_id", nullable = false)
-     private User user;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Car(String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user) {
         this.licensePlate = licensePlate;

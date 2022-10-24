@@ -60,6 +60,9 @@ public class Offer {
         if (endDateTime.isEqual(startDateTime)) {
             throw new IllegalArgumentException("EndDateTime can not be equal to StartDateTime");
         }
+
+
+
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.pickupLocation = pickupLocation;

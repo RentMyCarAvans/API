@@ -111,6 +111,23 @@ public class OfferController {
                 return ResponseHandler.generateResponse("Car with id " + offerDTO.getCarId() + " not found", HttpStatus.NOT_FOUND, null);
             }
 
+            System.out.println(" ========== offer.getCar().getId(): " + car.getId() + " ==========");
+
+            // Check if an offer for that car already exists in the same time period
+            List<Offer> offers = offerService.getAll();
+            for(Offer offer : offers){
+                if(offer.getCar().getId().equals(offerDTO.getCarId())){
+                    if(
+                            (offer.getStartDateTime().isBefore(offerDTO.getStartDateTime()) && offer.getEndDateTime().isAfter(offerDTO.getStartDateTime()))
+                            || (offer.getStartDateTime().isBefore(offerDTO.getEndDateTime()) && offer.getEndDateTime().isAfter(offerDTO.getEndDateTime()))
+                            || (offer.getStartDateTime().isEqual(offerDTO.getStartDateTime()))
+                            || (offer.getEndDateTime().isEqual(offerDTO.getEndDateTime()))
+                    ){
+                        return ResponseHandler.generateResponse("Offer already exists for that car in the same time period", HttpStatus.CONFLICT, null);
+                    }
+                }
+            }
+
             Offer newOffer = offerService.create(offerDTO.getStartDateTime(), offerDTO.getEndDateTime(), offerDTO.getPickupLocation(), car);
             if (newOffer != null) {
                 return new ResponseEntity<>(newOffer, HttpStatus.CREATED);

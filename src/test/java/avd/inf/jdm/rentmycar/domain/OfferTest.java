@@ -47,4 +47,6 @@ class OfferTest {
         assertThrows(IllegalArgumentException.class, () -> new Offer(LocalDateTime.parse("2022-10-10T10:00"), LocalDateTime.parse("2022-10-10T10:00"), "Rotterdam", testCar1));
     }
 
+
+
 }

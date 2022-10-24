@@ -1,7 +1,9 @@
 package avd.inf.jdm.rentmycar.controller;
 
 import avd.inf.jdm.rentmycar.RentMyCarApplication;
+import avd.inf.jdm.rentmycar.domain.Offer;
 import org.json.JSONException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -14,6 +16,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @ExtendWith(SpringExtension.class)
@@ -43,4 +49,5 @@ public class OfferControllerTest {
     private String createURLWithPort() {
         return "http://localhost:" + port + "/api/v1/offers/5";
     }
+
 }

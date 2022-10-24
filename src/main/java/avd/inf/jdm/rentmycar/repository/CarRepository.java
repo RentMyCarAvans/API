@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface CarRepository extends JpaRepository<Car, Long> {
     public Optional<Car> findByLicensePlate (String licensePlate);
 
-    public Boolean existsCarByLicensePlate(String licensePlate);
+    public Boolean existsByLicensePlate(String licensePlate);
 
 
 }

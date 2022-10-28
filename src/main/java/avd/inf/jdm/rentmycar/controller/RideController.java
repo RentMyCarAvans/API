@@ -1,8 +1,6 @@
 package avd.inf.jdm.rentmycar.controller;
 
 import avd.inf.jdm.rentmycar.ResponseHandler;
-import avd.inf.jdm.rentmycar.domain.Booking;
-import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.domain.Ride;
 import avd.inf.jdm.rentmycar.service.RideService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -31,9 +29,9 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class RideController {
 
-private final RideService rideService;
+    private final RideService rideService;
 
-@Autowired
+    @Autowired
     public RideController(RideService rideService) { this.rideService = rideService;}
 
     @Operation(summary = "Retrieving all rides")
@@ -43,8 +41,8 @@ private final RideService rideService;
             @ApiResponse(responseCode = "404", description = "No bookings found",content = @Content) })
     @GetMapping("/v1/rides")
     public ResponseEntity<Object> getAllRides() {
-    List<Ride> found = rideService.getAllRides();
-    return found.isEmpty() ?  ResponseHandler.generateResponse("No bookings found", HttpStatus.NO_CONTENT, null) :ResponseHandler.generateResponse(null, HttpStatus.OK, found);
+        List<Ride> found = rideService.getAllRides();
+        return found.isEmpty() ?  ResponseHandler.generateResponse("No bookings found", HttpStatus.NO_CONTENT, null) :ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }
 
     @Operation(summary = "Retrieve a ride by id")
@@ -53,13 +51,14 @@ private final RideService rideService;
             @ApiResponse(responseCode = "400", description = "Invalid id supplied",content = @Content),
             @ApiResponse(responseCode = "404", description = "Booking not found",content = @Content) })
     @GetMapping("/v1/rides/car/{carId}")
-    public ResponseEntity<List<Ride>> getRidesById(@PathVariable Long carId) {
+    public ResponseEntity<Object> getRidesById(@PathVariable Long carId) {
         try {
             List<Ride> found = new ArrayList<>();
             found.addAll(rideService.getRidesByCarId(carId));
-            return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
+            return found.isEmpty() ?
+                    ResponseHandler.generateResponse("No rides found", HttpStatus.NO_CONTENT, null) : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseHandler.generateResponse("Invalid id supplied", HttpStatus.BAD_REQUEST, null);
         }
 
     }
@@ -69,15 +68,15 @@ private final RideService rideService;
             @ApiResponse(responseCode = "201", description = "Ride created",content = { @Content(mediaType = "application/json",schema = @Schema(implementation = Ride.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid input",content = @Content),
             @ApiResponse(responseCode = "409", description = "Ride already exists",content = @Content) })
-@PostMapping
-public ResponseEntity<Ride> create(@RequestBody Ride newRide) {
-    try {
-        Ride ride = rideService.save(newRide);
-        return new ResponseEntity<>(ride, HttpStatus.CREATED);
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.badRequest().build();
+    @PostMapping
+    public ResponseEntity<Object> create(@RequestBody Ride newRide) {
+        try {
+            Ride ride = rideService.save(newRide);
+            return ResponseHandler.generateResponse("Ride created", HttpStatus.CREATED, ride);
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse("Invalid input", HttpStatus.BAD_REQUEST, null);
+        }
     }
-}
 
     @Operation(summary = "Update a ride by id")
     @ApiResponses(value = {
@@ -85,7 +84,7 @@ public ResponseEntity<Ride> create(@RequestBody Ride newRide) {
             @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
             @ApiResponse(responseCode = "404", description = "ride not found", content = @Content) })
     @PutMapping("v1/rides/{id}")
-    public ResponseEntity<Ride> updateRideByID(@RequestBody Ride newRide, @PathVariable Long id) {
+    public ResponseEntity<Object> updateRideByID(@RequestBody Ride newRide, @PathVariable Long id) {
         Optional<Ride> optionalRide = rideService.getRideByID(id);
         if(optionalRide.isPresent()) {
             Ride ride = optionalRide.get();
@@ -96,10 +95,10 @@ public ResponseEntity<Ride> create(@RequestBody Ride newRide) {
             ride.setStartRideLongitude(newRide.getStartRideLongitude());
             ride.setMaxAccelerationForce(newRide.getMaxAccelerationForce());
             ride.setTotalKilometersDriven(newRide.getTotalKilometersDriven());
-            return ResponseEntity.ok(rideService.save(ride));
+            return ResponseHandler.generateResponse("Ride with id " + id + " has been updated", HttpStatus.OK, rideService.save(ride));
 
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseHandler.generateResponse("Ride not found", HttpStatus.NOT_FOUND, null);
         }
     }
 }

@@ -38,17 +38,17 @@ public class OfferController {
 
     @Operation(summary = "Retrieving all offers")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved all offers",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Offer.class)) }),
-        @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
-        @ApiResponse(responseCode = "404", description = "No Offers found",content = @Content) })
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all offers",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Offer.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
+            @ApiResponse(responseCode = "404", description = "No Offers found",content = @Content) })
     @GetMapping("/v1/offers")
     public ResponseEntity<Object> getAllOffers(
-        @RequestParam(required = false) String city,
-        @RequestParam(required = false) String colorOfCar,
-        @RequestParam(required = false) Integer numberOfSeats
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String colorOfCar,
+            @RequestParam(required = false) Integer numberOfSeats
     ){
 
-        List<Offer> found = new ArrayList<>();
+        List<Offer> found;
 
         found = offerService.getAll();
 
@@ -71,9 +71,9 @@ public class OfferController {
 
     @Operation(summary = "Retrieve an offer by id")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Found the offer",content = { @Content(mediaType = "application/json",schema = @Schema(implementation = Offer.class)) }),
-        @ApiResponse(responseCode = "400", description = "Invalid id supplied",content = @Content),
-        @ApiResponse(responseCode = "404", description = "Offer not found",content = @Content) })
+            @ApiResponse(responseCode = "200", description = "Found the offer",content = { @Content(mediaType = "application/json",schema = @Schema(implementation = Offer.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied",content = @Content),
+            @ApiResponse(responseCode = "404", description = "Offer not found",content = @Content) })
     @GetMapping("/v1/offers/{id}")
     public ResponseEntity<Object> getById(@PathVariable Long id){
         Optional<Offer> found =  offerService.getSingleById(id);
@@ -84,8 +84,8 @@ public class OfferController {
 
     @Operation(summary = "Retrieve all unbooked offers")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Found the offers",content = { @Content(mediaType = "application/json",schema = @Schema(implementation = Offer.class)) }),
-        @ApiResponse(responseCode = "404", description = "Offers not found",content = @Content) })
+            @ApiResponse(responseCode = "200", description = "Found the offers",content = { @Content(mediaType = "application/json",schema = @Schema(implementation = Offer.class)) }),
+            @ApiResponse(responseCode = "404", description = "Offers not found",content = @Content) })
     @GetMapping("/v1/offers/unbooked")
     public ResponseEntity<Object> getAllUnbookedOffers() {
         try {
@@ -100,9 +100,9 @@ public class OfferController {
 
     @Operation(summary = "Add a new offer")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Offer created",content = { @Content(mediaType = "application/json",schema = @Schema(implementation = Offer.class)) }),
-        @ApiResponse(responseCode = "400", description = "Invalid input",content = @Content),
-        @ApiResponse(responseCode = "409", description = "Offer already exists",content = @Content) })
+            @ApiResponse(responseCode = "201", description = "Offer created",content = { @Content(mediaType = "application/json",schema = @Schema(implementation = Offer.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid input",content = @Content),
+            @ApiResponse(responseCode = "409", description = "Offer already exists",content = @Content) })
     @PostMapping("/v1/offers")
     public ResponseEntity<Object> create(@RequestBody OfferDTO offerDTO) {
         try {
@@ -119,9 +119,9 @@ public class OfferController {
                 if(offer.getCar().getId().equals(offerDTO.getCarId())){
                     if(
                             (offer.getStartDateTime().isBefore(offerDTO.getStartDateTime()) && offer.getEndDateTime().isAfter(offerDTO.getStartDateTime()))
-                            || (offer.getStartDateTime().isBefore(offerDTO.getEndDateTime()) && offer.getEndDateTime().isAfter(offerDTO.getEndDateTime()))
-                            || (offer.getStartDateTime().isEqual(offerDTO.getStartDateTime()))
-                            || (offer.getEndDateTime().isEqual(offerDTO.getEndDateTime()))
+                                    || (offer.getStartDateTime().isBefore(offerDTO.getEndDateTime()) && offer.getEndDateTime().isAfter(offerDTO.getEndDateTime()))
+                                    || (offer.getStartDateTime().isEqual(offerDTO.getStartDateTime()))
+                                    || (offer.getEndDateTime().isEqual(offerDTO.getEndDateTime()))
                     ){
                         return ResponseHandler.generateResponse("Offer already exists for that car in the same time period", HttpStatus.CONFLICT, null);
                     }
@@ -143,11 +143,11 @@ public class OfferController {
 
     @Operation(summary = "Update an offer by id")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Offer updated", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Offer.class)) }),
-        @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
-        @ApiResponse(responseCode = "404", description = "Offer not found", content = @Content) })
+            @ApiResponse(responseCode = "200", description = "Offer updated", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Offer.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Offer not found", content = @Content) })
     @PutMapping("/v1/offers/{id}")
-    ResponseEntity<Offer> update(@RequestBody Offer newOffer, @PathVariable Long id) {
+    ResponseEntity<Object> update(@RequestBody Offer newOffer, @PathVariable Long id) {
         Optional<Offer> optionalOffer = offerService.getSingleById(id);
 
         if (optionalOffer.isPresent()) {
@@ -159,17 +159,17 @@ public class OfferController {
             offer.setPickupLocation(newOffer.getPickupLocation());
             offer.setCar(newOffer.getCar());
 
-            return ResponseEntity.ok(offerService.save(offer));
-        } else {
-            return ResponseEntity.notFound().build();
+            return ResponseHandler.generateResponse("Offer with id " + id + " is succesfully updated", HttpStatus.OK, offerService.save(offer));
+
         }
+        return ResponseHandler.generateResponse("Offer with id " + id + " could not be found", HttpStatus.NOT_FOUND, null);
     }
 
     @Operation(summary = "Delete an offer by id")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Offer deleted",content = { @Content(mediaType = "application/json",schema = @Schema(implementation = Offer.class)) }),
-        @ApiResponse(responseCode = "400", description = "Invalid id supplied",content = @Content),
-        @ApiResponse(responseCode = "404", description = "Offer not found",content = @Content) })
+            @ApiResponse(responseCode = "200", description = "Offer deleted",content = { @Content(mediaType = "application/json",schema = @Schema(implementation = Offer.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied",content = @Content),
+            @ApiResponse(responseCode = "404", description = "Offer not found",content = @Content) })
     @DeleteMapping("/v1/offers/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         // 1. Check if the offer exists

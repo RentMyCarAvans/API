@@ -130,7 +130,7 @@ public class OfferController {
 
             Offer newOffer = offerService.create(offerDTO.getStartDateTime(), offerDTO.getEndDateTime(), offerDTO.getPickupLocation(), car);
             if (newOffer != null) {
-                return new ResponseEntity<>(newOffer, HttpStatus.CREATED);
+                return ResponseHandler.generateResponse("New Offer added succesfully", HttpStatus.CREATED, newOffer);
             }
 
             return ResponseHandler.generateResponse("Offer could not be created", HttpStatus.BAD_REQUEST, null);

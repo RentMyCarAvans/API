@@ -28,7 +28,7 @@ import java.util.Optional;
                         "Overview of available API's"))
 @Tag(name = "user-controller", description = "API's to add new user, delete a user, retrieve all users")
 @RestController
-@RequestMapping(path = "api")
+@RequestMapping("/api")
 @CrossOrigin
 public class UserController {
     private final UserService userService;
@@ -80,7 +80,8 @@ public class UserController {
     @GetMapping("/v1/users/{id}")
     public ResponseEntity<Object> getUserByID(@PathVariable Long id)  {
         Optional<User> found = userService.getUserByID(id);
-        return found.isEmpty() ? ResponseHandler.generateResponse("User with id" + id + " not found", HttpStatus.NO_CONTENT, null)
+        return found.isEmpty()
+                ? ResponseHandler.generateResponse("User with id " + id + " not found", HttpStatus.NOT_FOUND, null)
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }
 

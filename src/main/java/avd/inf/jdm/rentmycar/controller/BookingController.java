@@ -92,7 +92,7 @@ public class BookingController {
             Booking newBooking = bookingService.create(offer, customer);
 
             if (newBooking != null) {
-                return ResponseHandler.generateResponse("Booking created", HttpStatus.CREATED, newBooking);
+                return ResponseHandler.generateResponse("Offer with id " + offer.getId() + " has been booked by " + customer.getFirstName() + " " + customer.getLastName(), HttpStatus.CREATED, newBooking);
             }
 
             return ResponseHandler.generateResponse("Booking could not be created", HttpStatus.BAD_REQUEST, null);

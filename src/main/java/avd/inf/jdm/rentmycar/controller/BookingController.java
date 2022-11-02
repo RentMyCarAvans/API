@@ -84,6 +84,11 @@ public class BookingController {
             Offer offer = offerService.getSingleById(bookingDTO.getOfferId()).isPresent() ? offerService.getSingleById(bookingDTO.getOfferId()).get() : null;
             User customer = userService.getUserByID(bookingDTO.getCustomerId()).isPresent() ? userService.getUserByID(bookingDTO.getCustomerId()).get() : null;
 
+            if (bookingService.getBookingByOffer(offer).isPresent()) {
+                return ResponseHandler.generateResponse("Offer " + offer.getId() + " has already been booked.", HttpStatus.CONFLICT, null);
+            }
+
+
 
             if(offer == null || customer == null){
                 return ResponseHandler.generateResponse("Offer or customer not found", HttpStatus.NOT_FOUND, null);

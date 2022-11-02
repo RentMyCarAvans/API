@@ -88,7 +88,9 @@ public class BookingController {
                 return ResponseHandler.generateResponse("Offer " + offer.getId() + " has already been booked.", HttpStatus.CONFLICT, null);
             }
 
-
+            if (offer.getCar().getUser().getId() == customer.getId()) {
+                return ResponseHandler.generateResponse("You cannot book your own car.", HttpStatus.CONFLICT, null);
+            }
 
             if(offer == null || customer == null){
                 return ResponseHandler.generateResponse("Offer or customer not found", HttpStatus.NOT_FOUND, null);

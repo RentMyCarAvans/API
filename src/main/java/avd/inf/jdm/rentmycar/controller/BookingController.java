@@ -84,6 +84,13 @@ public class BookingController {
             Offer offer = offerService.getSingleById(bookingDTO.getOfferId()).isPresent() ? offerService.getSingleById(bookingDTO.getOfferId()).get() : null;
             User customer = userService.getUserByID(bookingDTO.getCustomerId()).isPresent() ? userService.getUserByID(bookingDTO.getCustomerId()).get() : null;
 
+            if (bookingService.getBookingByOffer(offer).isPresent()) {
+                return ResponseHandler.generateResponse("Offer " + offer.getId() + " has already been booked.", HttpStatus.CONFLICT, null);
+            }
+
+            if (offer.getCar().getUser().getId() == customer.getId()) {
+                return ResponseHandler.generateResponse("You cannot book your own car.", HttpStatus.CONFLICT, null);
+            }
 
             if(offer == null || customer == null){
                 return ResponseHandler.generateResponse("Offer or customer not found", HttpStatus.NOT_FOUND, null);
@@ -92,7 +99,7 @@ public class BookingController {
             Booking newBooking = bookingService.create(offer, customer);
 
             if (newBooking != null) {
-                return ResponseHandler.generateResponse("Booking created", HttpStatus.CREATED, newBooking);
+                return ResponseHandler.generateResponse("Offer with id " + offer.getId() + " has been booked by " + customer.getFirstName() + " " + customer.getLastName(), HttpStatus.CREATED, newBooking);
             }
 
             return ResponseHandler.generateResponse("Booking could not be created", HttpStatus.BAD_REQUEST, null);
@@ -108,7 +115,7 @@ public class BookingController {
             @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
             @ApiResponse(responseCode = "404", description = "Booking not found", content = @Content) })
     @PutMapping("/v1/bookings/{id}")
-    ResponseEntity<Booking> updateBooking(@RequestBody Booking newBooking, @PathVariable Long id) {
+    ResponseEntity<Object> updateBooking(@RequestBody Booking newBooking, @PathVariable Long id) {
         Optional<Booking> optionalBooking = bookingService.getSingleById(id);
 
         if (optionalBooking.isPresent()) {
@@ -120,10 +127,10 @@ public class BookingController {
             booking.setDropOfLocation(newBooking.getDropOfLocation());
             booking.setStatus(newBooking.getStatus());
 
-            return ResponseEntity.ok(bookingService.save(booking));
-        } else {
-            return ResponseEntity.notFound().build();
+            return ResponseHandler.generateResponse("Booking with id " + id + " is succesfully updated", HttpStatus.OK, bookingService.save(booking));
+
         }
+        return ResponseHandler.generateResponse("Booking with id " + id + " could not be found", HttpStatus.NOT_FOUND, null);
     }
 
     @Operation(summary = "Delete a booking by id")
@@ -132,14 +139,14 @@ public class BookingController {
             @ApiResponse(responseCode = "400", description = "Invalid id supplied",content = @Content),
             @ApiResponse(responseCode = "404", description = "Booking not found",content = @Content) })
     @DeleteMapping("/v1/bookings/{id}")
-    public ResponseEntity<Booking> delete(@PathVariable Long id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         Optional<Booking> optionalBooking = bookingService.getSingleById(id);
 
         if (optionalBooking.isPresent()) {
             bookingService.delete(optionalBooking.get());
-            return ResponseEntity.ok().build();
+            return ResponseHandler.generateResponse("Booking with id " + id + " is succesfully deleted", HttpStatus.OK, null);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseHandler.generateResponse("Booking with id " + id + " could not be found", HttpStatus.NOT_FOUND, null);
         }
     }
 
@@ -148,8 +155,8 @@ public class BookingController {
             @ApiResponse(responseCode = "200", description = "Booking and ride updated", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Booking.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
             @ApiResponse(responseCode = "404", description = "Booking not found", content = @Content) })
-    @PostMapping("/v1/bookings/endride/{bookingId}")
-    ResponseEntity<Booking> endARide(@RequestBody EndRideDTO endRideDTO, @PathVariable Long bookingId) {
+    @PostMapping("/v1/bookings/{bookingId}/endride")
+    ResponseEntity<Object> endARide(@RequestBody EndRideDTO endRideDTO, @PathVariable Long bookingId) {
         Optional<Booking> optionalBooking = bookingService.getSingleById(bookingId);
 
         if (optionalBooking.isPresent()) {
@@ -182,9 +189,9 @@ public class BookingController {
                 booking.setRide(newRide);
             }
             bookingService.save(booking);
-            return ResponseEntity.ok().build();
+            return ResponseHandler.generateResponse("Booking with id " + bookingId + " is succesfully updated", HttpStatus.OK, bookingService.save(booking));
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseHandler.generateResponse("Booking with id " + bookingId + " could not be found", HttpStatus.NOT_FOUND, null);
         }
     }
 

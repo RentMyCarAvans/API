@@ -56,12 +56,12 @@ public class RentMyCarApplication {
             carService.save(car6);
 
 
-            Offer offer1 = new Offer(LocalDateTime.parse("2022-11-01T12:00"), LocalDateTime.now().parse("2022-11-01T13:00"), "Tilburg", car2);
-            Offer offer2 = new Offer(LocalDateTime.parse("2022-11-02T12:00"), LocalDateTime.now().plusYears(3).parse("2022-11-02T13:00"), "Breda", car1);
-            Offer offer3 = new Offer(LocalDateTime.parse("2022-11-03T12:00"), LocalDateTime.now().plusYears(3).parse("2022-11-03T13:00"), "Vlissingen", car3);
-            Offer offer4 = new Offer(LocalDateTime.parse("2022-11-04T12:00"), LocalDateTime.now().plusYears(3).parse("2022-11-04T13:00"), "Rotterdam", car4);
-            Offer offer5 = new Offer(LocalDateTime.parse("2022-11-05T12:00"), LocalDateTime.now().plusYears(3).parse("2022-11-05T13:00"), "Tilburg", car5);
-            Offer offer6 = new Offer(LocalDateTime.parse("2022-11-06T12:00"), LocalDateTime.now().plusYears(3).parse("2022-11-06T13:00"), "Rotterdam", car6);
+            Offer offer1 = new Offer(LocalDateTime.parse("2023-11-01T12:00"), LocalDateTime.now().parse("2023-11-01T13:00"), "Tilburg", car2);
+            Offer offer2 = new Offer(LocalDateTime.parse("2023-11-02T12:00"), LocalDateTime.now().plusYears(3).parse("2023-11-02T13:00"), "Breda", car1);
+            Offer offer3 = new Offer(LocalDateTime.parse("2023-11-03T12:00"), LocalDateTime.now().plusYears(3).parse("2023-11-03T13:00"), "Vlissingen", car3);
+            Offer offer4 = new Offer(LocalDateTime.parse("2023-11-04T12:00"), LocalDateTime.now().plusYears(3).parse("2023-11-04T13:00"), "Rotterdam", car4);
+            Offer offer5 = new Offer(LocalDateTime.parse("2023-11-05T12:00"), LocalDateTime.now().plusYears(3).parse("2023-11-05T13:00"), "Tilburg", car5);
+            Offer offer6 = new Offer(LocalDateTime.parse("2023-11-06T12:00"), LocalDateTime.now().plusYears(3).parse("2023-11-06T13:00"), "Rotterdam", car6);
             offerService.save(offer1);
             offerService.save(offer2);
             offerService.save(offer3);

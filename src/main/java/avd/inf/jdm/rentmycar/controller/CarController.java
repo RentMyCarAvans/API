@@ -96,7 +96,7 @@ public class CarController {
     public ResponseEntity<Object> getById(@PathVariable Long id){
         log.info("invoke GET api/v1/cars/{" + id + "}");
         Optional<Car> found = carService.getSingleById(id);
-        return found.isEmpty()
+        return found == null
                 ? ResponseHandler.generateResponse("Car with id " + id + " not found", HttpStatus.NOT_FOUND, null)
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }
@@ -110,7 +110,7 @@ public class CarController {
     public ResponseEntity<Object> getByLicensePlate(@RequestParam(name = "licenseplate") String licensePlate){
         log.info("invoke GET api/v1/cars/query{" + licensePlate + "}");
         Optional<Car> found = carService.getByLicensePlate(licensePlate);
-        return found.isEmpty()
+        return found == null
                 ? ResponseHandler.generateResponse("Car with licenseplante " + licensePlate + " not found", HttpStatus.NOT_FOUND, null)
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }

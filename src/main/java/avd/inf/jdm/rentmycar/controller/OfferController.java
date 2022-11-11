@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Tag(name = "offer-controller", description = "Endpoints to add new offers, delete an offer, retrieve all offers, retrieve specific offer information")
 @RestController
@@ -53,15 +54,15 @@ public class OfferController {
         found = offerService.getAll();
 
         if(city != null && !city.isEmpty()){
-            found = found.stream().filter(offer -> offer.getPickupLocation().equals(city)).toList();
+            found = found.stream().filter(offer -> offer.getPickupLocation().equals(city)).collect(Collectors.toList());
         }
 
         if(colorOfCar != null && !colorOfCar.isEmpty()){
-            found = found.stream().filter(offer -> offer.getCar().getColorType().toString().equals(colorOfCar)).toList();
+            found = found.stream().filter(offer -> offer.getCar().getColorType().toString().equals(colorOfCar)).collect(Collectors.toList());
         }
 
         if(numberOfSeats != null && numberOfSeats != 0){
-            found = found.stream().filter(offer -> offer.getCar().getNumberOfSeats() >= numberOfSeats).toList();
+            found = found.stream().filter(offer -> offer.getCar().getNumberOfSeats() >= numberOfSeats).collect(Collectors.toList());
         }
 
         return found.isEmpty()
@@ -77,7 +78,7 @@ public class OfferController {
     @GetMapping("/v1/offers/{id}")
     public ResponseEntity<Object> getById(@PathVariable Long id){
         Optional<Offer> found =  offerService.getSingleById(id);
-        return found.isEmpty()
+        return found == null
                 ? ResponseHandler.generateResponse("Offer with id " + id + " not found", HttpStatus.NOT_FOUND, null)
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }

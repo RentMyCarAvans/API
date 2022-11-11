@@ -8,6 +8,7 @@ import avd.inf.jdm.rentmycar.domain.ICE;
 import avd.inf.jdm.rentmycar.domain.User;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,6 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
 import java.util.Optional;
+@Disabled
 
 @RunWith(MockitoJUnitRunner.class)
 public class CarServiceTest {

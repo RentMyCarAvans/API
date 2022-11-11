@@ -68,7 +68,7 @@ public class BookingController {
     @GetMapping("/v1/bookings/{id}")
     public ResponseEntity<Object> getById(@PathVariable Long id){
         Optional<Booking> found =  bookingService.getSingleById(id);
-        return found.isEmpty()
+        return found == null
                 ? ResponseHandler.generateResponse("Booking with id " + id + " not found", HttpStatus.NOT_FOUND, null)
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }

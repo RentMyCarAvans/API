@@ -23,6 +23,7 @@ public class RentMyCarApplication {
         SpringApplication.run(RentMyCarApplication.class, args);
     }
 
+
     @Bean
     public CommandLineRunner runRentMyCar(CarService carService, UserService userService, OfferService offerService, BookingService bookingService) {
         return (args -> {

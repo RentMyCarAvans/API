@@ -1,10 +1,7 @@
 package avd.inf.jdm.rentmycar.repository;
 
 import avd.inf.jdm.rentmycar.domain.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -15,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+@Disabled
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

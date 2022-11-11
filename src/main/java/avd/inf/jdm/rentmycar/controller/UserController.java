@@ -58,7 +58,7 @@ public class UserController {
         User newUser;
         try {
             Optional<User> maybeUser = userService.getUserByEmail(userDto.getEmail());
-            if (maybeUser.isEmpty()) {
+            if (maybeUser == null) {
                 newUser = userService.saveDTO(userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword());
                 return  ResponseHandler.generateResponse("User created", HttpStatus.CREATED, newUser);
 
@@ -80,7 +80,7 @@ public class UserController {
     @GetMapping("/v1/users/{id}")
     public ResponseEntity<Object> getUserByID(@PathVariable Long id)  {
         Optional<User> found = userService.getUserByID(id);
-        return found.isEmpty()
+        return found == null
                 ? ResponseHandler.generateResponse("User with id " + id + " not found", HttpStatus.NOT_FOUND, null)
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }

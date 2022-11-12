@@ -17,6 +17,8 @@ services:
   rentmycar-api:
     container_name: rentmycar-api
     image: rentmycar/api:latest
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
     build:
       context: ./
       dockerfile: Dockerfile

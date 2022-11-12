@@ -4,13 +4,13 @@ import avd.inf.jdm.rentmycar.domain.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
-@Disabled
-
+@ActiveProfiles("dev")
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BookingIntegrationTest {

@@ -3,12 +3,12 @@ package avd.inf.jdm.rentmycar;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
-@Disabled
+@ActiveProfiles("dev")
 @SpringBootTest
 class RentMyCarApplicationTests {
 
-    @Disabled
     @Test
     void contextLoads() {
     }

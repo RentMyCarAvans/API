@@ -14,9 +14,9 @@ services:
       - 3306:3306
     volumes:
       - mysqldb:/var/lib/mysql
-  api:
-    container_name: api
-    image: spring-boot-api-tutorial-img
+  rentmycar-api:
+    container_name: rentmycar-api
+    image: rentmycar/api:latest
     build:
       context: ./
       dockerfile: Dockerfile

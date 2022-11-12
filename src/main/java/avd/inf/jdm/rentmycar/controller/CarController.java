@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
+
 @OpenAPIDefinition(
         info = @Info(
                 title = "Rent My Car Avans",
@@ -77,7 +77,7 @@ public class CarController {
             User user = userService.getUserByID(carDTO.getUserId()).get();
             Car newCar = carService.create(carDTO.getType(), carDTO.getLicensePlate(), carDTO.getYearOfManufacture(), carDTO.getModel(), carDTO.getColorType(), carDTO.getMileage(), carDTO.getNumberOfSeats(), user);
             if (newCar != null) {
-                return new ResponseEntity<>(newCar, HttpStatus.CREATED);
+                return ResponseHandler.generateResponse("Car created", HttpStatus.CREATED, newCar);
             }
 
             return ResponseHandler.generateResponse("Car could not be created", HttpStatus.BAD_REQUEST, null);
@@ -124,7 +124,7 @@ public class CarController {
     public ResponseEntity<Object> deleteById(@PathVariable Long id){
         log.info("invoke DELETE api/v1/cars/{" + id + "}");
         if (!carService.existsById(id)){
-            return ResponseEntity.notFound().build();
+            return ResponseHandler.generateResponse("Car with id " + id + " not found", HttpStatus.NOT_FOUND, null);
         }
         try {
             carService.deleteById(id);
@@ -132,7 +132,7 @@ public class CarController {
         catch (Exception e) {
             return ResponseHandler.generateResponse("Car can't be deleted", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
-        return ResponseEntity.ok().build();
+        return ResponseHandler.generateResponse("Car deleted", HttpStatus.OK, null);
     }
 
     @Operation(summary = "Update a car by id")
@@ -141,7 +141,7 @@ public class CarController {
             @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
             @ApiResponse(responseCode = "404", description = "No car found",content = @Content) })
     @PutMapping("/v1/cars/{id}")
-    ResponseEntity<Car> update(@PathVariable Long id, @RequestBody Car carNewValues){
+    ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Car carNewValues){
         log.info("invoke PUT api/v1/cars/{" + id + "}");
         Optional<Car> optionalCar = carService.getSingleById(id);
 
@@ -153,9 +153,9 @@ public class CarController {
             car.setLicensePlate(carNewValues.getLicensePlate());
             car.setYearOfManufacture(carNewValues.getYearOfManufacture());
 
-            return ResponseEntity.ok(carService.save(car));
+            return ResponseHandler.generateResponse("Car with id " + id + " is updated", HttpStatus.OK, carService.save(car));
         }
-        return ResponseEntity.notFound().build();
+        return ResponseHandler.generateResponse("Car with id " + id + " not found", HttpStatus.NOT_FOUND, null);
     }
 
 }

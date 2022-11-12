@@ -28,7 +28,7 @@ import java.util.Optional;
                         "Overview of available API's"))
 @Tag(name = "user-controller", description = "API's to add new user, delete a user, retrieve all users")
 @RestController
-@RequestMapping(path = "api")
+@RequestMapping("/api")
 @CrossOrigin
 public class UserController {
     private final UserService userService;
@@ -60,15 +60,15 @@ public class UserController {
             Optional<User> maybeUser = userService.getUserByEmail(userDto.getEmail());
             if (maybeUser.isEmpty()) {
                 newUser = userService.saveDTO(userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword());
-                return new ResponseHandler().generateResponse("User created", HttpStatus.CREATED, newUser);
+                return  ResponseHandler.generateResponse("User created", HttpStatus.CREATED, newUser);
 
             }
-            return new ResponseHandler().generateResponse("Email already exists", HttpStatus.BAD_REQUEST, null);
+            return ResponseHandler.generateResponse("Email already exists", HttpStatus.BAD_REQUEST, null);
 
 
-    } catch (IllegalArgumentException e) {
-        return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-    }
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
 
     }
 
@@ -80,8 +80,9 @@ public class UserController {
     @GetMapping("/v1/users/{id}")
     public ResponseEntity<Object> getUserByID(@PathVariable Long id)  {
         Optional<User> found = userService.getUserByID(id);
-        return found.isEmpty() ? ResponseHandler.generateResponse("User with id" + id + " not found", HttpStatus.NO_CONTENT, null)
-       : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
+        return found.isEmpty()
+                ? ResponseHandler.generateResponse("User with id " + id + " not found", HttpStatus.NOT_FOUND, null)
+                : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }
 
     @Operation(summary = "Delete a user by id")
@@ -94,7 +95,7 @@ public class UserController {
         Optional<User> optionalUser = userService.getUserByID(id);
 
         if (!optionalUser.isPresent()) {
-            return ResponseEntity.notFound().build();
+            ResponseHandler.generateResponse("User with id" + id + " not found", HttpStatus.NO_CONTENT, null);
         }
 
         try {
@@ -104,7 +105,9 @@ public class UserController {
             return ResponseHandler.generateResponse("User can't be deleted", HttpStatus.INTERNAL_SERVER_ERROR, null);
 
         }
-        return ResponseEntity.ok().build();
+        return ResponseHandler.generateResponse("User with id " + id + " is succesfully deleted", HttpStatus.OK, null);
+
+
 
     }
 }

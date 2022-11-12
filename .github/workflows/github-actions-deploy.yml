@@ -36,8 +36,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /rentmycar-api
-            docker-compose stop rentmycar-api
+            #cd /rentmycar-api
+            #docker-compose stop rentmycar-api
             docker rm rentmycar-api
             docker pull rentmycar/api:latest
             docker-compose up -d rentmycar-api

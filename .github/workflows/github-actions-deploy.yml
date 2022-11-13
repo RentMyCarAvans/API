@@ -1,3 +1,4 @@
+# got info from https://dev.to/knowbee/how-to-setup-continuous-deployment-of-a-website-on-a-vps-using-github-actions-54im
 name: Build & Deploy
 
 on:
@@ -24,10 +25,10 @@ jobs:
           push: true
           tags: robskt/rentmycar:latest
 
-  deploy_to_droplet:
+  deploy_to_vps:
     runs-on: ubuntu-latest
     needs: build_and_push
-    name: Deploy to Droplet
+    name: Deploy to VPS
     steps:
       - name: Connect with SSH and Deploy
         uses: appleboy/ssh-action@master

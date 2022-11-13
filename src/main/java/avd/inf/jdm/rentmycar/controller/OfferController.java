@@ -54,15 +54,15 @@ public class OfferController {
         found = offerService.getAll();
 
         if(city != null && !city.isEmpty()){
-            found = found.stream().filter(offer -> offer.getPickupLocation().equals(city)).collect(Collectors.toList());
+            found = found.stream().filter(offer -> offer.getPickupLocation().equals(city)).toList();
         }
 
         if(colorOfCar != null && !colorOfCar.isEmpty()){
-            found = found.stream().filter(offer -> offer.getCar().getColorType().toString().equals(colorOfCar)).collect(Collectors.toList());
+            found = found.stream().filter(offer -> offer.getCar().getColorType().toString().equals(colorOfCar)).toList();
         }
 
         if(numberOfSeats != null && numberOfSeats != 0){
-            found = found.stream().filter(offer -> offer.getCar().getNumberOfSeats() >= numberOfSeats).collect(Collectors.toList());
+            found = found.stream().filter(offer -> offer.getCar().getNumberOfSeats() >= numberOfSeats).toList();
         }
 
         return found.isEmpty()
@@ -78,7 +78,7 @@ public class OfferController {
     @GetMapping("/v1/offers/{id}")
     public ResponseEntity<Object> getById(@PathVariable Long id){
         Optional<Offer> found =  offerService.getSingleById(id);
-        return found == null
+        return found.isEmpty()
                 ? ResponseHandler.generateResponse("Offer with id " + id + " not found", HttpStatus.NOT_FOUND, null)
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }

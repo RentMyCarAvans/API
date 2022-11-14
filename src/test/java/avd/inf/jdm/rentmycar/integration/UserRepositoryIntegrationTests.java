@@ -2,14 +2,17 @@ package avd.inf.jdm.rentmycar.integration;
 
 import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.repository.UserRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+@ActiveProfiles("dev")
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")

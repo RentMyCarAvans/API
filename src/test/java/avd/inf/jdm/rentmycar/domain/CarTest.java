@@ -1,11 +1,14 @@
 package avd.inf.jdm.rentmycar.domain;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+@ActiveProfiles("dev")
 
 @SpringBootTest
 class CarTest {

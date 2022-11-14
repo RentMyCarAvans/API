@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Tag(name = "offer-controller", description = "Endpoints to add new offers, delete an offer, retrieve all offers, retrieve specific offer information")
 @RestController

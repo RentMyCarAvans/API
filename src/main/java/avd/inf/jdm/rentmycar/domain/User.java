@@ -38,6 +38,8 @@ public class User extends Account {
     private final LocalDateTime createdAt = LocalDateTime.now();
 
 
+    private String profileImage;
+
     public User(String firstName, String lastName, String password, LocalDate dateOfBirth, String email, int bonusPoints) {
         super(email, password);
         if(firstName == null) {

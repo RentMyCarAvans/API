@@ -2,7 +2,10 @@ package avd.inf.jdm.rentmycar.controller;
 
 import avd.inf.jdm.rentmycar.ResponseHandler;
 import avd.inf.jdm.rentmycar.controller.dto.UserDto;
+import avd.inf.jdm.rentmycar.domain.Image;
 import avd.inf.jdm.rentmycar.domain.User;
+import avd.inf.jdm.rentmycar.repository.ImageRepository;
+import avd.inf.jdm.rentmycar.service.ImageService;
 import avd.inf.jdm.rentmycar.service.UserService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,10 +17,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,9 +39,12 @@ import java.util.Optional;
 @CrossOrigin
 public class UserController {
     private final UserService userService;
+    private final ImageService imageService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ImageService imageService) {
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     @Operation(summary = "Retrieving all users")
@@ -106,8 +116,37 @@ public class UserController {
 
         }
         return ResponseHandler.generateResponse("User with id " + id + " is succesfully deleted", HttpStatus.OK, null);
+    }
 
+//    @Operation(summary = "Upload profilephoto")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Uploaded profile picture", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = User.class))}),
+//            @ApiResponse(responseCode = "400", description = "Invalid photo", content = @Content),
+//            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)})
+//    @PostMapping("/v1/users/profilephoto/{id}")
+//    public ResponseEntity<ImageUploadResponse> uploadImage(@RequestParam("image") MultipartFile file)
+//            throws IOException {
+//
+//        ImageRepository.save(Image.builder()
+//                .name(file.getOriginalFilename())
+//                .type(file.getContentType())
+//                .image(ImageUtility.compressImage(file.getBytes())).build());
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(new ImageUploadResponse("Image uploaded successfully: " +
+//                        file.getOriginalFilename()));
+//    }
+    @PostMapping("/v1/users/profilephoto/{id}")
+    public ResponseEntity uploadProfilePhoto(@RequestParam("file") MultipartFile file ) {
+        return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, imageService.uploadImage(file));
+    }
 
+    @GetMapping(path = {"/v1/users/profilephoto/{id}"})
+    public ResponseEntity getImage(@PathVariable Long id) throws IOException {
+
+        return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, imageService.getPhotoByUserID(id));
 
     }
 }
+
+
+

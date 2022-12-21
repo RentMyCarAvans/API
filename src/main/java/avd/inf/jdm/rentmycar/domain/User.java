@@ -28,6 +28,13 @@ public class User extends Account {
     @NotNull
 
     private String lastName;
+
+    private String telephone;
+
+    private String address;
+
+    private String city;
+
     @NotNull
 
     private LocalDate dateOfBirth;
@@ -38,7 +45,7 @@ public class User extends Account {
     private final LocalDateTime createdAt = LocalDateTime.now();
 
 
-    private String profileImage;
+    private String profileImageUrl;
 
     public User(String firstName, String lastName, String password, LocalDate dateOfBirth, String email, int bonusPoints) {
         super(email, password);

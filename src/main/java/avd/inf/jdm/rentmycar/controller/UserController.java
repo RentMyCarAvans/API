@@ -2,10 +2,8 @@ package avd.inf.jdm.rentmycar.controller;
 
 import avd.inf.jdm.rentmycar.ResponseHandler;
 import avd.inf.jdm.rentmycar.controller.dto.UserDto;
-import avd.inf.jdm.rentmycar.domain.Image;
 import avd.inf.jdm.rentmycar.domain.User;
-import avd.inf.jdm.rentmycar.repository.ImageRepository;
-import avd.inf.jdm.rentmycar.service.ImageService;
+import avd.inf.jdm.rentmycar.service.CarService;
 import avd.inf.jdm.rentmycar.service.UserService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +13,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,12 +40,10 @@ import java.util.Optional;
 @CrossOrigin
 public class UserController {
     private final UserService userService;
-    private final ImageService imageService;
 
     @Autowired
-    public UserController(UserService userService, ImageService imageService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.imageService = imageService;
     }
 
     @Operation(summary = "Retrieving all users")
@@ -118,34 +117,37 @@ public class UserController {
         return ResponseHandler.generateResponse("User with id " + id + " is succesfully deleted", HttpStatus.OK, null);
     }
 
-//    @Operation(summary = "Upload profilephoto")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "Uploaded profile picture", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = User.class))}),
-//            @ApiResponse(responseCode = "400", description = "Invalid photo", content = @Content),
-//            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)})
-//    @PostMapping("/v1/users/profilephoto/{id}")
-//    public ResponseEntity<ImageUploadResponse> uploadImage(@RequestParam("image") MultipartFile file)
-//            throws IOException {
-//
-//        ImageRepository.save(Image.builder()
-//                .name(file.getOriginalFilename())
-//                .type(file.getContentType())
-//                .image(ImageUtility.compressImage(file.getBytes())).build());
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(new ImageUploadResponse("Image uploaded successfully: " +
-//                        file.getOriginalFilename()));
-//    }
     @PostMapping("/v1/users/profilephoto/{id}")
-    public ResponseEntity uploadProfilePhoto(@RequestParam("file") MultipartFile file ) {
-        return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, imageService.uploadImage(file));
+    public ResponseEntity<Object> uploadProfilePhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file ) {
+        return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, userService.setProfilePicture(file, id));
     }
 
-    @GetMapping(path = {"/v1/users/profilephoto/{id}"})
-    public ResponseEntity getImage(@PathVariable Long id) throws IOException {
-
-        return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, imageService.getPhotoByUserID(id));
+    @PostMapping("/v1/users/{id}/profilephoto/")
+    public ResponseEntity setProfilePicture(@PathVariable Long id, @RequestParam MultipartFile file){
+        return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, userService.setProfilePicture(file, id));
 
     }
+
+    @GetMapping(path = {"/v1/users/profilephotourl/{id}"})
+    public ResponseEntity getProfilePhotoUrl(@PathVariable Long id) {
+
+        return ResponseHandler.generateResponse( "Profile image", HttpStatus.OK, userService.getProfilePictureByUserID(id));
+
+    }
+
+    @GetMapping(
+            path = {"/v1/users/profilephoto/{id}"},
+            produces = MediaType.IMAGE_JPEG_VALUE
+    )
+    public @ResponseBody byte[] getProfilePhotoBlob(@PathVariable Long id) throws IOException {
+        String ImagePath = "images";
+        final String url = ImagePath + File.separator + userService.getProfilePictureByUserID(id);
+        FileInputStream fileInputStream = new FileInputStream(url);
+        return IOUtils.toByteArray(fileInputStream);
+    }
+
+
+
 }
 
 

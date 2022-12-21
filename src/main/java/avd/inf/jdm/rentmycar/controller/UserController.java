@@ -122,12 +122,6 @@ public class UserController {
         return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, userService.setProfilePicture(file, id));
     }
 
-    @PostMapping("/v1/users/{id}/profilephoto/")
-    public ResponseEntity setProfilePicture(@PathVariable Long id, @RequestParam MultipartFile file){
-        return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, userService.setProfilePicture(file, id));
-
-    }
-
     @GetMapping(path = {"/v1/users/profilephotourl/{id}"})
     public ResponseEntity getProfilePhotoUrl(@PathVariable Long id) {
 

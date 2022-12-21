@@ -3,7 +3,7 @@ name: Build & Deploy
 
 on:
   push:
-    branches: [ main, develop, feature/docker ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:

@@ -16,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Tag(name = "Authentication Controller", description = "Endpoints regarding user authentication")
 @RestController
@@ -47,12 +44,16 @@ public class AuthController {
             return ResponseHandler.generateResponse("Username or password is incorrect", HttpStatus.UNAUTHORIZED, null);
 
         }
-
         // TODO: Create class for creating JWTs
         // For now return a random string
         String randomExampleToken = RandomStringUtils.randomAlphanumeric(50);
+        String userId = String.valueOf(user.get().getId());
 
-        return ResponseHandler.generateResponse("Login successfully", HttpStatus.OK, randomExampleToken);
+        Map<String, String> responseMap =new HashMap<>();
+        responseMap.put("token", randomExampleToken );
+        responseMap.put("userId", userId);
+
+        return ResponseHandler.generateResponse("Login successfully", HttpStatus.OK, responseMap);
     }
 
     @Operation(summary = "Reset password for Rent My Car")

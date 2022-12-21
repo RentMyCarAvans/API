@@ -73,11 +73,13 @@ public class UserService {
 
 
     public Map setProfilePicture (MultipartFile file, Long id){
-
+        // first find user
+        Optional<User> maybeUser = userRepository.findById(id);
+        // if no user is found, return early.
+        if(maybeUser.isEmpty()) return null;
 
         String ImagePath = "images";
 
-        Optional<User> maybeUser = userRepository.findById(id);
 
         File directory = new File(ImagePath);
         if (!directory.exists()) {

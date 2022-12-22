@@ -35,7 +35,7 @@ public class User extends Account {
 
     private String city;
 
-    private Boolean isVerifiedUser;
+    private Boolean isVerifiedUser = false;
 
     @NotNull
 
@@ -66,6 +66,29 @@ public class User extends Account {
         this.dateOfBirth = dateOfBirth;
         this.bonusPoints = bonusPoints;
         this.isAdult = isAdult();
+    }
+
+    public User(String firstName, String lastName, String password, LocalDate dateOfBirth, String email, int bonusPoints, String address, String city, String telephone,  Boolean isVerifiedUser) {
+        super(email, password);
+        if(firstName == null) {
+            throw new NullPointerException("Firstname cannot be null");
+        }
+        if(lastName == null) {
+            throw new NullPointerException("Lastname cannot be null");
+        }
+        if(dateOfBirth == null) {
+            throw new NullPointerException("Date of Birth cannot be null");
+        }
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.bonusPoints = bonusPoints;
+        this.isAdult = isAdult();
+        this.address = address;
+        this.city = city;
+        this.telephone = telephone;
+        this.isVerifiedUser = isVerifiedUser;
     }
 
 

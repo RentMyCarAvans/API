@@ -68,11 +68,35 @@ public class UserController {
         try {
             Optional<User> maybeUser = userService.getUserByEmail(userDto.getEmail());
             if (maybeUser.isEmpty()) {
-                newUser = userService.saveDTO(userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword());
+                newUser = userService.saveDTO(userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword(), userDto.getAddress(), userDto.getCity(), userDto.getIsVerifiedUser(), userDto.getBonusPoints(), userDto.getTelephone());
                 return  ResponseHandler.generateResponse("User created", HttpStatus.CREATED, newUser);
 
             }
             return ResponseHandler.generateResponse("Email already exists", HttpStatus.BAD_REQUEST, null);
+
+
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+
+    }
+
+    @Operation(summary = "Update a User")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = User.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)})
+    @PutMapping("/v1/users/{id}")
+    public ResponseEntity<Object> updateUser(@Valid @RequestBody UserDto userDto) {
+        User newUser;
+        try {
+            Optional<User> maybeUser = userService.getUserByID(userDto.getId());
+            if (maybeUser.isPresent()) {
+                newUser = userService.saveDTO(userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword(), userDto.getAddress(), userDto.getCity(), userDto.getIsVerifiedUser(), userDto.getBonusPoints(), userDto.getTelephone());
+                return  ResponseHandler.generateResponse("User updated", HttpStatus.OK, newUser);
+
+            }
+            return  ResponseHandler.generateResponse("User not found", HttpStatus.NOT_FOUND, null);
 
 
         } catch (IllegalArgumentException e) {

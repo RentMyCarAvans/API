@@ -38,19 +38,27 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User saveDTO(String firstName, String lastName, LocalDate dateOfBirth, String email, String password) {
+    public User saveDTO(String firstName, String lastName, LocalDate dateOfBirth, String email, String password,String address, String city, Boolean isVerifiedUser, int bonusPoints, String telephone) {
         Optional<User> maybeUser = userRepository.findUserByEmail(email);
 
         if(maybeUser.isPresent()) {
 
 //            user/email is found, update the user. First map the maybeUser to
             final User mappedUser = mapper.convertValue(maybeUser, User.class);
-
+            mappedUser.setFirstName(firstName);
+            mappedUser.setLastName(lastName);
+            mappedUser.setDateOfBirth(dateOfBirth);
+            mappedUser.setBonusPoints(bonusPoints);
+            mappedUser.setAddress(address);
+            mappedUser.setCity(city);
+            mappedUser.setTelephone(telephone);
+            mappedUser.setIsVerifiedUser(isVerifiedUser);
+            mappedUser.setEmail(email);
             userRepository.save(mappedUser);
             return mappedUser;
         } else {
 //            user is new, create new one
-            User newUser = new User(firstName, lastName, password, dateOfBirth, email, 100);
+            User newUser = new User(firstName, lastName, password, dateOfBirth, email, 100, address, city, telephone, isVerifiedUser);
             userRepository.save(newUser);
             return newUser;
 

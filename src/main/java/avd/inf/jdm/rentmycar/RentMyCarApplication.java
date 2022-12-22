@@ -32,7 +32,8 @@ public class RentMyCarApplication {
 
             log.debug("[RentMyCarApplication] executing method runRentMyCar()");
 
-            User user1 = new User("Rob", "Funcken","password", LocalDate.of(2000,12,31),"rob@rentmycar.nl", 100);
+
+            User user1 = new User("Rob", "Funcken","password", LocalDate.of(2000,12,31),"rob@rentmycar.nl", 100, "Hogeschoollaan 1, 1337AA", "Breda", "013-5114578", true);
             User user2 = new User("Roy", "Schrauwen","password", LocalDate.of(2000,01,01),"roy@rentmycar.nl", 100);
             User user3 = new User("Aubrey", "Polderman","password", LocalDate.of(2000,12,01),"aubrey@rentmycar.nl", 100);
             User user4 = new User("Paul", "de Mast","password", LocalDate.of(2000,01,01),"paul@avans.nl", 100);

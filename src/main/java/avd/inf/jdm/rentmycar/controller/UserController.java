@@ -119,6 +119,12 @@ public class UserController {
 
     @PostMapping("/v1/users/{id}/profilephoto")
     public ResponseEntity<Object> uploadProfilePhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file ) {
+
+        // Check if file is empty
+        if (file.isEmpty()) {
+            return ResponseHandler.generateResponse("Please select a file to upload", HttpStatus.BAD_REQUEST, null);
+        }
+
         return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, userService.setProfilePicture(file, id));
     }
 

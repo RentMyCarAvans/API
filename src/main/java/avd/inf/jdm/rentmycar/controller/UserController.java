@@ -117,20 +117,23 @@ public class UserController {
         return ResponseHandler.generateResponse("User with id " + id + " is succesfully deleted", HttpStatus.OK, null);
     }
 
-    @PostMapping("/v1/users/profilephoto/{id}")
+    @PostMapping("/v1/users/{id}/profilephoto")
     public ResponseEntity<Object> uploadProfilePhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file ) {
         return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, userService.setProfilePicture(file, id));
     }
 
-    @GetMapping(path = {"/v1/users/profilephotourl/{id}"})
+    @GetMapping(path = {"/v1/users/{id}/profilephoto"})
     public ResponseEntity getProfilePhotoUrl(@PathVariable Long id) {
 
-        return ResponseHandler.generateResponse( "Profile image", HttpStatus.OK, userService.getProfilePictureByUserID(id));
+        return userService.getProfilePictureByUserID(id) == null
+                ? ResponseHandler.generateResponse( "No profile image found for user with id " + id, HttpStatus.NOT_FOUND, null)
+                : ResponseHandler.generateResponse( "Profile image", HttpStatus.OK, userService.getProfilePictureByUserID(id))
+                ;
 
     }
 
     @GetMapping(
-            path = {"/v1/users/profilephoto/{id}"},
+            path = {"/v1/users/{id}/profilephoto"},
             produces = MediaType.IMAGE_JPEG_VALUE
     )
     public @ResponseBody byte[] getProfilePhotoBlob(@PathVariable Long id) throws IOException {

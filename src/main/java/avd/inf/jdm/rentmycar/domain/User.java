@@ -35,6 +35,8 @@ public class User extends Account {
 
     private String city;
 
+    private boolean isVerifiedUser;
+
     @NotNull
 
     private LocalDate dateOfBirth;

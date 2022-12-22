@@ -125,6 +125,11 @@ public class UserController {
             return ResponseHandler.generateResponse("Please select a file to upload", HttpStatus.BAD_REQUEST, null);
         }
 
+        // Check if file is an image
+        if (!file.getContentType().contains("image")) {
+            return ResponseHandler.generateResponse("Added file is not an image. Please select an image", HttpStatus.BAD_REQUEST, null);
+        }
+
         return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, userService.setProfilePicture(file, id));
     }
 

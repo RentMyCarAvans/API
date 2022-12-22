@@ -28,6 +28,15 @@ public class User extends Account {
     @NotNull
 
     private String lastName;
+
+    private String telephone;
+
+    private String address;
+
+    private String city;
+
+    private boolean isVerifiedUser;
+
     @NotNull
 
     private LocalDate dateOfBirth;
@@ -37,6 +46,8 @@ public class User extends Account {
     @JsonIgnore
     private final LocalDateTime createdAt = LocalDateTime.now();
 
+
+    private String profileImageUrl;
 
     public User(String firstName, String lastName, String password, LocalDate dateOfBirth, String email, int bonusPoints) {
         super(email, password);

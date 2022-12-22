@@ -1,14 +1,19 @@
 package avd.inf.jdm.rentmycar.service;
 
-import avd.inf.jdm.rentmycar.domain.Booking;
 import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -64,4 +69,55 @@ public class UserService {
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
+
+
+
+    public Map setProfilePicture (MultipartFile file, Long id){
+        // first find user
+        Optional<User> maybeUser = userRepository.findById(id);
+        // if no user is found, return early.
+        if(maybeUser.isEmpty()) return null;
+
+        String ImagePath = "images";
+
+
+        File directory = new File(ImagePath);
+        if (!directory.exists()) {
+            try {
+                directory.mkdir();
+            } catch (SecurityException se) {
+                return null;
+            }
+        }
+        String fileName = System.currentTimeMillis() + file.getOriginalFilename();
+        final String path = ImagePath + File.separator + fileName;
+        try (InputStream inputStream = file.getInputStream();
+
+             FileOutputStream fileOutputStream = new FileOutputStream(new File(path))) {
+            byte[] buf = new byte[1024];
+            int numRead = 0;
+            while ((numRead = inputStream.read(buf)) >= 0) {
+                fileOutputStream.write(buf, 0, numRead);
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        Map responseResult = new HashMap<>();
+        responseResult.put("ProfilePhoto", fileName);
+
+        // save profilepic url to db
+        if(maybeUser.isPresent()) {
+//            user/email is found, update the user with profilepic
+            final User mappedUser = mapper.convertValue(maybeUser, User.class);
+                mappedUser.setProfileImageUrl(fileName);
+            userRepository.save(mappedUser);
+        }
+
+        return responseResult;
+    }
+
+    public String getProfilePictureByUserID(Long id) {
+      return  userRepository.findById(id).get().getProfileImageUrl();
+    }
+
 }

@@ -3,6 +3,7 @@ package avd.inf.jdm.rentmycar.controller;
 import avd.inf.jdm.rentmycar.ResponseHandler;
 import avd.inf.jdm.rentmycar.controller.dto.UserDto;
 import avd.inf.jdm.rentmycar.domain.User;
+import avd.inf.jdm.rentmycar.service.CarService;
 import avd.inf.jdm.rentmycar.service.UserService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,12 +13,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
 
+import java.io.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +40,7 @@ import java.util.Optional;
 @CrossOrigin
 public class UserController {
     private final UserService userService;
+
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
@@ -106,8 +115,48 @@ public class UserController {
 
         }
         return ResponseHandler.generateResponse("User with id " + id + " is succesfully deleted", HttpStatus.OK, null);
+    }
 
+    @PostMapping("/v1/users/{id}/profilephoto")
+    public ResponseEntity<Object> uploadProfilePhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file ) {
 
+        // Check if file is empty
+        if (file.isEmpty()) {
+            return ResponseHandler.generateResponse("Please select a file to upload", HttpStatus.BAD_REQUEST, null);
+        }
+
+        // Check if file is an image
+        if (!file.getContentType().contains("image")) {
+            return ResponseHandler.generateResponse("Added file is not an image. Please select an image", HttpStatus.BAD_REQUEST, null);
+        }
+
+        return ResponseHandler.generateResponse( "uploaded image", HttpStatus.OK, userService.setProfilePicture(file, id));
+    }
+
+    @GetMapping(path = {"/v1/users/{id}/profilephoto"})
+    public ResponseEntity getProfilePhotoUrl(@PathVariable Long id) {
+
+        return userService.getProfilePictureByUserID(id) == null
+                ? ResponseHandler.generateResponse( "No profile image found for user with id " + id, HttpStatus.NOT_FOUND, null)
+                : ResponseHandler.generateResponse( "Profile image", HttpStatus.OK, userService.getProfilePictureByUserID(id))
+                ;
 
     }
+
+    @GetMapping(
+            path = {"/v1/users/{id}/profilephoto"},
+            produces = MediaType.IMAGE_JPEG_VALUE
+    )
+    public @ResponseBody byte[] getProfilePhotoBlob(@PathVariable Long id) throws IOException {
+        String ImagePath = "images";
+        final String url = ImagePath + File.separator + userService.getProfilePictureByUserID(id);
+        FileInputStream fileInputStream = new FileInputStream(url);
+        return IOUtils.toByteArray(fileInputStream);
+    }
+
+
+
 }
+
+
+

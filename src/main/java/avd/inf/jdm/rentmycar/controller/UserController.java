@@ -144,7 +144,7 @@ public class UserController {
     }
 
     @GetMapping(
-            path = {"/v1/users/{id}/profilephoto"},
+            path = {"/v1/users/{id}/profilephotoimage"},
             produces = MediaType.IMAGE_JPEG_VALUE
     )
     public @ResponseBody byte[] getProfilePhotoBlob(@PathVariable Long id) throws IOException {

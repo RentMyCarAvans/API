@@ -35,7 +35,7 @@ public class User extends Account {
 
     private String city;
 
-    private boolean isVerifiedUser;
+    private Boolean isVerifiedUser;
 
     @NotNull
 

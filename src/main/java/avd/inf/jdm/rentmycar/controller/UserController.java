@@ -84,25 +84,16 @@ public class UserController {
     @Operation(summary = "Update a User")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User updated", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = User.class))}),
-            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content),
-            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)})
+            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content)})
     @PutMapping("/v1/users/{id}")
-    public ResponseEntity<Object> updateUser(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<Object> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable Long id) {
         User newUser;
         try {
-            Optional<User> maybeUser = userService.getUserByID(userDto.getId());
-            if (maybeUser.isPresent()) {
-                newUser = userService.saveDTO(userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword(), userDto.getAddress(), userDto.getCity(), userDto.getIsVerifiedUser(), userDto.getBonusPoints(), userDto.getTelephone());
+            newUser = userService.updateUser(userDto, id);
                 return  ResponseHandler.generateResponse("User updated", HttpStatus.OK, newUser);
-
-            }
-            return  ResponseHandler.generateResponse("User not found", HttpStatus.NOT_FOUND, null);
-
-
-        } catch (IllegalArgumentException e) {
+            } catch(IllegalArgumentException e)  {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
-
     }
 
     @Operation(summary = "Retrieve a user by id")

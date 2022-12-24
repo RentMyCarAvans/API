@@ -15,14 +15,12 @@ public class UserDto {
     @NotNull
     private Long id;
 
-    @NotNull
+//    @NotNull
     private String firstName;
-    @NotNull
+//    @NotNull
     private String lastName;
-    @NotNull
     private LocalDate dateOfBirth;
     @Email
-    @NotNull
     private String email;
 
     private String address;

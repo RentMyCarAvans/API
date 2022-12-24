@@ -70,15 +70,15 @@ public class User extends Account {
 
     public User(String firstName, String lastName, String password, LocalDate dateOfBirth, String email, int bonusPoints, String address, String city, String telephone,  Boolean isVerifiedUser) {
         super(email, password);
-        if(firstName == null) {
-            throw new NullPointerException("Firstname cannot be null");
-        }
-        if(lastName == null) {
-            throw new NullPointerException("Lastname cannot be null");
-        }
-        if(dateOfBirth == null) {
-            throw new NullPointerException("Date of Birth cannot be null");
-        }
+//        if(firstName == null) {
+//            throw new NullPointerException("Firstname cannot be null");
+//        }
+//        if(lastName == null) {
+//            throw new NullPointerException("Lastname cannot be null");
+//        }
+//        if(dateOfBirth == null) {
+//            throw new NullPointerException("Date of Birth cannot be null");
+//        }
 
         this.firstName = firstName;
         this.lastName = lastName;

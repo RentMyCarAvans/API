@@ -1,5 +1,6 @@
 package avd.inf.jdm.rentmycar.service;
 
+import avd.inf.jdm.rentmycar.controller.dto.UserDto;
 import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,10 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -38,22 +36,87 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User saveDTO(String firstName, String lastName, LocalDate dateOfBirth, String email, String password) {
+    public User saveDTO(String firstName, String lastName, LocalDate dateOfBirth, String email, String password,String address, String city, Boolean isVerifiedUser, int bonusPoints, String telephone) {
         Optional<User> maybeUser = userRepository.findUserByEmail(email);
 
         if(maybeUser.isPresent()) {
 
 //            user/email is found, update the user. First map the maybeUser to
             final User mappedUser = mapper.convertValue(maybeUser, User.class);
-
+            mappedUser.setFirstName(firstName);
+            mappedUser.setLastName(lastName);
+            mappedUser.setDateOfBirth(dateOfBirth);
+            mappedUser.setBonusPoints(bonusPoints);
+            mappedUser.setAddress(address);
+            mappedUser.setCity(city);
+            mappedUser.setTelephone(telephone);
+            mappedUser.setIsVerifiedUser(isVerifiedUser);
+            mappedUser.setEmail(email);
             userRepository.save(mappedUser);
             return mappedUser;
         } else {
 //            user is new, create new one
-            User newUser = new User(firstName, lastName, password, dateOfBirth, email, 100);
+            User newUser = new User(firstName, lastName, password, dateOfBirth, email, 100, address, city, telephone, isVerifiedUser);
             userRepository.save(newUser);
             return newUser;
 
+        }
+    }
+
+    // got idea from ; https://www.geeksforgeeks.org/spring-boot-crud-operations/
+    public User updateUser(UserDto userDto, Long id) {
+        Optional<User> maybeUser = userRepository.findById(id);
+
+        if(maybeUser.isPresent()) {
+//            user/email is found, update the user.
+            if (Objects.nonNull(userDto.getFirstName())
+                    && !"".equalsIgnoreCase(
+                    userDto.getFirstName())) {
+                maybeUser.get().setFirstName(userDto.getFirstName());}
+
+            if (Objects.nonNull(userDto.getLastName())
+                    && !"".equalsIgnoreCase(
+                    userDto.getLastName())) {
+                maybeUser.get().setLastName(userDto.getLastName());}
+
+            if (Objects.nonNull(userDto.getEmail())
+                    && !"".equalsIgnoreCase(
+                    userDto.getEmail())) {
+                maybeUser.get().setEmail(userDto.getEmail());}
+
+              if (Objects.nonNull(userDto.getAddress())
+                    && !"".equalsIgnoreCase(
+                    userDto.getAddress())) {
+                maybeUser.get().setAddress(userDto.getAddress());}
+
+            if (Objects.nonNull(userDto.getCity())
+                    && !"".equalsIgnoreCase(
+                    userDto.getCity())) {
+                maybeUser.get().setCity(userDto.getCity());}
+
+            if (Objects.nonNull(userDto.getTelephone())
+                    && !"".equalsIgnoreCase(
+                    userDto.getTelephone())) {
+                maybeUser.get().setTelephone(userDto.getTelephone());}
+
+            if (Objects.nonNull(userDto.getIsVerifiedUser())) {
+                maybeUser.get().setIsVerifiedUser(userDto.getIsVerifiedUser());}
+
+            if (Objects.nonNull(userDto.getDateOfBirth())) {
+                maybeUser.get().setDateOfBirth(userDto.getDateOfBirth());}
+
+            if (Objects.nonNull(userDto.getPassword())
+                    && !"".equalsIgnoreCase(
+                    userDto.getPassword())) {
+                maybeUser.get().setPassword(userDto.getPassword());}
+
+            maybeUser.get().setBonusPoints(userDto.getBonusPoints());
+
+            userRepository.save(maybeUser.get());
+            return maybeUser.get();
+        } else {
+//            cannot find user
+            throw new IllegalArgumentException("Cannot find user");
         }
     }
 

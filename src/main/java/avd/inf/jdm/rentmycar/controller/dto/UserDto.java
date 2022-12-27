@@ -12,17 +12,24 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class UserDto {
-    @NotNull
+    private Long id;
     private String firstName;
-    @NotNull
     private String lastName;
-    @NotNull
     private LocalDate dateOfBirth;
     @Email
-    @NotNull
     private String email;
 
-    @NotEmpty
+    private String address;
+
+    private String city;
+
+    private String telephone;
+
+    private Boolean isVerifiedUser;
+
+    private int bonusPoints;
+
+
     @Size(min = 6, message = "password should have at least 6 characters")
     private String password;
 }

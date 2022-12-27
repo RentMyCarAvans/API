@@ -68,7 +68,7 @@ public class UserController {
         try {
             Optional<User> maybeUser = userService.getUserByEmail(userDto.getEmail());
             if (maybeUser.isEmpty()) {
-                newUser = userService.saveDTO(userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword());
+                newUser = userService.saveDTO(userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword(), userDto.getAddress(), userDto.getCity(), userDto.getIsVerifiedUser(), userDto.getBonusPoints(), userDto.getTelephone());
                 return  ResponseHandler.generateResponse("User created", HttpStatus.CREATED, newUser);
 
             }
@@ -79,6 +79,21 @@ public class UserController {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
 
+    }
+
+    @Operation(summary = "Update a User")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = User.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content)})
+    @PutMapping("/v1/users/{id}")
+    public ResponseEntity<Object> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable Long id) {
+        User newUser;
+        try {
+            newUser = userService.updateUser(userDto, id);
+                return  ResponseHandler.generateResponse("User updated", HttpStatus.OK, newUser);
+            } catch(IllegalArgumentException e)  {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
     }
 
     @Operation(summary = "Retrieve a user by id")

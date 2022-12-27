@@ -12,12 +12,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class UserDto {
-    @NotNull
     private Long id;
-
-//    @NotNull
     private String firstName;
-//    @NotNull
     private String lastName;
     private LocalDate dateOfBirth;
     @Email

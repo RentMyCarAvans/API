@@ -53,8 +53,18 @@ public class BookingController {
             @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
             @ApiResponse(responseCode = "404", description = "No bookings found",content = @Content) })
     @GetMapping("/v1/bookings")
-    public ResponseEntity<Object> getAllBookings(){
+    public ResponseEntity<Object> getAllBookings(
+            @RequestParam(required = false) Long customerId
+    ){
         List<Booking> found =  bookingService.getAll();
+
+        if(customerId != null) {
+            User customer = userService.getUserByID(customerId).orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+            found = bookingService.getBookingsByCustomer(customer);
+        }
+
+
+
         return found.isEmpty()
                 ? ResponseHandler.generateResponse("No bookings found", HttpStatus.NO_CONTENT, null)
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);

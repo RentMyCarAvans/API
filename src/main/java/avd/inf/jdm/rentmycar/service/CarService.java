@@ -86,7 +86,7 @@ public class CarService {
         return false;
     }
 
-    public Car create(String type, String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user){
+    public Car create(String type, String licensePlate, Short yearOfManufacture, String model, String colorType, int mileage, int numberOfSeats, String image, String vehicleType, User user){
         if (licensePlate == null || licensePlate.isEmpty()) {
             throw new IllegalArgumentException("Licenseplate must not be empty");
         }
@@ -122,6 +122,8 @@ public class CarService {
         car.setColorType(colorType);
         car.setMileage(mileage);
         car.setNumberOfSeats(numberOfSeats);
+        car.setImage(image);
+        car.setVehicleType(vehicleType);
         car.setUser(user);
         carRepository.save(car);
         return car;

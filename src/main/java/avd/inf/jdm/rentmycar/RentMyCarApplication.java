@@ -44,12 +44,12 @@ public class RentMyCarApplication {
             userService.save(user4);
 
 
-            Car car1 = new ICE("1ICE12", (short) 2020,"Porsche 911 Carrera GTS", ColorType.BLACK,500,2,user1);
-            Car car2 = new BEV("2BEV34", (short) 2021,"Lamborgini Diablo",ColorType.BLACK,1000,2, user4);
-            Car car3 = new FCEV("3FCE56", (short) 2022,"Tesla Model S",ColorType.GREY,5000,4, user3);
-            Car car4 = new ICE("3FCE57", (short) 2018,"Fiat Panda",ColorType.RED,250000,3, user1);
-            Car car5 = new ICE("3FCE58", (short) 2006,"Renault Kangoo",ColorType.GREEN,200000,5, user2);
-            Car car6 = new ICE("3FCE59", (short) 2019,"Ford Focus",ColorType.GREEN,200000,5, user2);
+            Car car1 = new ICE("1ICE12", (short) 2020,"Porsche 911 Carrera GTS", "BLACK",500,2,null,"personenauto",user1);
+            Car car2 = new BEV("2BEV34", (short) 2021,"Lamborgini Diablo","BLACK",1000,2, null,"personenauto", user4);
+            Car car3 = new FCEV("3FCE56", (short) 2022,"Tesla Model S","GREY",5000,4,null,"personenauto", user3);
+            Car car4 = new ICE("3FCE57", (short) 2018,"Fiat Panda","RED",250000,3, null,"personenauto",user1);
+            Car car5 = new ICE("3FCE58", (short) 2006,"Renault Kangoo","GREEN",200000,5, null,"personenauto",user2);
+            Car car6 = new ICE("3FCE59", (short) 2019,"Ford Focus","GREEN",200000,5,null,"personenauto", user2);
 
             carService.save(car1);
             carService.save(car2);

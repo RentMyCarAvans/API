@@ -10,7 +10,7 @@ public class CarDTO {
     private String licensePlate;
     private Short yearOfManufacture;
     private String model;
-    private String color;
+    private String colorType;
     private int mileage;
     private int numberOfSeats;
     private String image;

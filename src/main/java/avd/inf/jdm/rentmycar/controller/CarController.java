@@ -3,6 +3,7 @@ package avd.inf.jdm.rentmycar.controller;
 import avd.inf.jdm.rentmycar.ResponseHandler;
 import avd.inf.jdm.rentmycar.controller.dto.CarDTO;
 import avd.inf.jdm.rentmycar.domain.Car;
+import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.domain.User;
 import avd.inf.jdm.rentmycar.service.CarService;
 import avd.inf.jdm.rentmycar.service.UserService;
@@ -50,10 +51,14 @@ public class CarController {
             @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
             @ApiResponse(responseCode = "404", description = "No cars found",content = @Content) })
     @GetMapping("/v1/cars")
-    public ResponseEntity<Object> getAll(){
+    public ResponseEntity<Object> getAll( @RequestParam(required = false) Long userId){
         log.info("invoke GET api/v1/cars");
+
         try {
             List<Car> found = carService.getAll();
+            if(userId != null){
+                found = found.stream().filter(car ->  car.getUser().getId()==(userId)).toList();
+            }
             return found.isEmpty()
                     ? ResponseHandler.generateResponse("No cars found", HttpStatus.NO_CONTENT, null)
                     : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
@@ -75,7 +80,7 @@ public class CarController {
         }
         try {
             User user = userService.getUserByID(carDTO.getUserId()).get();
-            Car newCar = carService.create(carDTO.getType(), carDTO.getLicensePlate(), carDTO.getYearOfManufacture(), carDTO.getModel(), carDTO.getColorType(), carDTO.getMileage(), carDTO.getNumberOfSeats(), user);
+            Car newCar = carService.create(carDTO.getType(), carDTO.getLicensePlate(), carDTO.getYearOfManufacture(), carDTO.getModel(), carDTO.getColor(), carDTO.getMileage(), carDTO.getNumberOfSeats(), carDTO.getImage(), carDTO.getVehicleType(), user);
             if (newCar != null) {
                 return ResponseHandler.generateResponse("Car created", HttpStatus.CREATED, newCar);
             }

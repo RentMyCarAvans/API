@@ -17,7 +17,7 @@ class BookingIntegrationTest {
 
     User testOwner1 = new User("Tessy", "De Owner", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
     User testCustomer = new User("Testy", "De Customer", "welkom", LocalDate.of(2022,01,01), "email@test.test", 100);
-    Car testCar1 = new ICE("AB-12-CD", (short) 2006, "Renault Kangoo", ColorType.BLACK, 200000, 5, testOwner1);
+    Car testCar1 = new ICE("AB-12-CD", (short) 2006, "Renault Kangoo", "BLACK", 200000, 5, null,"personenauto",testOwner1);
     Offer testOffer1 = new Offer(LocalDateTime.parse("2022-10-10T08:00"), LocalDateTime.parse("2022-10-10T10:00"), "Rotterdam", testCar1);
 
     @Autowired UserRepository userRepository;

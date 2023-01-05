@@ -19,18 +19,18 @@ class CarTest {
 
         // Arrange
         User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
-        Car car1 = new ICE("H777RX", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
+        Car car1 = new ICE("H777RX", (short) 2022,"Porsche 911 Carrera GTS","BLACK",0,2,null,"personenauto", testUser);
         short expectedYearOfManufacture = 2022;
         String expectedLicensePlate = "H777RX";
         String expectedModel = "Porsche 911 Carrera GTS";
-        ColorType expectedColor = ColorType.BLACK;
+        String expectedColor = "BLACK";
         int expectedMileage = 0;
 
         // Act
         short actualYearOfManufacture = car1.getYearOfManufacture();
         String actualLicensePlate = car1.getLicensePlate();
         String actualModel = car1.getModel();
-        ColorType actualColor = car1.getColorType();
+        String actualColor = car1.getColorType();
         int actualMileage = car1.getMileage();
 
         // Assert
@@ -47,18 +47,18 @@ class CarTest {
         User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car1 = new BEV("H777RX", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
+        Car car1 = new BEV("H777RX", (short) 2022,"Porsche 911 Carrera GTS","BLACK",0,2,null,"personenauto", testUser);
         short expectedYearOfManufacture = 2022;
         String expectedLicensePlate = "H777RX";
         String expectedModel = "Porsche 911 Carrera GTS";
-        ColorType expectedColor = ColorType.BLACK;
+        String expectedColor = "BLACK";
         int expectedMileage = 0;
 
         // Act
         short actualYearOfManufacture = car1.getYearOfManufacture();
         String actualLicensePlate = car1.getLicensePlate();
         String actualModel = car1.getModel();
-        ColorType actualColor = car1.getColorType();
+        String actualColor = car1.getColorType();
         int actualMileage = car1.getMileage();
 
         // Assert
@@ -75,18 +75,18 @@ class CarTest {
         User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car1 = new FCEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
+        Car car1 = new FCEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS","BLACK",0,2, null,"personenauto",testUser);
         short expectedYearOfManufacture = 2022;
         String expectedLicensePlate = "H777RR";
         String expectedModel = "Porsche 911 Carrera GTS";
-        ColorType expectedColor = ColorType.BLACK;
+        String expectedColor = "BLACK";
         int expectedMileage = 0;
 
         // Act
         short actualYearOfManufacture = car1.getYearOfManufacture();
         String actualLicensePlate = car1.getLicensePlate();
         String actualModel = car1.getModel();
-        ColorType actualColor = car1.getColorType();
+        String actualColor = car1.getColorType();
         int actualMileage = car1.getMileage();
 
         // Assert
@@ -103,7 +103,7 @@ class CarTest {
         User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car = new ICE("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
+        Car car = new ICE("H777RR", (short) 2022,"Porsche 911 Carrera GTS","BLACK",0,2,null,"personenauto", testUser);
         double expectedTCO = 125.22;
 
         // Act
@@ -119,8 +119,8 @@ class CarTest {
         User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car = new BEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
-        double expectedTCO = 403.0;
+        Car car = new BEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS","BLACK",0,2,null,"personenauto", testUser);
+        double expectedTCO = 503.0;
 
         // Act
         double actualTCO = car.calculateTCO(car.getMileage(), car.getYearOfManufacture(),car.getNumberOfSeats());
@@ -135,7 +135,7 @@ class CarTest {
         User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car = new FCEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS",ColorType.BLACK,0,2, testUser);
+        Car car = new FCEV("H777RR", (short) 2022,"Porsche 911 Carrera GTS","BLACK",0,2,null,"personenauto", testUser);
         double expectedTCO = 222.22;
 
         // Act
@@ -151,12 +151,12 @@ class CarTest {
         User testUser = new User("Tessy", "De Tester", "welkom", LocalDate.of(2022,01,01), "tessy@avans.nl", 100);
 
         // Arrange
-        Car car = new ICE("H123SD", (short) 2019,"KIA Sportage",ColorType.BLACK,12422,2, testUser);
+        Car car = new ICE("H123SD", (short) 2019,"KIA Sportage","BLACK",12422,2,null,"personenauto", testUser);
         int expectedMileage = 45222;
         Long expectedId = 10L;
         String expectedLicensePlate = "RFBT65";
         String expectedModel = "KIA Ceed";
-        ColorType expectedColor = ColorType.GREY;
+        String expectedColor = "GREY";
         short expectedYearOfmanufacture = 2007;
 
         // Act
@@ -164,7 +164,7 @@ class CarTest {
         car.setMileage(45222);
         car.setId(10L);
         car.setModel("KIA Ceed");
-        car.setColorType(ColorType.GREY);
+        car.setColorType("GREY");
         car.setYearOfManufacture((short) 2007);
 
         // Assert

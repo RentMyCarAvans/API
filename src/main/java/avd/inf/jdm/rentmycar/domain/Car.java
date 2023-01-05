@@ -47,13 +47,19 @@ public abstract class Car {
     private String model;
 
     @Column(name="color", nullable = true)
-    private ColorType colorType;
+    private String colorType;
 
     @Column(name="mileage", nullable = true)
     private int mileage;
 
     @Column(name="number_of_seats", nullable = false)
     private int numberOfSeats;
+
+    @Column(name="image", nullable = true)
+    private String image;
+
+    @Column(name="vehicle_type", nullable = false)
+    private String vehicleType;
 
     @CreationTimestamp
     private Date createdAt;
@@ -65,13 +71,15 @@ public abstract class Car {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Car(String licensePlate, Short yearOfManufacture, String model, ColorType colorType, int mileage, int numberOfSeats, User user) {
+    public Car(String licensePlate, Short yearOfManufacture, String model, String colorType, int mileage, int numberOfSeats, String image, String vehicleType, User user) {
         this.licensePlate = licensePlate;
         this.yearOfManufacture = yearOfManufacture;
         this.model = model;
         this.colorType = colorType;
         this.mileage = mileage;
         this.numberOfSeats = numberOfSeats;
+        this.image = image;
+        this.vehicleType = vehicleType;
         this.user = user;
     }
 

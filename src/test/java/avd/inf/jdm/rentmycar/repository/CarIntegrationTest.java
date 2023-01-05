@@ -20,7 +20,7 @@ class CarIntegrationTest {
 
     User testOwner = new User("Jimmy", "Green", "welkom", LocalDate.of(1980,01,01), "jimmy.green@outlook.com", 0);
 
-    Car testCar = new ICE("XX123Z", (short) 2006, "KIA Sportage", ColorType.BLACK, 2500, 5, testOwner);
+    Car testCar = new ICE("XX123Z", (short) 2006, "KIA Sportage", "BLACK", 2500, 5, null,"personenauto",testOwner);
 
     @Autowired UserRepository userRepository;
     @Autowired CarRepository carRepository;

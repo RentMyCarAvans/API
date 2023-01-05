@@ -41,7 +41,7 @@ public class CarServiceTest {
     @Test
     public void testgetCarById() {
         User user = new User("Demo","Testname","password", LocalDate.now(), "email@gmail.com",0);
-        Car car = new ICE("1ICE12", (short) 2020,"Porsche 911 Carrera GTS", ColorType.BLACK,500,2,user);
+        Car car = new ICE("1ICE12", (short) 2020,"Porsche 911 Carrera GTS", "BLACK",500,2,null,"personenauto",user);
         when(carService.getById(1L)).thenReturn(car);
         Car car2 = carService.getById(1L);
         assertEquals(car, car2);

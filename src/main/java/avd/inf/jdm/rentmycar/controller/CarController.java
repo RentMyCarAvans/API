@@ -80,7 +80,7 @@ public class CarController {
         }
         try {
             User user = userService.getUserByID(carDTO.getUserId()).get();
-            Car newCar = carService.create(carDTO.getType(), carDTO.getLicensePlate(), carDTO.getYearOfManufacture(), carDTO.getModel(), carDTO.getColor(), carDTO.getMileage(), carDTO.getNumberOfSeats(), carDTO.getImage(), carDTO.getVehicleType(), user);
+            Car newCar = carService.create(carDTO.getType(), carDTO.getLicensePlate(), carDTO.getYearOfManufacture(), carDTO.getModel(), carDTO.getColorType(), carDTO.getMileage(), carDTO.getNumberOfSeats(), carDTO.getImage(), carDTO.getVehicleType(), user);
             if (newCar != null) {
                 return ResponseHandler.generateResponse("Car created", HttpStatus.CREATED, newCar);
             }

@@ -155,6 +155,8 @@ public class CarController {
             car.setColorType(carNewValues.getColorType());
             car.setModel(carNewValues.getModel());
             car.setMileage(carNewValues.getMileage());
+            car.setImage(carNewValues.getImage());
+            car.setVehicleType(carNewValues.getVehicleType());
             car.setLicensePlate(carNewValues.getLicensePlate());
             car.setYearOfManufacture(carNewValues.getYearOfManufacture());
 

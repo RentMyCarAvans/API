@@ -46,7 +46,7 @@ public abstract class Car {
     @Column(name="model", nullable = false)
     private String model;
 
-    @Column(name="color", nullable = true)
+    @Column(name="colorType", nullable = true)
     private String colorType;
 
     @Column(name="mileage", nullable = true)

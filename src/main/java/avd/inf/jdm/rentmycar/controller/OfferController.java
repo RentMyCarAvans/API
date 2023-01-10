@@ -67,7 +67,7 @@ public class OfferController {
         }
 
         if(userId != null && userId != 0){
-            found = found.stream().filter(offer -> offer.getCar().getUser().getId() = userId).toList();
+            found = found.stream().filter(offer -> offer.getCar().getUser().getId() == userId).toList();
         }
 
         return found.isEmpty()

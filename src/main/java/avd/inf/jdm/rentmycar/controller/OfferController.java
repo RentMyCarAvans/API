@@ -46,7 +46,8 @@ public class OfferController {
     public ResponseEntity<Object> getAllOffers(
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String colorOfCar,
-            @RequestParam(required = false) Integer numberOfSeats
+            @RequestParam(required = false) Integer numberOfSeats,
+            @RequestParam(required = false) Long userId
     ){
 
         List<Offer> found;
@@ -63,6 +64,10 @@ public class OfferController {
 
         if(numberOfSeats != null && numberOfSeats != 0){
             found = found.stream().filter(offer -> offer.getCar().getNumberOfSeats() >= numberOfSeats).toList();
+        }
+
+        if(userId != null && userId != 0){
+            found = found.stream().filter(offer -> offer.getCar().getUser().getId() == userId).toList();
         }
 
         return found.isEmpty()

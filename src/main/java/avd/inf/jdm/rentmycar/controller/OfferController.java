@@ -6,6 +6,7 @@ import avd.inf.jdm.rentmycar.domain.Car;
 import avd.inf.jdm.rentmycar.domain.Offer;
 import avd.inf.jdm.rentmycar.service.CarService;
 import avd.inf.jdm.rentmycar.service.OfferService;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,9 +14,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +138,33 @@ public class OfferController {
                 }
             }
 
-            Offer newOffer = offerService.create(offerDTO.getStartDateTime(), offerDTO.getEndDateTime(), offerDTO.getPickupLocation(), car);
+            // Get the Latitude and Longitude of the pickup location, using http://api.positionstack.com/v1/forward?access_key=04e13b946c065785becd602f43c14ece&query=
+            String url = "http://api.positionstack.com/v1/forward?access_key=04e13b946c065785becd602f43c14ece&query=" + offerDTO.getPickupLocation();
+            RestTemplate restTemplate = new RestTemplate();
+            String result = restTemplate.getForObject(url, String.class);
+            // Convert String to JSON Object
+            JSONObject locationObj = new JSONObject(result);
+
+            // Get the latitude and longitude from the data in the JSON object
+            Double latitude = locationObj.getJSONArray("data").getJSONObject(0).getDouble("latitude");
+            Double longitude = locationObj.getJSONArray("data").getJSONObject(0).getDouble("longitude");
+
+
+            System.out.println(" ~~~~~~ Get LatLng of Offer pickup location: " + result + " ~~~~~~");
+            System.out.println(" ~~~~~~ Get LatLng of Offer locationObj: latitude " + latitude + " ~~~~~~");
+            System.out.println(" ~~~~~~ Get LatLng of Offer locationObj: longitude " + longitude + " ~~~~~~");
+
+
+            Offer offer = new Offer();
+            offer.setCar(car);
+            offer.setPickupLocation(offerDTO.getPickupLocation());
+            offer.setStartDateTime(offerDTO.getStartDateTime());
+            offer.setEndDateTime(offerDTO.getEndDateTime());
+            offer.setPickupLocationLatitude(latitude);
+            offer.setPickupLocationLongitude(longitude);
+
+
+            Offer newOffer = offerService.create(offer);
             if (newOffer != null) {
                 return ResponseHandler.generateResponse("New Offer added succesfully", HttpStatus.CREATED, newOffer);
             }
@@ -143,6 +173,8 @@ public class OfferController {
 
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -153,17 +185,44 @@ public class OfferController {
             @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
             @ApiResponse(responseCode = "404", description = "Offer not found", content = @Content) })
     @PutMapping("/v1/offers/{id}")
-    ResponseEntity<Object> update(@RequestBody Offer newOffer, @PathVariable Long id) {
+    ResponseEntity<Object> update(@RequestBody OfferDTO offerDTO, @PathVariable Long id) throws JSONException {
         Optional<Offer> optionalOffer = offerService.getSingleById(id);
+
+        Car car = carService.getSingleById(offerDTO.getCarId()).isPresent() ? carService.getSingleById(offerDTO.getCarId()).get() : null;
+        if(car == null){
+            return ResponseHandler.generateResponse("Car with id " + offerDTO.getCarId() + " not found", HttpStatus.NOT_FOUND, null);
+        }
 
         if (optionalOffer.isPresent()) {
 
             Offer offer = optionalOffer.get();
 
-            offer.setStartDateTime(newOffer.getStartDateTime());
-            offer.setEndDateTime(newOffer.getEndDateTime());
-            offer.setPickupLocation(newOffer.getPickupLocation());
-            offer.setCar(newOffer.getCar());
+            offer.setStartDateTime(offerDTO.getStartDateTime());
+            offer.setEndDateTime(offerDTO.getEndDateTime());
+            offer.setPickupLocation(offerDTO.getPickupLocation());
+            offer.setCar(car);
+
+
+            // Get the Latitude and Longitude of the pickup location, using http://api.positionstack.com/v1/forward?access_key=04e13b946c065785becd602f43c14ece&query=
+            String url = "http://api.positionstack.com/v1/forward?access_key=04e13b946c065785becd602f43c14ece&query=" + offerDTO.getPickupLocation();
+            RestTemplate restTemplate = new RestTemplate();
+            String result = restTemplate.getForObject(url, String.class);
+            // Convert String to JSON Object
+            JSONObject locationObj = new JSONObject(result);
+
+            // Get the latitude and longitude from the data in the JSON object
+            Double latitude = locationObj.getJSONArray("data").getJSONObject(0).getDouble("latitude");
+            Double longitude = locationObj.getJSONArray("data").getJSONObject(0).getDouble("longitude");
+
+
+            System.out.println(" ~~~~~~ Get LatLng of Offer pickup location: " + result + " ~~~~~~");
+            System.out.println(" ~~~~~~ Get LatLng of Offer locationObj: latitude " + latitude + " ~~~~~~");
+            System.out.println(" ~~~~~~ Get LatLng of Offer locationObj: longitude " + longitude + " ~~~~~~");
+
+            offer.setPickupLocationLatitude(latitude);
+            offer.setPickupLocationLongitude(longitude);
+
+
 
             return ResponseHandler.generateResponse("Offer with id " + id + " is succesfully updated", HttpStatus.OK, offerService.save(offer));
 

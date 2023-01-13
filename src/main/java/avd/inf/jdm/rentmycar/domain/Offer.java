@@ -29,6 +29,12 @@ public class Offer {
     @Column(name = "pickupLocation")
     private String pickupLocation;
 
+    @Column(name = "pickupLocationLatitude")
+    private Double pickupLocationLatitude = 51.58354791977657;
+
+    @Column(name = "pickupLocationLongitude")
+    private Double pickupLocationLongitude = 4.797201933230787 ;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "car")
     @NonNull

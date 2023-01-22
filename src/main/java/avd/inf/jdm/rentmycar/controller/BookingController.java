@@ -70,6 +70,28 @@ public class BookingController {
                 : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
     }
 
+    // Get Booking for specific Offer
+    @Operation(summary = "Retrieving booking for specific offer")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved booking for specific offer",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Booking.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",content = @Content),
+            @ApiResponse(responseCode = "404", description = "No booking found",content = @Content) })
+    @GetMapping("/v1/bookings/offer/{offerId}")
+    public ResponseEntity<Object> getBookingByOffer(
+            @PathVariable Long offerId
+    ){
+        Optional<Offer> offer = offerService.getSingleById(offerId);
+        if(offer.isEmpty()) {
+            return ResponseHandler.generateResponse("No Booking for this Offer", HttpStatus.NOT_FOUND, null);
+        }
+        Offer foundOffer = offer.get();
+        Optional<Booking> found = bookingService.getBookingByOffer(foundOffer);
+
+        return found.isEmpty()
+                ? ResponseHandler.generateResponse("No booking found", HttpStatus.NO_CONTENT, null)
+                : ResponseHandler.generateResponse(null, HttpStatus.OK, found);
+    }
+
     @Operation(summary = "Retrieve a booking by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the booking",content = { @Content(mediaType = "application/json",schema = @Schema(implementation = Booking.class)) }),

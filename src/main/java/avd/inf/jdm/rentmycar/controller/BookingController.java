@@ -2,6 +2,7 @@ package avd.inf.jdm.rentmycar.controller;
 
 import avd.inf.jdm.rentmycar.ResponseHandler;
 import avd.inf.jdm.rentmycar.controller.dto.BookingDTO;
+import avd.inf.jdm.rentmycar.controller.dto.BookingUpdateDTO;
 import avd.inf.jdm.rentmycar.controller.dto.EndRideDTO;
 import avd.inf.jdm.rentmycar.domain.Booking;
 import avd.inf.jdm.rentmycar.domain.Offer;
@@ -147,17 +148,18 @@ public class BookingController {
             @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
             @ApiResponse(responseCode = "404", description = "Booking not found", content = @Content) })
     @PutMapping("/v1/bookings/{id}")
-    ResponseEntity<Object> updateBooking(@RequestBody Booking newBooking, @PathVariable Long id) {
+    ResponseEntity<Object> updateBooking(@RequestBody BookingUpdateDTO bookingUpdateDTO, @PathVariable Long id) {
         Optional<Booking> optionalBooking = bookingService.getSingleById(id);
 
         if (optionalBooking.isPresent()) {
 
             Booking booking = optionalBooking.get();
 
-            booking.setCustomer(newBooking.getCustomer());
-            booking.setOffer(newBooking.getOffer());
-            booking.setDropOfLocation(newBooking.getDropOfLocation());
-            booking.setStatus(newBooking.getStatus());
+            booking.setCustomer(optionalBooking.get().getCustomer());
+            booking.setOffer(optionalBooking.get().getOffer());
+
+            booking.setDropOfLocation(bookingUpdateDTO.getDropOfLocation());
+            booking.setStatus(bookingUpdateDTO.getStatus());
 
             return ResponseHandler.generateResponse("Booking with id " + id + " is succesfully updated", HttpStatus.OK, bookingService.save(booking));
 

@@ -9,3 +9,5 @@ public class BookingDTO {
     private long offerId;
     private long customerId;
 }
+
+
